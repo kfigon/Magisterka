@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 
 
     Odbiornik o(sciezkaDoStacji, sciezka);
-		o.SkupWidmo();
+	o.SkupWidmo();
 
 	
 
