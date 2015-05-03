@@ -108,7 +108,8 @@ void CiagPn::generujCiag()
 
 void CiagPn::PrzesunDoOffsetu(const USHORT& offsetPn)
 {
-	for (size_t i = 0; i < offsetPn * 63; i++)
+	// todo: 63-64?!
+	for (size_t i = 0; i < offsetPn * 64; i++)
 	{
 		przesunCyklicznieWprawo();
 	}

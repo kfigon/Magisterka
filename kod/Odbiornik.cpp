@@ -62,14 +62,21 @@ void Odbiornik::SkupWidmo()
 	size_t indeksCiagu = 0;
 
 	vector<WynikKorelacji> wynik;
-	for (size_t i = 0; i < iloscProbekDanych; i++)
+	for (size_t i = 0; i < 512; i++)
 	{
-		PiszPostepPetli(i, iloscProbekDanych);
-		suma = IteracjaKorelacji(iloscProbekDanych, ciag, i);
+		PiszPostepPetli(i, 512);
+		suma = IteracjaKorelacji(512, ciag, i);
 		ciag.PrzesunDoOffsetu(i);
 		wynik.push_back(WynikKorelacji(i, suma));
 	}
-	printf("ASD!\n");
+	printf("skonczone, zrzucam...\n");
+	fstream plik;
+	plik.open("ASD.txt", ios::out);
+	for (size_t i = 0; i < wynik.size(); i++)
+	{
+		plik << i << "\t" << wynik[i].wartosc << "\n";
+	}
+	plik.close();
 }
 
 bool Odbiornik::LadujNowyPlikDanych(const string& sciezkaDoPliku)
