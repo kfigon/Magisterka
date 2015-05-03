@@ -32,47 +32,44 @@ Odbiornik::~Odbiornik()
 {
 	czyscDane();
 }
+double Odbiornik::IteracjaKorelacji(size_t rozmiarDanych, const CiagRozpraszajacy& ciag, int opoznienie)
+{
+
+	long long suma = 0;
+	size_t indeksCiagu = 0;
+	for (size_t indeksDanych = 0; indeksDanych < rozmiarDanych; indeksDanych++)
+	{
+		if (indeksDanych != 0 && indeksDanych % INDEKS_PROBKI_DO_POMINIECIA == 0)
+			indeksDanych++;
+
+		suma += mDane[indeksDanych].I * ciag.mSygnal[indeksCiagu + opoznienie];
+
+		indeksCiagu++;
+	}
+	return suma;
+}
+
  // todo
 void Odbiornik::SkupWidmo()
 {
 	CiagPn ciag(Odczepy::ILOSC_REJESTROW_I, Odczepy::ODCZEPY_I);
 	long long suma = 0;
-	vector<long long> wynik;
 
-	size_t indeksCiaguRozpraszajacego = 0;
 	USHORT offset = 0;
 #define DLUGOSC_SKUPIANEGO_PN 4096
 
-	size_t rozmiar = (size_t)(mRozmiarTablicyDanych / 4);
-	for (size_t indeksDanych = 0; indeksDanych < rozmiar; indeksDanych++)
+	auto iloscProbekDanych = static_cast<size_t>(ileProbek(26.6*1000, CZESTOTLIWOSC_PROBKOWANIA_DANYCH_MHZ));
+	size_t indeksCiagu = 0;
+
+	vector<WynikKorelacji> wynik;
+	for (size_t i = 0; i < iloscProbekDanych; i++)
 	{
-		PiszPostepPetli(indeksDanych, rozmiar);
-
-		indeksCiaguRozpraszajacego++;
-
-		if (indeksDanych != 0 && indeksDanych % DLUGOSC_SKUPIANEGO_PN == 0)
-		{
-			offset++;
-			ciag.PrzesunDoOffsetu(offset);
-			indeksCiaguRozpraszajacego = 0;
-			wynik.push_back(suma);
-			suma = 0;
-		}
-
-		if (indeksDanych !=0 && indeksDanych % INDEKS_PROBKI_DO_POMINIECIA == 0)
-			indeksDanych++;
-
-		suma += mDane[indeksDanych].I * ciag.mSygnal[indeksCiaguRozpraszajacego];
+		PiszPostepPetli(i, iloscProbekDanych);
+		suma = IteracjaKorelacji(iloscProbekDanych, ciag, i);
+		ciag.PrzesunDoOffsetu(i);
+		wynik.push_back(WynikKorelacji(i, suma));
 	}
-
-	printf("\nZrzucam do pliku\n");
-	fstream plik;
-	plik.open("C:\\Users\\Kamil\\Desktop\\wykresy_python\\asd.txt", ios::out);
-	for (size_t i = 0; i < wynik.size(); i++)
-	{
-		plik << i << "\t" << wynik[i] << "\n";
-	}
-	plik.close();
+	printf("ASD!\n");
 }
 
 bool Odbiornik::LadujNowyPlikDanych(const string& sciezkaDoPliku)

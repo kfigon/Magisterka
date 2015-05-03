@@ -7,11 +7,6 @@
 #include "Odbiornik.h"
 using namespace std;
 
-// czas w [us], czProbkowania w [MHz]
-const double ileProbek(const double& czas, const double& czProbkowania)
-{
-	return czProbkowania*czas;
-}
 
 int main(int argc, char *argv[])
 {

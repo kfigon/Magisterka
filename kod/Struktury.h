@@ -24,6 +24,9 @@
 #define CZESTOTLIWOSC_PROBKOWANIA_DANYCH_MHZ				1.28
 #define SZYBKOSC_TRANSMISJI_DANYCH_KHZ						19.2
 
+// czas w [us], czProbkowania w [MHz]
+#define ileProbek(czas, czProbkowania)	(czProbkowania*czas)
+
 typedef unsigned char UCHAR;	
 typedef unsigned short USHORT;
 typedef unsigned int UINT;

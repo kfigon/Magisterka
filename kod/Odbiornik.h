@@ -12,6 +12,7 @@
 
 using namespace std;
 
+
 class Odbiornik
 {
 private:
@@ -40,4 +41,5 @@ public:
 
 private:
 	void czyscDane();
+	double IteracjaKorelacji(size_t rozmiarDanych, const CiagRozpraszajacy& ciag, int opoznienie);
 };
