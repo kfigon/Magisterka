@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Magisterka", "Magisterka\Magisterka.vcxproj", "{7AB05D5D-85D7-47D6-842B-1AB68D4AB809}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Testy", "Testy\Testy.vcxproj", "{A6DD1F2C-8DA5-4ADC-8D0D-536F8EAD2F07}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7AB05D5D-85D7-47D6-842B-1AB68D4AB809}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7AB05D5D-85D7-47D6-842B-1AB68D4AB809}.Debug|Win32.Build.0 = Debug|Win32
+		{7AB05D5D-85D7-47D6-842B-1AB68D4AB809}.Release|Win32.ActiveCfg = Release|Win32
+		{7AB05D5D-85D7-47D6-842B-1AB68D4AB809}.Release|Win32.Build.0 = Release|Win32
+		{A6DD1F2C-8DA5-4ADC-8D0D-536F8EAD2F07}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A6DD1F2C-8DA5-4ADC-8D0D-536F8EAD2F07}.Debug|Win32.Build.0 = Debug|Win32
+		{A6DD1F2C-8DA5-4ADC-8D0D-536F8EAD2F07}.Release|Win32.ActiveCfg = Release|Win32
+		{A6DD1F2C-8DA5-4ADC-8D0D-536F8EAD2F07}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
