@@ -7,9 +7,9 @@ mDlugoscRejestryWBitach(dlugoscRejestryWBitach)
 
 int RejestrPrzesuwny::getVal()
 {
-	unsigned int wynik = 0;
+	UINT wynik = 0;
 
-	for (unsigned int nrOdczepu : mOdczepy)
+	for (UINT nrOdczepu : mOdczepy)
 		wynik ^= ((mStan >> (mDlugoscRejestryWBitach - nrOdczepu)) & 1);
 
 	mStan >>= 1;

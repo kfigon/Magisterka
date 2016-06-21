@@ -29,6 +29,7 @@ namespace Stale
 // czas w [us], czProbkowania w [MHz]
 #define ileProbek(czas, czProbkowania)	(czProbkowania*czas)
 
+
 typedef unsigned char UCHAR;
 typedef unsigned short USHORT;
 typedef unsigned int UINT;
@@ -36,8 +37,21 @@ typedef unsigned long long ULONGLONG;
 
 struct Data
 {
-	short I;
-	short Q;
+	union
+	{
+		struct
+		{
+			short I;
+			short Q;
+		};
+		int raw;	// cala probka raw, I oraz Q naraz
+	};
+
+	Data(short I = 0, short Q = 0) :
+		I(I),
+		Q(Q)
+	{}
+
 };
 
 //struct Stacja

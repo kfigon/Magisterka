@@ -17,7 +17,7 @@ private:
 	const string mSciezkaDoPliku;
 
 public:
-	fstreamWrapper(const string& sciezkaDoPliku);
+	fstreamWrapper(const string& sciezkaDoPliku, bool isRead);
 	virtual ~fstreamWrapper();
 
 	// gettery
@@ -26,21 +26,25 @@ public:
 	bool czyOk() const { return (is_open() && zwrocRozmiarPliku() != 0); }
 };
 
-class CzytaczoPisaczBinarnychPlikow :public fstreamWrapper
+class BinaryReader :public fstreamWrapper
 {
 public:
-
 	enum Endian{ Big, Little };
 
-	CzytaczoPisaczBinarnychPlikow(const string& sciezkaDoPliku);
-	~CzytaczoPisaczBinarnychPlikow() = default;
+	BinaryReader(const string& sciezkaDoPliku);
+	~BinaryReader() = default;
 
 	std::vector<Data> Czytaj(size_t dlugoscWektoraWyjsciowego, Endian endian);
 	size_t liczWymanaganyRozmiarTablicy() const { return zwrocRozmiarPliku() / sizeof(Data) - 1; }
+};
 
-	// pomocniczo do zrzucania danych do plikow:
-	static void ZapiszPlik(const std::vector<Data>& buf, const string& sciezkaDoPlikuWyjsciowego);
-	static void ZapiszPlik(const std::vector<char>& buf, const string& sciezkaDoPlikuWyjsciowego);
+class BinaryWriter : public fstreamWrapper
+{
+public:
+	BinaryWriter(const string& sciezkaDoPliku);
+	~BinaryWriter() = default;
+
+	void pisz(const std::vector<UCHAR>& data);
 };
 
 //class ParserStacjiBazowych :public fstreamWrapper

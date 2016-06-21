@@ -32,13 +32,14 @@ namespace Testy
 			sprawdzPoczatek(ciag);
 		}
 
-		// sprawdzamy czy czy na poczatku nie ma zer
+		// sprawdzamy czy czy na poczatku nie ma zera
 		void sprawdzPoczatek(SygnalBipolarny& ciag)
 		{
 			auto pierwszy = ciag.getElement(0);
 			Assert::AreNotEqual(0, SygnalBipolarny::unmap(pierwszy));
 		}
 
+		// ilosc jedynek i zer musi byc jednakowa
 		void sprawdzIloscJedynekIZer(SygnalBipolarny& ciag)
 		{
 			int iloscJedynek = 0;

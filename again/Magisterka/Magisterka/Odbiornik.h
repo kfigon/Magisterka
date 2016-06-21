@@ -26,7 +26,7 @@ struct WynikKorelacji
 	{}
 };
 
-void PrzygotujPlikDanychKorelacji(const std::string& sciezka, std::vector<WynikKorelacji>& wynikKorelacji);
-void RysujWykres(const std::string& sciezkaDoPliku, std::vector<WynikKorelacji>& wynikKorelacji);
-long long liczIteracje(std::vector<Data>& dane, SygnalBipolarny& ciagI);
-void liczKorelacje(std::vector<Data>& dane, int coKtoraPominac, CzytaczoPisaczBinarnychPlikow::Endian endian);
+void PrzygotujPlikDanychKorelacji(const std::string& sciezka, const std::vector<WynikKorelacji>& wynikKorelacji);
+void RysujWykres(const std::string& sciezkaDoPliku, const std::vector<WynikKorelacji>& wynikKorelacji);
+long long liczIteracje(const std::vector<Data>& dane, const SygnalBipolarny& ciagI);
+void liczKorelacje(std::vector<Data>& dane, int coKtoraPominac, BinaryReader::Endian endian);

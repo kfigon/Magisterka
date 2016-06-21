@@ -9,6 +9,7 @@ class GeneratorCiagow
 public:
 	static const size_t DLUGOSC_CIAGU = 32768;
 
+	// todo: zrobic unique_ptr
 	static SygnalBipolarny* generujCiagI();
 	static SygnalBipolarny* generujCiagQ();
 

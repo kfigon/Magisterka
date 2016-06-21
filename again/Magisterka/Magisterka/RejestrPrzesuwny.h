@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "Struktury.h"
 
 // lista odczepow, w formie:
 // 11,13,14,16
@@ -14,7 +15,7 @@ public:
 	int getVal();
 
 private:
-	const long long mStanPoczatkowy = 13; // 0b1101 dowolny stan jest ok
+	const long long mStanPoczatkowy = 13; // 0b1101; dowolny stan jest ok
 
 	long long mStan = mStanPoczatkowy;
 	size_t mDlugoscRejestryWBitach = 0;
