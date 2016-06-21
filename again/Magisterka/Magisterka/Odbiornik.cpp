@@ -37,7 +37,7 @@ long long liczIteracje(const std::vector<Data>& dane, const SygnalBipolarny& cia
 void liczKorelacje(std::vector<Data>& dane, int coKtoraPominac, BinaryReader::Endian endian)
 {
 	cout << "Wynik dla: " << coKtoraPominac << "\n";
-	auto* ciagI = GeneratorCiagow::generujCiagI();
+	auto ciagI = GeneratorCiagow::generujCiagI();
 
 	vector<WynikKorelacji> outTab(dane.size(), 0);
 
@@ -58,6 +58,4 @@ void liczKorelacje(std::vector<Data>& dane, int coKtoraPominac, BinaryReader::En
 		<< ".txt";
 
 	RysujWykres(nazwaPliku.str(), outTab);
-
-	delete ciagI;
 }

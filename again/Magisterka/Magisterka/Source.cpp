@@ -12,23 +12,27 @@
 // w debugu tez nie ma tragedii
 void testPredkosciEndianessu(BinaryReader::Endian endian);
 std::vector<string> plikiWKatalogu(const string& katalog);
-void zrzucCiagIDoPliku(const string& sciezka)
+void zrzucCiagDoPliku(const string& sciezka, SygnalBipolarny& sygnal)
 {
 	BinaryWriter writer{ sciezka };
-	auto ciagI = GeneratorCiagow::generujCiagI();
-
-	std::vector<UCHAR> buf(ciagI->getDlugosc(), 0);
-	for (size_t i = 0; i < ciagI->getDlugosc(); i++)
-		buf[i] = static_cast<UCHAR>(ciagI->getElement(i));
-	
+	std::vector<UCHAR> buf(sygnal.getDlugosc(), 0);
+	for (size_t i = 0; i < sygnal.getDlugosc(); i++)
+	{
+		auto el = SygnalBipolarny::unmap(sygnal[i]);
+		buf[i] = static_cast<UCHAR>(el);
+	}
 	writer.pisz(buf);
-
-	delete ciagI;
 }
 
 int main()
 {
-	zrzucCiagIDoPliku("ciagI.txt");
+	auto ciagI = GeneratorCiagow::generujCiagI();
+	zrzucCiagDoPliku("ciagI.txt", *ciagI.get());
+
+	auto ciagQ = GeneratorCiagow::generujCiagQ();
+	zrzucCiagDoPliku("ciagQ.txt", *ciagQ.get());
+
+	return 1;
 
 	const string katalog = "D:\\Kamil\\_magisterka\\pomiary";
 	auto pliki = plikiWKatalogu(katalog);
@@ -54,7 +58,6 @@ int main()
 
 
 	// todo: odbiornik, korelacja
-	// todo: zrzucanie ciagow do pliku dla dra
 
 	// jakby lepiej dla BE
 	liczKorelacje(dane, 24, endian);
@@ -89,24 +92,27 @@ std::vector<string> plikiWKatalogu(const string& katalog)
 
 	std::vector<string> out;
 
-	if (handleDir != INVALID_HANDLE_VALUE)
+	if (handleDir == INVALID_HANDLE_VALUE)
 	{
-		do
-		{
-			const string fileFullName = katalog + "\\" + fileData.cFileName;
-			const bool isDirectory = (fileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0;
-
-			if (fileData.cFileName[0] == '.')
-				continue;
-
-			if (isDirectory)
-				continue;
-
-			out.push_back(fileFullName);
-		} while (FindNextFile(handleDir, &fileData));
-
-		FindClose(handleDir);
+		cout << "Nie udalo sie utworzyc katalogu " << katalog << "\n";
+		return out;
 	}
+
+	do
+	{
+		const string fileFullName = katalog + "\\" + fileData.cFileName;
+		const bool isDirectory = (fileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0;
+
+		if (fileData.cFileName[0] == '.')
+			continue;
+
+		if (isDirectory)
+			continue;
+
+		out.push_back(fileFullName);
+	} while (FindNextFile(handleDir, &fileData));
+
+	FindClose(handleDir);
 
 	return out;
 }

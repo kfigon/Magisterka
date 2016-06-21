@@ -65,7 +65,9 @@ void BinaryWriter::pisz(const std::vector<UCHAR>& data)
 {
 	if (is_open())
 	{
-		write(reinterpret_cast<const char*>(data.data()), data.size());
+		// write nie ma przeciazonego UCHARa, wiec zapisywal mi nulle i znak ascii 1
+		for (size_t i = 0; i < data.size(); i++)
+			operator<<(data[i]);
 	}
 	else
 	{

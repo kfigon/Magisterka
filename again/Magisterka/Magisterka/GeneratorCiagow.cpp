@@ -1,18 +1,18 @@
 #include "GeneratorCiagow.h"
 
-SygnalBipolarny* GeneratorCiagow::generujCiagI()
+std::unique_ptr<SygnalBipolarny> GeneratorCiagow::generujCiagI()
 {
 	std::vector<int> odczepy{ 5, 7, 8, 9, 13, 15 };
 	return generujCiagPn(RejestrPrzesuwny{ 15, odczepy });
 }
 
-SygnalBipolarny* GeneratorCiagow::generujCiagQ()
+std::unique_ptr<SygnalBipolarny> GeneratorCiagow::generujCiagQ()
 {
 	std::vector<int> odczepy{ 3, 4, 5, 6, 10, 11, 12, 15 };
 	return generujCiagPn(RejestrPrzesuwny{ 15, odczepy });
 }
 
-SygnalBipolarny* GeneratorCiagow::generujCiagPn(RejestrPrzesuwny& rejestr)
+std::unique_ptr<SygnalBipolarny> GeneratorCiagow::generujCiagPn(RejestrPrzesuwny& rejestr)
 {
 	std::vector<int> data(GeneratorCiagow::DLUGOSC_CIAGU, 0);
 	int iloscZerPodRzad = 0;
@@ -36,6 +36,5 @@ SygnalBipolarny* GeneratorCiagow::generujCiagPn(RejestrPrzesuwny& rejestr)
 		else
 			iloscZerPodRzad = 0;
 	}
-
-	return new SygnalBipolarny{ data, indeksPierwszejJedynkiPoZerach };
+	return std::make_unique<SygnalBipolarny>(data, indeksPierwszejJedynkiPoZerach);
 }

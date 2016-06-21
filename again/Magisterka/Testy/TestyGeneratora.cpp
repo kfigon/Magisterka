@@ -12,16 +12,14 @@ namespace Testy
 
 		TEST_METHOD(testCiaguI)
 		{
-			auto* ciag = GeneratorCiagow::generujCiagI();
+			auto ciag = GeneratorCiagow::generujCiagI();
 			testujCiag(*ciag);
-			delete ciag;
 		}
 
 		TEST_METHOD(testCiaguQ)
 		{
-			auto* ciag = GeneratorCiagow::generujCiagQ();
+			auto ciag = GeneratorCiagow::generujCiagQ();
 			testujCiag(*ciag);
-			delete ciag;
 		}
 
 	private:

@@ -2,18 +2,18 @@
 #include "Struktury.h"
 #include "RejestrPrzesuwny.h"
 #include "Sygnal.h"
+#include <memory>
 
-// klasa alokuje pamiec!
+
 class GeneratorCiagow
 {
 public:
 	static const size_t DLUGOSC_CIAGU = 32768;
-
-	// todo: zrobic unique_ptr
-	static SygnalBipolarny* generujCiagI();
-	static SygnalBipolarny* generujCiagQ();
+	
+	static std::unique_ptr<SygnalBipolarny> generujCiagI();
+	static std::unique_ptr<SygnalBipolarny> generujCiagQ();
 
 private:
-	static SygnalBipolarny* generujCiagPn(RejestrPrzesuwny& rejestr);
+	static std::unique_ptr<SygnalBipolarny> generujCiagPn(RejestrPrzesuwny& rejestr);
 };
 
