@@ -26,6 +26,7 @@ void zrzucCiagDoPliku(const string& sciezka, SygnalBipolarny& sygnal)
 
 int main()
 {
+#if 0
 	auto ciagI = GeneratorCiagow::generujCiagI();
 	zrzucCiagDoPliku("ciagI.txt", *ciagI.get());
 
@@ -33,6 +34,7 @@ int main()
 	zrzucCiagDoPliku("ciagQ.txt", *ciagQ.get());
 
 	return 1;
+#endif
 
 	const string katalog = "D:\\Kamil\\_magisterka\\pomiary";
 	auto pliki = plikiWKatalogu(katalog);
@@ -46,7 +48,8 @@ int main()
 	//const size_t rozmiarTablicy = czytacz.liczWymaganyRozmiarTablicy();
 	const size_t rozmiarTablicy = 1024*4;
 
-	auto endian = BinaryReader::Endian::Big;
+	const auto endian = BinaryReader::Endian::Big;
+	const auto skip = 24;
 
 	auto dane = czytacz.Czytaj(rozmiarTablicy, endian);
 	if (dane.empty())
@@ -60,7 +63,7 @@ int main()
 	// todo: odbiornik, korelacja
 
 	// jakby lepiej dla BE
-	liczKorelacje(dane, 24, endian);
+	liczKorelacje(dane, skip, endian);
 
 
 	return 0;

@@ -8,6 +8,7 @@
 class GeneratorCiagow
 {
 public:
+	// 2^15
 	static const size_t DLUGOSC_CIAGU = 32768;
 	
 	static std::unique_ptr<SygnalBipolarny> generujCiagI();

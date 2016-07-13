@@ -29,6 +29,7 @@ std::unique_ptr<SygnalBipolarny> GeneratorCiagow::generujCiagPn(RejestrPrzesuwny
 			{
 				DbgPrint("14 zer pod rzad pod indeksem %d", i);
 				i++;
+				// wstawiamy dodatkowe zero po 14 zerach
 				data[i] = 0;
 				indeksPierwszejJedynkiPoZerach = i + 1;
 			}
