@@ -1,74 +1,32 @@
 #include "RejestrPrzesuwny.h"
+#include <assert.h>
 
-RejestrPrzesuwny::RejestrPrzesuwny(size_t dlugoscRejestryWBitach, const std::vector<int>& odczepy, long long stanPoczatkowy) :
+RejestrPrzesuwny::RejestrPrzesuwny(size_t dlugoscRejestryWBitach, const std::vector<int>& odczepy) :
 mOdczepy(odczepy),
-mDlugoscRejestryWBitach(dlugoscRejestryWBitach)
+mStan(dlugoscRejestryWBitach, 1)
 {
-	mStan = stanPoczatkowy;
+	assert(dlugoscRejestryWBitach == mOdczepy[0]);
+}
+
+void RejestrPrzesuwny::przesun()
+{
+	for (int i = 0; i < mStan.size() - 1; i++)
+		mStan[i] = mStan[i + 1];
 }
 
 int RejestrPrzesuwny::getVal()
 {
-	UINT wynik = 0;
+	auto wynikXora = 0;
 
-	for (UINT nrOdczepu : mOdczepy)
-	{
-		wynik ^= ((mStan >> (mDlugoscRejestryWBitach - nrOdczepu)) & 1);
-	}
-	mStan >>= 1;
-	mStan |= (wynik << (mDlugoscRejestryWBitach - 1));
-	return wynik;
+	for (size_t i = 1; i < mOdczepy.size(); i++)
+		wynikXora ^= mStan[mOdczepy[i]];
+		
+
+	const auto ostatni = mStan[0];
+	przesun();
+
+	// nadpisz ostatni
+	mStan[mOdczepy[0] - 1] = wynikXora;
+
+	return ostatni;
 }
-
-
-//#include "RejestrPrzesuwny.h"
-//
-//RejestrPrzesuwnyAsd::RejestrPrzesuwnyAsd(size_t dlugoscRejestryWBitach, const std::vector<int>& odczepy, long long stanPoczatkowy) :
-//mOdczepy(odczepy),
-//mStan(dlugoscRejestryWBitach, 0)
-//{
-//	//mStan = stanPoczatkowy;
-//	mStan[0] = 1;
-//}
-//
-////int RejestrPrzesuwnyAsd::getVal()
-////{
-////	UINT wynik = 0;
-////
-////	for (UINT nrOdczepu : mOdczepy)
-////	{
-////		wynik ^= ((mStan >> (mDlugoscRejestryWBitach - nrOdczepu)) & 1);
-////	}
-////	mStan >>= 1;
-////	mStan |= (wynik << (mDlugoscRejestryWBitach - 1));
-////	return wynik;
-////}
-//
-//void RejestrPrzesuwnyAsd::przesun()
-//{
-//	for (int i = mStan.size() - 2; i >= 0; i--)
-//		mStan[i + 1] = mStan[i];
-//}
-//
-//int RejestrPrzesuwnyAsd::getVal()
-//{
-//	auto wynikXora = 0;
-//
-//	for (auto odczep : mOdczepy)
-//		wynikXora ^= mStan[odczep - 1];
-//
-//	const auto ostatni = mStan[getDlugoscRejestruWBitach() - 1];
-//
-//	przesun();
-//	mStan[0] = wynikXora;
-//
-//	return ostatni;
-//
-//	//wynikXora ^= self.__stan[odczep - 1]
-//
-//	//	ostatni = self.__stan[self.__iloscRejestrow - 1]
-//	//	self.__przesun()
-//	//	self.__stan[0] = wynikXora
-//
-//	//	return ostatni
-//}

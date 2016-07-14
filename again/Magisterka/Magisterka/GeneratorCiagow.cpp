@@ -2,13 +2,13 @@
 
 std::unique_ptr<SygnalBipolarny> GeneratorCiagow::generujCiagI()
 {
-	std::vector<int> odczepy{ 5, 7, 8, 9, 13, 15 };
+	std::vector<int> odczepy{ 15, 13, 9, 8, 7, 5, 0 };
 	return generujCiagPn(RejestrPrzesuwny{ 15, odczepy });
 }
 
 std::unique_ptr<SygnalBipolarny> GeneratorCiagow::generujCiagQ()
 {
-	std::vector<int> odczepy{ 3, 4, 5, 6, 10, 11, 12, 15 };
+	std::vector<int> odczepy{ 15, 12, 11, 10, 6, 5, 4, 3, 0 };
 	return generujCiagPn(RejestrPrzesuwny{ 15, odczepy });
 }
 

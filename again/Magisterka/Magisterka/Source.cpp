@@ -26,6 +26,7 @@ void zrzucCiagDoPliku(const string& sciezka, SygnalBipolarny& sygnal)
 
 int main()
 {
+	// zrzuty dla dra Sadowskiego
 #if 0
 	auto ciagI = GeneratorCiagow::generujCiagI();
 	zrzucCiagDoPliku("ciagI.txt", *ciagI.get());
@@ -48,7 +49,7 @@ int main()
 	//const size_t rozmiarTablicy = czytacz.liczWymaganyRozmiarTablicy();
 	const size_t rozmiarTablicy = 1024*4;
 
-	const auto endian = BinaryReader::Endian::Big;
+	const auto endian = BinaryReader::Endian::Little;
 	const auto skip = 24;
 
 	auto dane = czytacz.Czytaj(rozmiarTablicy, endian);
@@ -86,7 +87,6 @@ void testPredkosciEndianessu(BinaryReader::Endian endian)
 	cout << ((endian == BinaryReader::Endian::Little) ? "LE: " : "BE: ")
 		<< stop.QuadPart - start.QuadPart << "\n";
 }
-
 
 std::vector<string> plikiWKatalogu(const string& katalog)
 {
