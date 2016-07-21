@@ -9,8 +9,9 @@ mSciezkaDoPliku(sciezkaDoPliku)
 
 	if (is_open())
 	{
+		seekg(0, end);
 		mRozmiarPliku = static_cast<size_t>(tellg());
-		seekg(0);
+		seekg(0, beg);
 	}
 	else
 	{

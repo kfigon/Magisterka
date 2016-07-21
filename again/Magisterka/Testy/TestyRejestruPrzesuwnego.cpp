@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 #include "RejestrPrzesuwny.cpp"
+#include <fstream>
+#include <iostream>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -322,6 +324,98 @@ namespace Testy
 			Assert::AreEqual(0, rej.getVal());
 			Assert::AreEqual(0, rej.getVal());
 		}
+
+		std::vector<char> czytajPlikZeSpodziewanymiDanymiZMatlaba(const std::string& sciezka)
+		{
+			using namespace std;
+			fstream plik;
+			plik.open(sciezka.c_str(), ios::in);
+
+			if (plik.is_open() == false)
+				Assert::Fail(L"Nie udalo sie otworzyc pliku z danymi!");
+
+			plik.seekg(0, plik.end);
+
+			// plik ma \n, wiec jego rozmiar jest 2x wiekszy
+			const auto rozmiar = plik.tellg() / 2;
+			plik.seekg(0, plik.beg);
+
+			Assert::AreEqual(static_cast<int>(pow(2, 15) - 1), static_cast<int>(rozmiar));
+
+			std::vector<char> buf(rozmiar, 0);
+			for (size_t i = 0; i < buf.size(); i++)
+			{
+				string linijka;
+				getline(plik, linijka);
+				buf[i] = atoi(linijka.c_str());
+			}
+			plik.close();
+
+			return buf;
+		}
+
+		void testujCiagZDanymiZMatlaba(std::vector<char>& buf, RejestrPrzesuwny& rejestr)
+		{
+			Assert::AreEqual(static_cast<int>(pow(2, 15)) - 1, rejestr.ileWartosciMozeWygenerowac());
+			Assert::AreEqual(static_cast<int>(buf.size()), rejestr.ileWartosciMozeWygenerowac());
+
+			for (int iloscProb = 0; iloscProb < 5; iloscProb++)
+			{
+				for (int i = 0; i < rejestr.ileWartosciMozeWygenerowac(); i++)
+				{
+					Assert::AreEqual(buf[i], static_cast<char>(rejestr.getVal()));
+				}
+			}
+		}
+
+		TEST_METHOD(testRejestruMatlabI)
+		{
+			//clear all;
+			//g = [15 13 9 8 7 5 0];
+			//init = [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1];
+			//curr = [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1];
+			//mask = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 1];
+			//NoOfOutBits = (2 ^ 15) - 1;
+			//h = commsrc.pn('GenPoly', g, ...
+			//	'InitialStates', init, ...
+			//	'CurrentStates', curr, ...
+			//	'Mask', mask, ...
+			//	'NumBitsOut', NoOfOutBits)
+			// out = h.generate();
+			//	fileID = fopen('C:\\Users\\Kamil\\Desktop\\outputI.txt', 'w');
+			//fprintf(fileID, '%d\n', out);
+			//fclose(fileID);
+		
+			RejestrPrzesuwny rej{ 15, { 15, 13, 9, 8, 7, 5, 0 } };
+			auto buf = czytajPlikZeSpodziewanymiDanymiZMatlaba("C:\\Users\\Kamil\\Desktop\\repoMgr\\again\\Magisterka\\Testy\\matlabOutputI.txt");
+
+			testujCiagZDanymiZMatlaba(buf, rej);
+		}
+
+		TEST_METHOD(testRejestruMatlabQ)
+		{
+			//clear all;
+			//g = [15 12 11 10 6 5 4 3 0];
+			//init = [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1];
+			//curr = [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1];
+			//mask = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 1];
+			//NoOfOutBits = (2 ^ 15) - 1;
+			//h = commsrc.pn('GenPoly', g, ...
+			//	'InitialStates', init, ...
+			//	'CurrentStates', curr, ...
+			//	'Mask', mask, ...
+			//	'NumBitsOut', NoOfOutBits)
+			//	out = h.generate();
+			//fileID = fopen('C:\\Users\\Kamil\\Desktop\\outputQ.txt', 'w');
+			//fprintf(fileID, '%d\n', out);
+			//fclose(fileID);
+
+			RejestrPrzesuwny rej{ 15, { 15, 12, 11, 10, 6, 5, 4, 3, 0 } };
+			auto buf = czytajPlikZeSpodziewanymiDanymiZMatlaba("C:\\Users\\Kamil\\Desktop\\repoMgr\\again\\Magisterka\\Testy\\matlabOutputQ.txt");
+
+			testujCiagZDanymiZMatlaba(buf, rej);
+		}
+
 
 #if 0 
 		TEST_METHOD(testPrzykladWikipedia)
