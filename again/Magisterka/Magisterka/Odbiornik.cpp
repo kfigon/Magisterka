@@ -48,6 +48,9 @@ void liczKorelacje(std::vector<Data>& dane, int coKtoraPominac, BinaryReader::En
 		outTab[i].wartosc = liczIteracje(dane, *ciagI);
 
 		ciagI->przesunWLewo();
+
+		// fs = 1,28MHz, szybkosc transmisji 1,2288Mcps
+		// wiec sie rozjedzie po 24 probkach
 		if ((i % coKtoraPominac == 0) && (i != 0))
 			ciagI->przesunWLewo();
 	}
