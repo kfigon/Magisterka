@@ -46,17 +46,3 @@ public:
 
 	void pisz(const std::vector<UCHAR>& data);
 };
-
-//class ParserStacjiBazowych :public fstreamWrapper
-//{
-//public:
-//	ParserStacjiBazowych(const string& sciezkaDoPliku);
-//	~ParserStacjiBazowych() = default;
-//
-//	vector<Stacja> ParsujStacje();
-//
-//private:
-//	Stacja ParsujLinijke(const string& linijka);
-//	vector<string> podzielStringPoZnaku(const string& napis, char znak);
-//	WspolrzedneDMS wydobadzWspolrzednezNapisu(const string& napis);
-//};

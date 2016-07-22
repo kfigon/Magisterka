@@ -12,17 +12,7 @@
 // w debugu tez nie ma tragedii
 void testPredkosciEndianessu(BinaryReader::Endian endian);
 std::vector<string> plikiWKatalogu(const string& katalog);
-void zrzucCiagDoPliku(const string& sciezka, SygnalBipolarny& sygnal)
-{
-	BinaryWriter writer{ sciezka };
-	std::vector<UCHAR> buf(sygnal.getDlugosc(), 0);
-	for (size_t i = 0; i < sygnal.getDlugosc(); i++)
-	{
-		auto el = SygnalBipolarny::unmap(sygnal[i]);
-		buf[i] = static_cast<UCHAR>(el);
-	}
-	writer.pisz(buf);
-}
+void zrzucCiagDoPliku(const string& sciezka, SygnalBipolarny& sygnal);
 
 int main()
 {
@@ -86,6 +76,18 @@ void testPredkosciEndianessu(BinaryReader::Endian endian)
 
 	cout << ((endian == BinaryReader::Endian::Little) ? "LE: " : "BE: ")
 		<< stop.QuadPart - start.QuadPart << "\n";
+}
+
+void zrzucCiagDoPliku(const string& sciezka, SygnalBipolarny& sygnal)
+{
+	BinaryWriter writer{ sciezka };
+	std::vector<UCHAR> buf(sygnal.getDlugosc(), 0);
+	for (size_t i = 0; i < sygnal.getDlugosc(); i++)
+	{
+		auto el = SygnalBipolarny::unmap(sygnal[i]);
+		buf[i] = static_cast<UCHAR>(el);
+	}
+	writer.pisz(buf);
 }
 
 std::vector<string> plikiWKatalogu(const string& katalog)

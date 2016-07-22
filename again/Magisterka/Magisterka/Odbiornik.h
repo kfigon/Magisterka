@@ -6,14 +6,6 @@
 #include "GeneratorCiagow.h"
 #include "FileReader.h"
 
-//class Odbiornik
-//{
-//public:
-//	Odbiornik();
-//	~Odbiornik();
-//};
-//
-
 
 struct WynikKorelacji
 {

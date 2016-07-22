@@ -45,7 +45,7 @@ void liczKorelacje(std::vector<Data>& dane, int coKtoraPominac, BinaryReader::En
 	{
 		PiszPostepPetli(i, outTab.size());
 		outTab[i].offset = i;
-		outTab[i].wartosc = liczIteracje(dane, *ciagI);/*/GeneratorCiagow::DLUGOSC_CIAGU;*/
+		outTab[i].wartosc = liczIteracje(dane, *ciagI);
 
 		ciagI->przesunWLewo();
 		if ((i % coKtoraPominac == 0) && (i != 0))
