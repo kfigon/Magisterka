@@ -25,6 +25,7 @@ namespace Testy
 	private:
 		void testujCiag(SygnalBipolarny& ciag)
 		{
+			Assert::AreEqual(static_cast<size_t>(pow(2, 15)), GeneratorCiagow::DLUGOSC_CIAGU);
 			Assert::AreEqual(GeneratorCiagow::DLUGOSC_CIAGU, ciag.getDlugosc(), L"Ciag jest za krotki!");
 			sprawdzIloscJedynekIZer(ciag);
 			sprawdzPoczatek(ciag);

@@ -15,7 +15,7 @@ namespace Testy
 		TEST_METHOD_INITIALIZE(init)
 		{
 			std::vector<int> dane{ 1, 0, 1, 1, 1, 0, 0 };
-			sygnal = new SygnalBipolarny{dane };
+			sygnal = new SygnalBipolarny{ dane };
 		}
 
 		TEST_METHOD_CLEANUP(cleanup)
