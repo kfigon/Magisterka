@@ -14,15 +14,15 @@ std::unique_ptr<SygnalBipolarny> GeneratorCiagow::generujCiagQ()
 
 std::unique_ptr<SygnalBipolarny> GeneratorCiagow::generujCiagPn(RejestrPrzesuwny& rejestr)
 {
-	std::vector<int> data(GeneratorCiagow::DLUGOSC_CIAGU, 0);
+	std::vector<int> ciagBinarny(GeneratorCiagow::DLUGOSC_CIAGU, 0);
 	int iloscZerPodRzad = 0;
 	int indeksPierwszejJedynkiPoZerach = 0;
 
-	for (size_t i = 0; i < data.size(); i++)
+	for (size_t i = 0; i < ciagBinarny.size(); i++)
 	{
-		auto input = rejestr.getVal();
-		data[i] = input;
-		if (input == 0)
+		const auto wygenerowanyBit = rejestr.getVal();
+		ciagBinarny[i] = wygenerowanyBit;
+		if (wygenerowanyBit == 0)
 		{
 			iloscZerPodRzad++;
 			if (iloscZerPodRzad == 14)
@@ -30,12 +30,14 @@ std::unique_ptr<SygnalBipolarny> GeneratorCiagow::generujCiagPn(RejestrPrzesuwny
 				DbgPrint("14 zer pod rzad pod indeksem %d", i);
 				i++;
 				// wstawiamy dodatkowe zero po 14 zerach
-				data[i] = 0;
+				ciagBinarny[i] = 0;
+				// kolejny element bedzie jedynka, wiec zaznaczamy jego pozycje, 
+				// zeby potem stworzyc poprawny ciag PN
 				indeksPierwszejJedynkiPoZerach = i + 1;
 			}
 		}
 		else
 			iloscZerPodRzad = 0;
 	}
-	return std::make_unique<SygnalBipolarny>(data, indeksPierwszejJedynkiPoZerach);
+	return std::make_unique<SygnalBipolarny>(ciagBinarny, indeksPierwszejJedynkiPoZerach);
 }

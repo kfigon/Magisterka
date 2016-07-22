@@ -1,6 +1,6 @@
 #pragma once
 
-//#define VERBOSE
+#define VERBOSE
 
 #ifdef VERBOSE
 #define DbgPrint(x, ...)					printf("[%s] "x, __FUNCTION__, ##__VA_ARGS__)
