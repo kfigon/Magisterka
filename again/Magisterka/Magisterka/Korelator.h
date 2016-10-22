@@ -11,5 +11,8 @@ namespace Korelator
 	int liczIteracjeKorelacji(SygnalBipolarny& a, SygnalBipolarny& b);
 
 	double liczWartoscSrednia(const std::vector<int>& ciag);
-	std::vector<int> iloczynCiagow(const std::vector<int>& a, const std::vector<int>& b);
+	std::vector<int> liczIloczynCiagow(const std::vector<int>& a, const std::vector<int>& b);
+	double liczWariancje(const std::vector<int>& ciag);
+	double liczWariancje(const std::vector<int>& a, const std::vector<int>& b);
+	double liczWspolczynnikKorelacji(const std::vector<int>& a, const std::vector<int>& b);
 }

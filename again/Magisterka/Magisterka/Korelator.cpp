@@ -38,7 +38,7 @@ namespace Korelator
 		return static_cast<double>(suma) / static_cast<double>(ciag.size());
 	}
 
-	std::vector<int> iloczynCiagow(const std::vector<int>& a, const std::vector<int>& b)
+	std::vector<int> liczIloczynCiagow(const std::vector<int>& a, const std::vector<int>& b)
 	{
 		if (a.size() != b.size())
 			return std::vector<int>();
@@ -50,5 +50,32 @@ namespace Korelator
 			out[i] = a[i] * b[i];
 		}
 		return out;
+	}
+
+	double liczWariancje(const std::vector<int>& ciag)
+	{
+		double suma = 0;
+		const auto wartoscSrednia = liczWartoscSrednia(ciag);
+		for (auto i : ciag)
+			suma += pow((i - wartoscSrednia), 2);
+
+		suma /= static_cast<double>(ciag.size());
+
+		return sqrt(suma);
+	}
+
+	double liczWariancje(const std::vector<int>& a, const std::vector<int>& b)
+	{
+		const auto iloczynCiagow = liczIloczynCiagow(a, b);
+		const auto wartoscSredniaIloczynu = liczWartoscSrednia(iloczynCiagow);
+		const auto wartoscSredniaA = liczWartoscSrednia(a);
+		const auto wartoscSredniaB = liczWartoscSrednia(b);
+
+		return wartoscSredniaIloczynu - wartoscSredniaA*wartoscSredniaB;
+	}
+
+	double liczWspolczynnikKorelacji(const std::vector<int>& a, const std::vector<int>& b)
+	{
+		return liczWariancje(a, b) / (liczWariancje(a) * liczWariancje(b));
 	}
 }
