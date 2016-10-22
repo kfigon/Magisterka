@@ -5,6 +5,7 @@ RejestrPrzesuwny::RejestrPrzesuwny(size_t dlugoscRejestryWBitach, const std::vec
 mOdczepy(odczepy),
 mStan(dlugoscRejestryWBitach, 1)
 {
+	// najwyzsza wartosc odczepy powinna byc rowna dlugosci - odczep na pierwszej komorce
 	assert(dlugoscRejestryWBitach == mOdczepy[0]);
 }
 

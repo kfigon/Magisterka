@@ -56,7 +56,6 @@ int main()
 	// jakby lepiej dla BE
 	liczKorelacje(dane, skip, endian);
 
-
 	return 0;
 }
 

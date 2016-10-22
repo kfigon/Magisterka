@@ -28,4 +28,27 @@ namespace Korelator
 
 		return wynik;
 	}
+
+	double liczWartoscSrednia(const std::vector<int>& ciag)
+	{
+		int suma = 0;
+		for (auto i : ciag)
+			suma += i;
+
+		return static_cast<double>(suma) / static_cast<double>(ciag.size());
+	}
+
+	std::vector<int> iloczynCiagow(const std::vector<int>& a, const std::vector<int>& b)
+	{
+		if (a.size() != b.size())
+			return std::vector<int>();
+
+		std::vector<int> out(a.size(), 0);
+
+		for (size_t i = 0; i < a.size(); i++)
+		{
+			out[i] = a[i] * b[i];
+		}
+		return out;
+	}
 }
