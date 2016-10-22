@@ -69,12 +69,20 @@ namespace Testy
 			czyPrawieRowne(-0.88, Korelator::liczWariancje(a, b));
 		}
 
-		TEST_METHOD(wspolczynnikKorelacji)
+		TEST_METHOD(wspolczynnikKorelacji1)
 		{
 			std::vector<int> a{ 3, 1, 6, 3, 4 };
 			std::vector<int> b{ 1, 5, 3, 4, 3 };
 
 			czyPrawieRowne(-0.408, Korelator::liczWspolczynnikKorelacji(a, b));
+		}
+
+		TEST_METHOD(wspolczynnikKorelacji2)
+		{
+			std::vector<int> a{ 0, 1, 1, 2, 3, 2, 1, 4, 5, 6, 8, 7, 5, 6, 4, 4, 3, 2, 1, 1 };
+			std::vector<int> b{ 2, 3, 3, 4, 3, 2, 5, 8, 7, 6, 6, 5, 4, 6, 3, 2, 2, 0, 1, 0 };
+		
+			czyPrawieRowne(0.6438, Korelator::liczWspolczynnikKorelacji(a, b));
 		}
 
 	private:
