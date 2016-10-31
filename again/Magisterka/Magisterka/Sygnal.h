@@ -6,7 +6,7 @@ class SygnalBipolarny
 {
 private:
 	std::vector<int> mCiag;
-	int mIndeksPoczatku = 0;
+	long long mIndeksPoczatku = 0;
 
 public:
 	SygnalBipolarny(const std::vector<int>& ciagBinarny);

@@ -41,7 +41,7 @@ std::vector<Data> BinaryReader::Czytaj(size_t dlugoscWektoraWyjsciowego, Endian 
 	std::vector<Data> bufor(dlugoscWektoraWyjsciowego, 0);
 
 	read(reinterpret_cast<char*>(bufor.data()), bufor.size()*sizeof(Data));
-	cout << "Przeczytano plik" << zwrocSciezkeDoPliku() << ". ";
+	cout << "Przeczytano plik " << zwrocSciezkeDoPliku() << "\n";
 
 	cout << "Dane zwrocone w formacie " <<
 		((endian == Endian::Big) ? "bin endian" : "little endian") << "\n";

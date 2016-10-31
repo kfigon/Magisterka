@@ -14,6 +14,40 @@ void testPredkosciEndianessu(BinaryReader::Endian endian);
 std::vector<string> plikiWKatalogu(const string& katalog);
 void zrzucCiagDoPliku(const string& sciezka, SygnalBipolarny& sygnal);
 
+void asd(BinaryReader::Endian endian, int skip, int plikidx)
+{
+	const string katalog = "D:\\Kamil\\_magisterka\\pomiary";
+	auto pliki = plikiWKatalogu(katalog);
+	if (pliki.empty())
+	{
+		cout << "Nie ma plikow .dat w katalogu: " << katalog << "\n";
+		//return 0;
+	}
+
+	BinaryReader czytacz{ pliki[plikidx] };
+	//const size_t rozmiarTablicy = czytacz.liczWymaganyRozmiarTablicy();
+	const size_t rozmiarTablicy = 1024 * 4;
+
+	//const auto endian = BinaryReader::Endian::Big;
+	//const auto skip = 24;	// 24
+
+	auto dane = czytacz.Czytaj(rozmiarTablicy, endian);
+	if (dane.empty())
+	{
+		cout << "Failed to read file\n";
+		system("pause");
+		//return 0;
+	}
+
+
+	// todo: odbiornik, korelacja
+
+	// jakby lepiej dla BE
+	liczKorelacje(dane, skip, endian);
+
+	cout << "\n";
+}
+
 int main()
 {
 	// zrzuty dla dra Sadowskiego
@@ -27,34 +61,20 @@ int main()
 	return 1;
 #endif
 
-	const string katalog = "D:\\Kamil\\_magisterka\\pomiary";
-	auto pliki = plikiWKatalogu(katalog);
-	if (pliki.empty())
-	{
-		cout << "Nie ma plikow .dat w katalogu: " << katalog << "\n";
-		return 0;
-	}
+	//asd(BinaryReader::Endian::Little, 23, 1);
+	//asd(BinaryReader::Endian::Little, 24, 1);
+	//asd(BinaryReader::Endian::Little, 25, 1);
+	//asd(BinaryReader::Endian::Little, 26, 1);
+	//asd(BinaryReader::Endian::Big, 23,	  1);
+	//asd(BinaryReader::Endian::Big, 24,    1);
+	//asd(BinaryReader::Endian::Big, 25,    1);
+	//asd(BinaryReader::Endian::Big, 26,    1);
 
-	BinaryReader czytacz{ pliki[0] };
-	//const size_t rozmiarTablicy = czytacz.liczWymaganyRozmiarTablicy();
-	const size_t rozmiarTablicy = 1024*4;
+	asd(BinaryReader::Endian::Little, 25, 0);
+	asd(BinaryReader::Endian::Little, 25, 1);
+	asd(BinaryReader::Endian::Little, 25, 2);
+	asd(BinaryReader::Endian::Little, 25, 3);
 
-	const auto endian = BinaryReader::Endian::Little;
-	const auto skip = 24;
-
-	auto dane = czytacz.Czytaj(rozmiarTablicy, endian);
-	if (dane.empty())
-	{
-		cout << "Failed to read file\n";
-		system("pause");
-		return 0;
-	}
-
-
-	// todo: odbiornik, korelacja
-
-	// jakby lepiej dla BE
-	liczKorelacje(dane, skip, endian);
 
 	return 0;
 }
