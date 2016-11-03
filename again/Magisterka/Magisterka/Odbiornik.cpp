@@ -69,19 +69,18 @@ void liczKorelacje(std::vector<Data>& dane, int coKtoraPominac, BinaryReader::En
 		outTab[i].offset = i;
 		//outTab[i].wartosc = liczIteracje(dane, *ciagI, coKtoraPominac);
 
-		long long suma = 0;
 		long long real = 0;
 		long long imag = 0;
 		size_t indeksCiagu = 0;
 		for (size_t indeksDanych = 0; indeksDanych < dane.size(); indeksDanych++)
 		{
 			auto cI = ciagI->getElement(indeksCiagu);
-			auto cQ = 0;// ciagQ->getElement(indeksCiagu);
+			auto cQ = 0; // ciagQ->getElement(indeksCiagu);
 			auto dI = dane[indeksDanych].I;
 			auto dQ = dane[indeksDanych].Q;
 
-			real+= cI*dI + cQ*dQ;
-			imag+= cQ*dI - dQ*cI;
+			real += cI*dI + cQ*dQ;
+			imag += cQ*dI - dQ*cI;
 
 			// fs danych = 1,28MHz, szybkosc transmisji 1,2288Mcps
 			// wiec sie rozjedzie po 24 probkach

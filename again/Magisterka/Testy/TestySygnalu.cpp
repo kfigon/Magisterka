@@ -83,4 +83,75 @@ namespace Testy
 				Assert::AreEqual(sygnal->getElement(i), nowy.getElement(i));
 		}
 	};
+
+	TEST_CLASS(TestySygnaluZOffsetem)
+	{
+	private:
+		SygnalBipolarny* sygnal;
+
+	public:
+		TEST_METHOD_INITIALIZE(init)
+		{
+			std::vector<int> dane{ 1, 0, 1, 1, 1, 0, 0 };
+			sygnal = new SygnalBipolarny{ dane, 2 };
+		}
+
+		TEST_METHOD_CLEANUP(cleanup)
+		{
+			delete sygnal;
+		}
+
+		TEST_METHOD(get)
+		{
+			Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElement(0));
+			Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElement(1));
+			Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElement(2));
+			Assert::AreEqual(SygnalBipolarny::map(0), sygnal->getElement(3));
+			Assert::AreEqual(SygnalBipolarny::map(0), sygnal->getElement(4));
+												   
+			Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElement(5));
+			Assert::AreEqual(SygnalBipolarny::map(0), sygnal->getElement(6));
+			Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElement(7));
+			Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElement(8));
+			Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElement(9));
+			Assert::AreEqual(SygnalBipolarny::map(0), sygnal->getElement(10));
+		}					
+
+		TEST_METHOD(przesunWlewo)
+		{
+			sygnal->przesunWLewo();
+			Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElement(0));
+			Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElement(1));
+			Assert::AreEqual(SygnalBipolarny::map(0), sygnal->getElement(2));
+			Assert::AreEqual(SygnalBipolarny::map(0), sygnal->getElement(3));
+												   
+			Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElement(4));
+			Assert::AreEqual(SygnalBipolarny::map(0), sygnal->getElement(5));
+			Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElement(6));
+												   
+			Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElement(7));
+			Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElement(8));
+			Assert::AreEqual(SygnalBipolarny::map(0), sygnal->getElement(9));
+			Assert::AreEqual(SygnalBipolarny::map(0), sygnal->getElement(10));												   
+		}
+
+		TEST_METHOD(przesunWPrawo)
+		{
+			sygnal->przesunWPrawo();
+			Assert::AreEqual(SygnalBipolarny::map(0), sygnal->getElement(0));
+			Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElement(1));
+			Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElement(2));
+			Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElement(3));
+			Assert::AreEqual(SygnalBipolarny::map(0), sygnal->getElement(4));
+			Assert::AreEqual(SygnalBipolarny::map(0), sygnal->getElement(5));
+			Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElement(6));
+
+			Assert::AreEqual(SygnalBipolarny::map(0), sygnal->getElement(7));
+			Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElement(8));
+			Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElement(9));
+			Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElement(10));
+			Assert::AreEqual(SygnalBipolarny::map(0), sygnal->getElement(11));
+
+		}
+	};
 }
