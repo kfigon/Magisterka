@@ -35,6 +35,17 @@ typedef unsigned short USHORT;
 typedef unsigned int UINT;
 typedef unsigned long long ULONGLONG;
 
+struct WynikKorelacji
+{
+	UINT offset;
+	long long wartosc;
+
+	WynikKorelacji(UINT offset = 0, long long wartosc = 0) :
+		offset(offset),
+		wartosc(wartosc)
+	{}
+};
+
 struct Data
 {
 	union
@@ -53,11 +64,3 @@ struct Data
 	{}
 
 };
-
-//struct Stacja
-//{
-//	UINT NrStacji;
-//	std::string Lokalizacja;
-//	UINT numeryCiagowPn[ILOSC_CIAGOW_PN_NA_STACJE];
-//	PozycjaGeograficzna pozycjaGeoStacji;
-//};

@@ -92,6 +92,7 @@
     </ClCompile>
     <ClCompile Include="TestyGeneratora.cpp" />
     <ClCompile Include="TestyKorelacji.cpp" />
+    <ClCompile Include="TestyOdbiornika.cpp" />
     <ClCompile Include="TestyRejestruPrzesuwnego.cpp" />
     <ClCompile Include="TestySygnalu.cpp" />
   </ItemGroup>

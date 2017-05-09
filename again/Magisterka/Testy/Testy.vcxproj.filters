@@ -38,5 +38,8 @@
     <ClCompile Include="TestyKorelacji.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TestyOdbiornika.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

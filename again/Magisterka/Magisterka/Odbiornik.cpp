@@ -55,50 +55,46 @@ long long liczIteracje(const std::vector<Data>& dane, const SygnalBipolarny& cia
 	return suma;
 }
 
-void liczKorelacje(std::vector<Data>& dane, int coKtoraPominac, BinaryReader::Endian endian)
+std::vector<WynikKorelacji> liczKorelacje(std::vector<Data>& dane, int coKtoraPominac)
 {
 	cout << "Wynik dla: " << coKtoraPominac << "\n";
 	auto ciagI = GeneratorCiagow::generujCiagI();
 	auto ciagQ = GeneratorCiagow::generujCiagQ();
-
-	vector<WynikKorelacji> outTab(dane.size(), 0);
+	std::vector<WynikKorelacji> outTab(dane.size(), 0);
 
 	for (size_t i = 0; i < outTab.size(); i++)
 	{
 		PiszPostepPetli(i, outTab.size());
 		outTab[i].offset = i;
-		//outTab[i].wartosc = liczIteracje(dane, *ciagI, coKtoraPominac);
 
 		long long real = 0;
 		long long imag = 0;
-		size_t indeksCiagu = 0;
 		for (size_t indeksDanych = 0; indeksDanych < dane.size(); indeksDanych++)
 		{
-			auto cI = ciagI->getElement(indeksCiagu);
+			auto cI = ciagI->getElement(indeksDanych + i);
 			auto cQ = 0; // ciagQ->getElement(indeksCiagu);
-			auto dI = dane[indeksDanych].I;
+			auto dI = dane[indeksDanych].I;	
 			auto dQ = dane[indeksDanych].Q;
 
-			real += cI*dI + cQ*dQ;
-			imag += cQ*dI - dQ*cI;
+			real = cI*dI + cQ*dQ;
+			imag = cQ*dI - dQ*cI;	// sprzezenie included
 
 			// fs danych = 1,28MHz, szybkosc transmisji 1,2288Mcps
 			// wiec sie rozjedzie po 24 probkach
-			if ((indeksDanych % coKtoraPominac == 0) && (indeksDanych != 0))
-				indeksDanych++; /*ciagI->przesunWLewo();*/
+			//if (coKtoraPominac != 0)
+			//{
+			//	if ((indeksDanych % coKtoraPominac == 0) && (indeksDanych != 0))
+			//		indeksDanych++; /*ciagI->przesunWLewo();*/
+			//}
+			auto len = sqrt(real*real + imag*imag);
+			outTab[i].wartosc += static_cast<long long>(len);
 
-			indeksCiagu++;
 		}
 
-		outTab[i].wartosc = sqrt(pow(real, 2) + pow(imag, 2));
-		ciagI->przesunWLewo();
-		ciagQ->przesunWLewo();
+		//ciagI->przesunWLewo();
+		//ciagQ->przesunWLewo();
 	}
+	printf("\n");
 
-	std::stringstream nazwaPliku;
-	nazwaPliku << "ASD_" << coKtoraPominac <<
-		((endian == BinaryReader::Endian::Little) ? "_le" : "_be")
-		<< ".txt";
-
-	RysujWykres(nazwaPliku.str(), outTab);
+	return outTab;
 }
