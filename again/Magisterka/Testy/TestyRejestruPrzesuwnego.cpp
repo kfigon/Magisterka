@@ -387,7 +387,9 @@ namespace Testy
 			//fclose(fileID);
 		
 			RejestrPrzesuwny rej{ 15, { 15, 13, 9, 8, 7, 5, 0 } };
-			auto buf = czytajPlikZeSpodziewanymiDanymiZMatlaba("C:\\Users\\Kamil\\Desktop\\repoMgr\\again\\Magisterka\\Testy\\matlabOutputI.txt");
+            //const std::string sciezka = "C:\\Users\\Kamil\\Desktop\\repoMgr\\again\\Magisterka\\Testy\\matlabOutputI.txt";
+            const std::string sciezka = "C:\\Users\\kfigon\\Desktop\\uczelnia\\mgr\\repoMgr\\again\\Magisterka\\Testy\\matlabOutputI.txt";
+			auto buf = czytajPlikZeSpodziewanymiDanymiZMatlaba(sciezka);
 
 			testujCiagZDanymiZMatlaba(buf, rej);
 		}
@@ -411,7 +413,9 @@ namespace Testy
 			//fclose(fileID);
 
 			RejestrPrzesuwny rej{ 15, { 15, 12, 11, 10, 6, 5, 4, 3, 0 } };
-			auto buf = czytajPlikZeSpodziewanymiDanymiZMatlaba("C:\\Users\\Kamil\\Desktop\\repoMgr\\again\\Magisterka\\Testy\\matlabOutputQ.txt");
+            //const std::string sciezka = "C:\\Users\\Kamil\\Desktop\\repoMgr\\again\\Magisterka\\Testy\\matlabOutputQ.txt";
+            const std::string sciezka = "C:\\Users\\kfigon\\Desktop\\uczelnia\\mgr\\repoMgr\\again\\Magisterka\\Testy\\matlabOutputQ.txt";
+			auto buf = czytajPlikZeSpodziewanymiDanymiZMatlaba(sciezka);
 
 			testujCiagZDanymiZMatlaba(buf, rej);
 		}

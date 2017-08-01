@@ -34,8 +34,8 @@ public:
 	BinaryReader(const string& sciezkaDoPliku);
 	~BinaryReader() = default;
 
-	std::vector<Data> Czytaj(size_t dlugoscWektoraWyjsciowego, Endian endian);
-	size_t liczWymanaganyRozmiarTablicy() const { return zwrocRozmiarPliku() / sizeof(Data) - 1; }
+	std::vector<Data> Czytaj(size_t dlugoscWektoraWyjsciowego, Endian endian = Endian::Little);
+	size_t liczWymaganyRozmiarTablicyNaCalyPlik() const { return zwrocRozmiarPliku() / sizeof(Data) - 1; }
 };
 
 class BinaryWriter : public fstreamWrapper

@@ -52,7 +52,8 @@ std::vector<Data> BinaryReader::Czytaj(size_t dlugoscWektoraWyjsciowego, Endian 
 	{
 		for (size_t i = 0; i < bufor.size(); i++)
 		{
-			bufor[i].raw = static_cast<int>(_byteswap_ulong(bufor[i].raw));
+            bufor[i].I = static_cast<USHORT>(_byteswap_ushort(bufor[i].I));
+            bufor[i].Q = static_cast<USHORT>(_byteswap_ushort(bufor[i].Q));
 		}
 	}
 	return bufor;

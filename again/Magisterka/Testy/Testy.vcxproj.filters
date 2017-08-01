@@ -35,10 +35,13 @@
     <ClCompile Include="TestySygnalu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TestyKorelacji.cpp">
+    <ClCompile Include="TestyOdbiornika.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TestyOdbiornika.cpp">
+    <ClCompile Include="TestyCzytaniaPliku.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TestyAproksymatora.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

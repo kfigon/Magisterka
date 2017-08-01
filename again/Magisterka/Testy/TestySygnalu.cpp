@@ -35,6 +35,11 @@ namespace Testy
 			Assert::AreEqual(1, SygnalBipolarny::unmap(-1));
 		}
 
+        TEST_METHOD(getDlugosc)
+        {
+            Assert::AreEqual<size_t>(7, sygnal->getDlugosc());
+        }
+
 		TEST_METHOD(testIdx)
 		{
 			Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElement(0));
@@ -79,9 +84,48 @@ namespace Testy
 		TEST_METHOD(testKopiowanie)
 		{
 			SygnalBipolarny nowy{ *sygnal };
-			for (size_t i = 0; i < nowy.getDlugosc(); i++)
+			for (int i = 0; i < nowy.getDlugosc(); i++)
 				Assert::AreEqual(sygnal->getElement(i), nowy.getElement(i));
 		}
+
+        TEST_METHOD(getEx)
+        {
+            Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElementEx(0));
+            Assert::AreEqual(SygnalBipolarny::map(0), sygnal->getElementEx(1));
+            Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElementEx(2));
+            Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElementEx(3));
+            Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElementEx(4));
+            Assert::AreEqual(SygnalBipolarny::map(0), sygnal->getElementEx(5));
+            Assert::AreEqual(SygnalBipolarny::map(0), sygnal->getElementEx(6));
+        }
+
+        TEST_METHOD(getEx_ujemne)
+        {
+            for (int i = -20; i < 0; i++)
+                Assert::AreEqual(SygnalBipolarny::map(0), sygnal->getElementEx(i));
+        }
+
+        TEST_METHOD(getEx_ponadDlugosc)
+        {
+            const auto dlugoscSygnalu = sygnal->getDlugosc();
+            for (size_t i = dlugoscSygnalu; i < dlugoscSygnalu + 50; i++)
+                Assert::AreEqual(SygnalBipolarny::map(0), sygnal->getElementEx(i));
+        }
+
+        TEST_METHOD(ograniczonaDlugosc)
+        {
+            sygnal->ograniczDlugosc(4);
+            Assert::AreEqual<size_t>(4, sygnal->getDlugosc());
+        }
+
+        TEST_METHOD(get_zOgraniczonaDlugoscia)
+        {
+            sygnal->ograniczDlugosc(4);
+            Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElement(0));
+            Assert::AreEqual(SygnalBipolarny::map(0), sygnal->getElement(1));
+            Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElement(2));
+            Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElement(3));
+        }
 	};
 
 	TEST_CLASS(TestySygnaluZOffsetem)
@@ -151,7 +195,63 @@ namespace Testy
 			Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElement(9));
 			Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElement(10));
 			Assert::AreEqual(SygnalBipolarny::map(0), sygnal->getElement(11));
-
 		}
+
+        TEST_METHOD(getEx)
+        {
+            Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElementEx(0));
+            Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElementEx(1));
+            Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElementEx(2));
+            Assert::AreEqual(SygnalBipolarny::map(0), sygnal->getElementEx(3));
+            Assert::AreEqual(SygnalBipolarny::map(0), sygnal->getElementEx(4));
+
+            Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElementEx(5));
+            Assert::AreEqual(SygnalBipolarny::map(0), sygnal->getElementEx(6));
+        }
+
+        TEST_METHOD(getEx_ujemne)
+        {
+            for (int i = -50; i < 0; i++)
+                Assert::AreEqual(SygnalBipolarny::map(0), sygnal->getElementEx(i));
+        }
+
+        TEST_METHOD(getEx_ponadDlugosc)
+        {
+            const auto dlugoscSygnalu = sygnal->getDlugosc();
+            for (int i = dlugoscSygnalu; i < dlugoscSygnalu + 50; i++)
+                Assert::AreEqual(SygnalBipolarny::map(0), sygnal->getElementEx(i));
+        }
+
+        TEST_METHOD(getDlugosc)
+        {
+            Assert::AreEqual<size_t>(7, sygnal->getDlugosc());
+        }
+
+        TEST_METHOD(ograniczonaDlugosc)
+        {
+            sygnal->ograniczDlugosc(4);
+            Assert::AreEqual<size_t>(4, sygnal->getDlugosc());
+        }
+
+        TEST_METHOD(get_zOgraniczonaDlugoscia)
+        {
+            sygnal->ograniczDlugosc(4);
+
+            Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElement(0));
+            Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElement(1));
+            Assert::AreEqual(SygnalBipolarny::map(1), sygnal->getElement(2));
+            Assert::AreEqual(SygnalBipolarny::map(0), sygnal->getElement(3));
+        }
+
+        TEST_METHOD(get_zOgraniczonaDlugoscia_zapetleniePrzezKoniec)
+        {
+            SygnalBipolarny s{ { 1, 0, 1, 1, 1, 0, 0 }, 5 };
+            s.ograniczDlugosc(4);
+
+            Assert::AreEqual(SygnalBipolarny::map(0), s.getElement(0));
+            Assert::AreEqual(SygnalBipolarny::map(0), s.getElement(1));
+            Assert::AreEqual(SygnalBipolarny::map(1), s.getElement(2));
+            Assert::AreEqual(SygnalBipolarny::map(0), s.getElement(3));
+        }
 	};
 }

@@ -13,7 +13,7 @@ public:
 
 	int getVal();
 	int ileWartosciMozeWygenerowac() const { return static_cast<int>(pow(2, getDlugoscRejestruWBitach()) - 1); }
-	int getDlugoscRejestruWBitach() const { return mStan.size(); }
+	int getDlugoscRejestruWBitach() const { return static_cast<int>(mStan.size()); }
 
 private:
 	std::vector<int> mStan;

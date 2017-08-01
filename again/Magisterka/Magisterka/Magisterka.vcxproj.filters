@@ -24,9 +24,6 @@
     <ClCompile Include="Sygnal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Korelator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="FileReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -36,7 +33,10 @@
     <ClCompile Include="Odbiornik.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SygnalZespolony.cpp">
+    <ClCompile Include="AproksymatorLiniowy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="viterbi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -45,9 +45,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Sygnal.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Korelator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FileReader.h">
@@ -62,7 +59,13 @@
     <ClInclude Include="Odbiornik.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SygnalZespolony.h">
+    <ClInclude Include="SpeedTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AproksymatorLiniowy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="viterbi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

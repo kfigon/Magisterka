@@ -26,10 +26,6 @@ namespace Stale
 }
 
 
-// czas w [us], czProbkowania w [MHz]
-#define ileProbek(czas, czProbkowania)	(czProbkowania*czas)
-
-
 typedef unsigned char UCHAR;
 typedef unsigned short USHORT;
 typedef unsigned int UINT;

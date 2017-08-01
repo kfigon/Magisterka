@@ -7,6 +7,7 @@ class SygnalBipolarny
 private:
 	std::vector<int> mCiag;
 	long long mIndeksPoczatku = 0;
+    size_t mOgraniczonaDlugosc = 0;
 
 public:
 	SygnalBipolarny(const std::vector<int>& ciagBinarny);
@@ -33,10 +34,24 @@ public:
 			return 1;
 	}
 
-	int getElement(int idx) const
-	{
-		return mCiag[(mIndeksPoczatku + idx) % getDlugosc()];
+	// zwraca sygnal cyklicznie
+    int getElement(int idx) const
+	{    
+        auto i = idx + mIndeksPoczatku;
+        if (i < mCiag.size())
+            return mCiag[i];
+
+        return mCiag[i % mCiag.size()];
 	}
+
+    // zwraca "rzeczywiscie". Gdy indeks ujemny lub za duzy - zwraca bit 0
+    int getElementEx(int idx) const
+    {
+        if (idx < 0 || idx >= getDlugosc())
+            return map(0);
+
+        return getElement(idx);
+    }
 
 	int operator[](int idx) const
 	{
@@ -55,6 +70,8 @@ public:
 			mIndeksPoczatku = getDlugosc() - 1;
 	}
 
-	size_t getDlugosc() const { return mCiag.size(); }
+    void ograniczDlugosc(size_t val) { mOgraniczonaDlugosc = val; }
+
+    size_t getDlugosc() const { return (mOgraniczonaDlugosc == 0) ? mCiag.size() : (mOgraniczonaDlugosc); }
 };
 
