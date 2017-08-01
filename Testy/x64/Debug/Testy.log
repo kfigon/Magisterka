@@ -1,0 +1,48 @@
+﻿Build started 2017-07-29 17:12:23.
+     1>Project "C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\Testy\Testy.vcxproj" on node 3 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I../Magisterka /I"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\UnitTest\include" /Zi /nologo /W3 /WX- /Od /D WIN32 /D _DEBUG /D _WINDLL /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"x64\Debug\Testy.pch" /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /FC /errorReport:prompt TestyOdbiornika.cpp
+         TestyOdbiornika.cpp
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\sygnal.h(41): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.h(139): warning C4244: 'return' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(121): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(170): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(211): warning C4267: '=' : conversion from 'size_t' to 'UINT', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(213): warning C4244: '=' : conversion from 'double' to '__int64', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(270): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(273): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(286): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(336): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(337): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(338): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(437): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\testy\testyodbiornika.cpp(214): warning C4244: 'argument' : conversion from '__int64' to 'double', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\testy\testyodbiornika.cpp(243): warning C4244: 'argument' : conversion from '__int64' to 'double', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\aproksymatorliniowy.h(33): warning C4244: '+=' : conversion from 'const double' to 'float', possible loss of data
+                 c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\aproksymatorliniowy.h(24) : while compiling class template member function 'AproksymatorLiniowy<double>::AproksymatorLiniowy(const std::vector<WartosciFunkcji<double>,std::allocator<_Ty>> &)'
+                 with
+                 [
+                     _Ty=WartosciFunkcji<double>
+                 ]
+                 c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(276) : see reference to function template instantiation 'AproksymatorLiniowy<double>::AproksymatorLiniowy(const std::vector<WartosciFunkcji<double>,std::allocator<_Ty>> &)' being compiled
+                 with
+                 [
+                     _Ty=WartosciFunkcji<double>
+                 ]
+                 c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(276) : see reference to class template instantiation 'AproksymatorLiniowy<double>' being compiled
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\aproksymatorliniowy.h(35): warning C4244: '+=' : conversion from 'const double' to 'float', possible loss of data
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Debug\Testy.dll" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\UnitTest\lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Debug\Testy.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Debug\Testy.lib" /MACHINE:X64 /DLL x64\Debug\stdafx.obj
+         x64\Debug\TestyAproksymatora.obj
+         x64\Debug\TestyCzytaniaPliku.obj
+         x64\Debug\TestyGeneratora.obj
+         x64\Debug\TestyOdbiornika.obj
+         x64\Debug\TestyRejestruPrzesuwnego.obj
+         x64\Debug\TestySygnalu.obj
+            Creating library C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Debug\Testy.lib and object C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Debug\Testy.exp
+         Testy.vcxproj -> C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Debug\Testy.dll
+     1>Done Building Project "C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\Testy\Testy.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:05.96
