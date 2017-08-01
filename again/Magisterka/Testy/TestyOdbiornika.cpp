@@ -401,18 +401,6 @@ namespace Testy
             }
         }
 
-        TEST_METHOD(wspolczynnikProporcjonalnosciCiagow_dopasowane)
-        {
-            Odbiornik o;
-            Assert::AreEqual(1.0, o.getWspolczynnikProporcjonalnosciCiagow());
-        }
-
-        TEST_METHOD(wspolczynnikProporcjonalnosciCiagow_rzeczywistyPrzypadek)
-        {
-            Odbiornik o{ 25, 24 };
-            Assert::AreEqual<double>(25.0 / 24.0, o.getWspolczynnikProporcjonalnosciCiagow());
-        }
-
         TEST_METHOD(skupienieWidma)
         {
             std::vector<Data> dane{

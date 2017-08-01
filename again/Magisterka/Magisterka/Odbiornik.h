@@ -61,24 +61,6 @@ class Odbiornik
     const long long mCzestotliwosc;
     const long long mCzestotliwoscProbkowania;
 public:
-    //Odbiornik(int skipDane = 0, int skipCiag = 0) :
-    //    mSkipDane(skipDane),
-    //    mSkipCiag(skipCiag)
-    //{
-    //}
-    static int liczNwd(int a, int b)
-    {
-        if (a == b)
-        {
-            return a;
-        }
-
-        int mniejsza = (a < b) ? a : b;
-        int roznica = abs(a - b);
-
-        return liczNwd(mniejsza, roznica);
-    }
-
     Odbiornik(long long czestotliwoscProbkowania = 1, long long czestotliwosc = 1) :
         mCzestotliwosc(czestotliwosc),
         mCzestotliwoscProbkowania(czestotliwoscProbkowania)
@@ -105,15 +87,19 @@ public:
     long long getCzestotliwoscProbkowania() const { return mCzestotliwoscProbkowania; }
     long long getCzestotliwoscSygnalu() const { return mCzestotliwosc; }
 
-    // niedopasowanie czestotliwosci probkowania powoduje potrzebe
-    // wyliczenia docelowych dlugosci ciagow
-    double getWspolczynnikProporcjonalnosciCiagow() const
+    static int liczNwd(int a, int b)
     {
-        if (mSkipCiag == 0)
-            return 1;
+        if (a == b)
+        {
+            return a;
+        }
 
-        return (static_cast<double>(mSkipDane) / static_cast<double>(mSkipCiag));
+        int mniejsza = (a < b) ? a : b;
+        int roznica = abs(a - b);
+
+        return liczNwd(mniejsza, roznica);
     }
+
 
     std::vector<complex<long long>> liczKorelacje(const std::vector<Data>& dane, const SygnalBipolarny& ciagI);
 

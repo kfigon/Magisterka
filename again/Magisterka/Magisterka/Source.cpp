@@ -49,7 +49,7 @@ void asd(int plikidx)
 #define rysujKorelacje 1
 #define demoduluj 0
 
-    Odbiornik o{ 25, 24 }; 
+    Odbiornik o{ Stale::CZESTOTLIWOSC_PROBKOWANIA_HZ, Stale::CZESTOTLIWOSC_SYGNALU_HZ };
     const auto ciagI = GeneratorCiagow::generujCiagI();
     const auto ciagQ = GeneratorCiagow::generujCiagQ();
     const auto ciagWalsha = GeneratorCiagow::generujCiagWalsha(32);
