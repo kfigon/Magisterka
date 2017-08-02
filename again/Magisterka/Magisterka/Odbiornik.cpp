@@ -406,8 +406,8 @@ std::vector<int> Odbiornik::demodulacja(const std::vector<complex<long long>>& s
         const auto re = zakumulowaneProbki.real();
         const auto im = zakumulowaneProbki.imag();
 
-        int bit0 = 0; // bit pierwszy
-        int bit1 = 0; // drugi
+        int bit0 = 0; // bit pierwszy Yi
+        int bit1 = 0; // drugi         Yq (3.1.3.1.16 spec)
         
         // pierwsza cwiartka
         if (re >= 0 && im >= 0)

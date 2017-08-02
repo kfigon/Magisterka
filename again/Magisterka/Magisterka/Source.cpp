@@ -167,10 +167,22 @@ void asd(int plikidx)
         stringstream s;
         for (size_t idRozplecionego = 0; idRozplecionego < rozplecione.size(); idRozplecionego++)
         {
-            if (idRozplecionego != 0 && (idRozplecionego % dlugoscRamkiPrzedRozplotem == 0))
-                cout << "\n";
+            //if (idRozplecionego != 0 && (idRozplecionego % dlugoscRamkiPrzedRozplotem == 0))
+            //    cout << "\n";
+            //cout << rozplecione[idRozplecionego];
             s << rozplecione[idRozplecionego];
-            cout << rozplecione[idRozplecionego];
+        }
+
+        // todo: ktore brac z powtorzenia?
+        stringstream odrzuconePowtorki;
+        auto str = s.str();
+        for (size_t asd = 0; asd < str.size(); asd++)
+        {
+            if (asd % 2 == 0)
+            {
+                odrzuconePowtorki << str[asd];
+                cout << str[asd];
+            }
         }
 
         cout << "\nzdekodowane\n\n";
@@ -180,9 +192,11 @@ void asd(int plikidx)
         polynomials.push_back(491);
         polynomials.push_back(369);
 
+        // todo: dostaje 24 bity zamiast 32 na wyjsciu dekodera :(
         ViterbiCodec codec(9, polynomials);
 
-        cout << codec.Decode(s.str());
+       // cout << codec.Decode(s.str());
+        cout << codec.Decode(odrzuconePowtorki.str());
 #endif //demoduluj
 
         cout << "\n\n";
