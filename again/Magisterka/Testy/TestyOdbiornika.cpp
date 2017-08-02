@@ -417,7 +417,7 @@ namespace Testy
             Odbiornik o;
             const auto wynik = o.skupWidmo(dane, ciagI, ciagQ, walsh, 0);
             std::vector<complex<long long>> expected{ { -3, -1 }, { 1, 3 }, { 4, -2 }, { -8, 0 },
-            { -7, 3 }, { -7, -1 }, { -4, 6 }, { 5, -1 }, { -2, 0 }, { -5, -1 } };
+            { -7, 3 }};
 
             sprawdzajCiagi(expected, wynik);
         }
@@ -438,7 +438,7 @@ namespace Testy
             Odbiornik o;
             const auto wynik = o.skupWidmo(dane, ciagI, ciagQ, walsh, 1);
             std::vector<complex<long long>> expected{ { -3, 1 }, { 2, 4 }, { 8, 0 }, { -7, 3 },
-            { -7, -1 }, { -6, -4 }, { 1, 5 }, { 2, 0 }, { -5, -1 } };
+            { -7, -1 }};
 
             sprawdzajCiagi(expected, wynik);
         }
@@ -465,7 +465,7 @@ namespace Testy
             sprawdzajCiagi(expected, wynik);
         }
 
-        TEST_METHOD(demodulator_krok1)
+        TEST_METHOD(demodulator_calkowaniePo1)
         {
             std::vector<complex<long long>> dane{ { -2, -1 }, { 3, 1 }, { 4, 4 },
             { -5, 2 }, { 3, -4 }, { -1, -5 }, { 3, 2 } };
@@ -478,15 +478,15 @@ namespace Testy
             porownajCiagi(expected, wynik);
         }
 
-        TEST_METHOD(demodulator_krok3)
+        TEST_METHOD(demodulator_calkowaniePo3)
         {
             std::vector<complex<long long>> dane{ { -2, -1 }, { 3, 1 }, { 4, 4 },
             { -5, 2 }, { 3, -4 }, { -1, -5 }, 
-            { 3, 2 } }; // wolna probka, rozpatrzona osobno
+            { 3, 2 } }; // wolna probka, odrzucona
 
             Odbiornik o;
             const auto wynik = o.demodulacja(dane, 3);
-            std::vector<int> expected{ 0,0,  1,1, 0,0};
+            std::vector<int> expected{ 0,0,  1,1};
 
             porownajCiagi(expected, wynik);
         }

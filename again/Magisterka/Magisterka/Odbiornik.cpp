@@ -315,15 +315,18 @@ std::vector<complex<double>> Odbiornik::wyznaczKorekte(const std::vector<double>
 
 std::vector<complex<long long>> Odbiornik::skupWidmo(const std::vector<Data>& dane, const SygnalBipolarny& ciagI, const SygnalBipolarny& ciagQ, const SygnalBipolarny& ciagWalsha, size_t offsetPn)
 {
-    if (dane.size() < ciagI.getDlugosc())
+    if (dane.size() < ciagI.getDlugosc() + offsetPn)
     {
-        cout << "Podano za krotki ciag probek! Dane: " << dane.size() << ", ciag wzorcowy " << ciagI.getDlugosc() << "\n";
+        cout << "Podano za krotki ciag probek! Dane: " << dane.size() << ", ciag wzorcowy " << ciagI.getDlugosc() << ", offset: " << offsetPn << "\n";
         assert(false);
 
         return std::vector<complex<long long>>{};
     }
 
-    std::vector<complex<long long>> out(dane.size() - offsetPn, 0);
+    KalkulatorDlugosciCiagow k{ getCzestotliwoscProbkowania(), getCzestotliwoscSygnalu() };
+    const auto ileProbekNaCiagWzorcowy = k.ileProbek(ciagI.getDlugosc());
+
+    std::vector<complex<long long>> out(ileProbekNaCiagWzorcowy, 0);
 
 
     size_t indeksDanych = offsetPn;
@@ -379,9 +382,9 @@ std::vector<complex<long long>> Odbiornik::korygujFaze(const std::vector<complex
     return out;
 }
 
-std::vector<int> Odbiornik::demodulacja(const std::vector<complex<long long>>& skupioneWidmo, int przedzialSumowania)
+std::vector<int> Odbiornik::demodulacja(const std::vector<complex<long long>>& skupioneWidmo, int przedzialCalkowania)
 {
-    const size_t ile = 2 * static_cast<int>(ceil(static_cast<float>(skupioneWidmo.size()) / static_cast<float>(przedzialSumowania)));
+    const size_t ile = 2 *(skupioneWidmo.size() / przedzialCalkowania);
 
     std::vector<int> out(ile,0);
     
@@ -390,7 +393,7 @@ std::vector<int> Odbiornik::demodulacja(const std::vector<complex<long long>>& s
     {
         // calkowanie
         std::complex<long long> zakumulowaneProbki = 0;
-        for (size_t j = 0; j < przedzialSumowania; j++)
+        for (size_t j = 0; j < przedzialCalkowania; j++)
         {
             if (idProbek >= skupioneWidmo.size())
                 break;
