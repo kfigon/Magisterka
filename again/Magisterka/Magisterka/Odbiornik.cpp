@@ -96,7 +96,10 @@ std::vector<complex<long long>> Odbiornik::liczKorelacje(const std::vector<Data>
 
     cout << "Skupiam widmo...\n";
 
-    const auto zakres = dane.size() / 2 + 1;
+
+    KalkulatorDlugosciCiagow kalkulatorDlugosciCiagow{ getCzestotliwoscProbkowania(), getCzestotliwoscSygnalu() }; 
+    const auto zakres = kalkulatorDlugosciCiagow.ileProbek(ciagI.getDlugosc()) +1; 
+    
     std::vector<complex<long long>> out(zakres, 0);
     
     SpeedTester speedTester;
@@ -149,7 +152,7 @@ std::vector<complex<long long>> Odbiornik::mnozenieZespoloneISumowanie(const std
         return std::vector<complex<long long>>{};
     }
 
-    KalkulatorDlugosciCiagow k{ Stale::CZESTOTLIWOSC_PROBKOWANIA_DANYCH_MHZ * 1000, Stale::SZYBKOSC_TRANSMISJI_CIAGU_ROZPRASZAJACEGO_MHZ * 1000 };
+    KalkulatorDlugosciCiagow k{ getCzestotliwoscProbkowania(), getCzestotliwoscSygnalu()};
     const auto ileProbekNaCiagWzorcowy = k.ileProbek(ciagI.getDlugosc());
 
     const auto dlugoscWyjscia =  ileProbekNaCiagWzorcowy / dlugoscPodCiagow;

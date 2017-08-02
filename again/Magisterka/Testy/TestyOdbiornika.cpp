@@ -114,7 +114,7 @@ namespace Testy
             const auto wynik = o.liczKorelacje(dane, ciagI);
             std::vector<double> expected{ 3, 6.083, 2, 5, 2.236, 6.708 };
 
-            Assert::AreEqual(expected.size(), wynik.size());
+            Assert::AreEqual(expected.size(), wynik.size(), L"nieprawidlowe dlugosc ciagow");
 
             for (size_t i = 0; i < expected.size(); i++)
             {
@@ -244,7 +244,7 @@ namespace Testy
             auto wynik = o.liczKorelacje(dane, ciagI);
             std::vector<int> expected{ 16, 12, 8, 2, -2, -6, -8, -6, -4, -2, 0, 2, 2, 0, -2, -4, -6, -8, -10, -6, -2, 4, 8, 12, 16 };
 
-            Assert::AreEqual(expected.size(), wynik.size());
+            Assert::AreEqual(expected.size(), wynik.size(), L"nieprawidlowe dlugosci ciagow");
 
             for (size_t i = 0; i < expected.size(); i++)
                 AreAlmostEqual(expected[i], wynik[i].real());
@@ -273,7 +273,7 @@ namespace Testy
             std::vector<int> expected{32,26,20,14,6,-2,-4,-6,-8,-10,-12,-10,-8,-6,-2,2,2,2,2,2,2,0,-2,
             -4,-6,-8,-10,-12,-14,-18,-22,-16,-10,-4,2,8,12,16,20,26,32};
            
-            Assert::AreEqual(expected.size(), wynik.size());
+            Assert::AreEqual(expected.size(), wynik.size(), L"nieprawidlowe dlugosci ciagow");
 
             for (size_t i = 0; i < expected.size(); i++)
                 AreAlmostEqual(expected[i], wynik[i].real());
@@ -793,13 +793,13 @@ namespace Testy
         // czas transmisji 26.66666667 ms
         TEST_METHOD(ileProbekNaCiagWzorcowy_25do24)
         {
-            KalkulatorDlugosciCiagow k{ Stale::CZESTOTLIWOSC_PROBKOWANIA_DANYCH_MHZ*1000, Stale::SZYBKOSC_TRANSMISJI_CIAGU_ROZPRASZAJACEGO_MHZ*1000 };
+            KalkulatorDlugosciCiagow k{ Stale::CZESTOTLIWOSC_PROBKOWANIA_HZ, Stale::CZESTOTLIWOSC_SYGNALU_HZ };
             Assert::AreEqual<size_t>(34133, k.ileProbek(GeneratorCiagow::DLUGOSC_CIAGU_PN));
         }
 
         TEST_METHOD(liczCzasTrwaniaSygnalu)
         {
-            KalkulatorDlugosciCiagow k{ Stale::CZESTOTLIWOSC_PROBKOWANIA_DANYCH_MHZ*1000, Stale::SZYBKOSC_TRANSMISJI_CIAGU_ROZPRASZAJACEGO_MHZ *1000};
+            KalkulatorDlugosciCiagow k{ Stale::CZESTOTLIWOSC_PROBKOWANIA_HZ, Stale::CZESTOTLIWOSC_SYGNALU_HZ };
             AreAlmostEqual(26.666667, k.liczCzasTrwaniaSygnaluWzorcowego(GeneratorCiagow::DLUGOSC_CIAGU_PN));
         }
 
@@ -812,7 +812,8 @@ namespace Testy
         TEST_METHOD(liczCzasTrwaniaSygnalu_1do1)
         {
             KalkulatorDlugosciCiagow k;
-            AreAlmostEqual(50, k.liczCzasTrwaniaSygnaluWzorcowego(50));
+            // wynik w [ms]!
+            AreAlmostEqual(50000, k.liczCzasTrwaniaSygnaluWzorcowego(50));
         }
     };
 

@@ -32,7 +32,7 @@ void asd(int plikidx)
     }
 
     //const size_t rozmiarTablicy = czytacz.liczWymaganyRozmiarTablicyNaCalyPlik();
-    KalkulatorDlugosciCiagow k{ Stale::CZESTOTLIWOSC_PROBKOWANIA_DANYCH_MHZ * 1000, Stale::SZYBKOSC_TRANSMISJI_CIAGU_ROZPRASZAJACEGO_MHZ * 1000 };
+    KalkulatorDlugosciCiagow k{ Stale::CZESTOTLIWOSC_PROBKOWANIA_HZ, Stale::CZESTOTLIWOSC_SYGNALU_HZ };
     const size_t rozmiarTablicy = k.ileProbek(GeneratorCiagow::DLUGOSC_CIAGU_PN * 2); //GeneratorCiagow::DLUGOSC_CIAGU_PN * 2;
     
     BinaryReader czytacz{ pliki[plikidx] };
@@ -113,8 +113,8 @@ void asd(int plikidx)
 
         // todo: 
         // - jak juz mam korelacje to wszystko robic kawalkami o dlugosci 26.66667ms
-        // - korekta na caly ciag
-        // - skupianie
+        // - korekta na caly ciag wzorcowy
+        // - skupianie o czasie trwania wzorca
         // - kolejne probki przesuniete o 26.66667ms
         // - piki korelacji bardzo ladnie widac na wielokrotnosciach 34133 probek:
         //      30538, 64671, 98804 (wszystko oddalone o 34133)

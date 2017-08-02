@@ -19,31 +19,30 @@ void RysujKonstelacje(const std::string& sciezkaDoPliku, const std::vector<compl
 
 class KalkulatorDlugosciCiagow
 {
-    // KHz
-    double mCzestotliwoscProbkowania = 1;
-    double mCzestotliwosc = 1;
+    // Hz
+    const long long mCzestotliwoscProbkowania;;
+    const long long mCzestotliwosc;;
 public:
-    KalkulatorDlugosciCiagow(double czProbkowania, double czSygnalu) :
+    // dane w Hz
+    KalkulatorDlugosciCiagow(long long czProbkowania=1, long long czSygnalu=1) :
         mCzestotliwoscProbkowania(czProbkowania),
         mCzestotliwosc(czSygnalu)
     {}
 
-    KalkulatorDlugosciCiagow()
-    {}
 
     // w [ms]
     double liczCzasTrwaniaSygnaluWzorcowego(size_t dlugoscCiaguWzorcowego) const
     {
-        return static_cast<double>(dlugoscCiaguWzorcowego) / (mCzestotliwosc);
+        return static_cast<double>(1000 * dlugoscCiaguWzorcowego) / static_cast<double>(mCzestotliwosc);
     }
 
     size_t ileProbek(size_t dlugoscCiaguWzorcowego) const 
     { 
         const double czasTrwaniaCiaguMs = liczCzasTrwaniaSygnaluWzorcowego(dlugoscCiaguWzorcowego);
-        const double licznik = mCzestotliwoscProbkowania*czasTrwaniaCiaguMs;
+        const double licznik = static_cast<double>(mCzestotliwoscProbkowania)*czasTrwaniaCiaguMs;
         const double mianownik = 1000;
 
-        return static_cast<size_t>(licznik * 1000 / mianownik);
+        return static_cast<size_t>(licznik / mianownik);
     }
 };
 
@@ -61,6 +60,7 @@ class Odbiornik
     const long long mCzestotliwosc;
     const long long mCzestotliwoscProbkowania;
 public:
+    // dane w Hz
     Odbiornik(long long czestotliwoscProbkowania = 1, long long czestotliwosc = 1) :
         mCzestotliwosc(czestotliwosc),
         mCzestotliwoscProbkowania(czestotliwoscProbkowania)
@@ -84,7 +84,9 @@ public:
     int getSkipDane() const { return mSkipDane; }
     int getSkipCiag() const { return mSkipCiag; }
 
+    // w Hz
     long long getCzestotliwoscProbkowania() const { return mCzestotliwoscProbkowania; }
+    // w Hz
     long long getCzestotliwoscSygnalu() const { return mCzestotliwosc; }
 
     static int liczNwd(int a, int b)
