@@ -119,6 +119,7 @@
     <ClCompile Include="FileReader.cpp" />
     <ClCompile Include="GeneratorCiagow.cpp" />
     <ClCompile Include="Odbiornik.cpp" />
+    <ClCompile Include="RamkaSyncCh.cpp" />
     <ClCompile Include="RejestrPrzesuwny.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Sygnal.cpp" />
@@ -129,6 +130,7 @@
     <ClInclude Include="FileReader.h" />
     <ClInclude Include="GeneratorCiagow.h" />
     <ClInclude Include="Odbiornik.h" />
+    <ClInclude Include="RamkaSyncCh.h" />
     <ClInclude Include="RejestrPrzesuwny.h" />
     <ClInclude Include="SpeedTest.h" />
     <ClInclude Include="Struktury.h" />

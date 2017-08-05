@@ -39,6 +39,9 @@
     <ClCompile Include="viterbi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RamkaSyncCh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RejestrPrzesuwny.h">
@@ -66,6 +69,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="viterbi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RamkaSyncCh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

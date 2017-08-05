@@ -437,6 +437,17 @@ std::vector<int> Odbiornik::demodulacja(const std::vector<complex<long long>>& s
     return out;
 }
 
+std::string Odbiornik::toString(const std::vector<int>& ciag)
+{
+    std::stringstream s;
+    for (auto bit : ciag)
+    {
+        s << bit;
+    }
+
+    return s.str();
+}
+
 std::vector<int> Rozplatacz::rozplot(const std::vector<int>& ciag) const
 {
     std::vector<int> out(ciag.size(), 0);

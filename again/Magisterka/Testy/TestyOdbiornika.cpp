@@ -319,6 +319,13 @@ namespace Testy
 
             sprawdzajCiagi(expected, wynik);
         }
+
+        TEST_METHOD(odbiornikToString)
+        {
+            const std::vector<int> ciag{ 1, 1, 1, 0, 0, 1, 0, 1 };
+
+            Assert::AreEqual(std::string{ "11100101" }, Odbiornik::toString(ciag));
+        }
     };
 
     // nie jest to skipowanie, tylko powtarzanie
