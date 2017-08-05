@@ -35,7 +35,7 @@ public:
         mRamka(ramka)
     {}
 
-    ~RamkaSyncCh();
+    ~RamkaSyncCh() = default;
 
     Status czyOk() const;
 
