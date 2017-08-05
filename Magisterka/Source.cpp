@@ -32,8 +32,8 @@ void asd(int plikidx)
     }
 
     //const size_t rozmiarTablicy = czytacz.liczWymaganyRozmiarTablicyNaCalyPlik();
-    KalkulatorDlugosciCiagow k{ Stale::CZESTOTLIWOSC_PROBKOWANIA_DANYCH_MHZ * 1000, Stale::SZYBKOSC_TRANSMISJI_CIAGU_ROZPRASZAJACEGO_MHZ * 1000 };
-    const size_t rozmiarTablicy = k.ileProbek(GeneratorCiagow::DLUGOSC_CIAGU_PN * 4); //GeneratorCiagow::DLUGOSC_CIAGU_PN * 2;
+    KalkulatorDlugosciCiagow k{ Stale::CZESTOTLIWOSC_PROBKOWANIA_HZ, Stale::CZESTOTLIWOSC_SYGNALU_HZ };
+    const size_t rozmiarTablicy = k.ileProbek(GeneratorCiagow::DLUGOSC_CIAGU_PN * 2); //GeneratorCiagow::DLUGOSC_CIAGU_PN * 2;
     
     BinaryReader czytacz{ pliki[plikidx] };
 	const auto dane = czytacz.Czytaj(rozmiarTablicy);
@@ -43,13 +43,15 @@ void asd(int plikidx)
 		system("pause");
 		return;
     }
-#define rysujKonselacje 1
+
+    // flagi konfiguracyjne
+#define rysujKonselacje 0
 #define rysujKorektyFaz 0
 #define rysujRozwiniecia 0
 #define rysujKorelacje 0
-#define demoduluj 0
+#define demoduluj 1
 
-    Odbiornik o{ 25, 24 }; 
+    Odbiornik o{ Stale::CZESTOTLIWOSC_PROBKOWANIA_HZ, Stale::CZESTOTLIWOSC_SYGNALU_HZ };
     const auto ciagI = GeneratorCiagow::generujCiagI();
     const auto ciagQ = GeneratorCiagow::generujCiagQ();
     const auto ciagWalsha = GeneratorCiagow::generujCiagWalsha(32);
@@ -61,7 +63,8 @@ void asd(int plikidx)
     RysujWykres("korelacja.txt", wynikKorelacji);
 #endif //rysujKorelacje
 
-    const long long domyslnyProgKorelacji = 7000000;
+    //const long long domyslnyProgKorelacji = 7000000;
+    const long long domyslnyProgKorelacji = 9000000;
     const auto domyslnaDlugoscCiagowDoZfazowania = 2096;
 
     const auto progowane = o.znajdzMaksimaKorelacji(wynikKorelacji, domyslnyProgKorelacji);
@@ -83,41 +86,47 @@ void asd(int plikidx)
         const auto aproksymacjeFazy = o.aproksymujFazyDoKorekty(rozwinieteFazy, domyslnaDlugoscCiagowDoZfazowania);
         const auto korekty = o.wyznaczKorekte(aproksymacjeFazy);
 
-#if 0
+#if rysujKorektyFaz
         // zastosowanie korekty
         std::vector<Data> noweDane(dane);
         for (size_t j = 0; j < korekty.size();j++)
         {
             std::complex<double> d{ 
-                static_cast<double>(noweDane[j + a.offset].I), 
-                static_cast<double>(noweDane[j + a.offset].Q) };
-           
+            static_cast<double>(noweDane[j + a.offset].I), 
+            static_cast<double>(noweDane[j + a.offset].Q) };
+
             const auto w = d*korekty[j];
             const short re = w.real();
             const short im = w.imag();
             noweDane[j + a.offset].I = re;
             noweDane[j + a.offset].Q = im;
         }
-#endif
 
-
-#if rysujKorektyFaz
         // katy po korekcji
         const auto wynikMnozenia2 = o.mnozenieZespoloneISumowanie(noweDane, *ciagI, a.offset, domyslnaDlugoscCiagowDoZfazowania);
         const auto nowekatyI = o.liczWartosciKatow(wynikMnozenia2);
         RysujWykres({"katyI.txt", "noweKaty.txt"}, katyI, nowekatyI);
 
 #endif //rysujKorektyFaz
-       
-#if rysujKonselacje
-        // nie dziala?
-        const auto skupionePrzedKorekta = o.skupWidmo(dane, *ciagI, *ciagQ, *ciagWalsha, a.offset);
-//        const auto skupionePoKorekcie = o.skupWidmo(noweDane, *ciagI, *ciagQ, *ciagWalsha, a.offset);
 
+        const auto skupionePrzedKorekta = o.skupWidmo(dane, *ciagI, *ciagQ, *ciagWalsha, a.offset);
         const auto skupionePoKorekcie = o.korygujFaze(skupionePrzedKorekta, korekty);
 
+#if rysujKonselacje
+
+        // todo algorytm: 
+        // - jak juz mam korelacje to wszystko robic kawalkami o dlugosci 26.66667ms
+        // - korekta na caly ciag wzorcowy
+        // - skupianie o czasie trwania wzorca
+        // - kolejne probki przesuniete o 26.66667ms
+        // - piki korelacji bardzo ladnie widac na wielokrotnosciach 34133 probek:
+        //      30538, 64671, 98804 (wszystko oddalone o 34133)
+        // moze byc koniecznosc zachowania tego samego powtarzania probek wzorca w kolejnyc wielokrotnosciach
+
+
+        const int krokSumy = 533;
         //const int krokSumy = 266;
-        const int krokSumy = 266;
+
         std::vector<complex<long long>> przed(skupionePrzedKorekta.size() / krokSumy, 0);
         std::vector<complex<long long>> po(skupionePoKorekcie.size() / krokSumy, 0);
 
@@ -135,19 +144,20 @@ void asd(int plikidx)
             po[j] = sumPo;
         }
 
-        
+        // todo: te konstelacje nie wygladaja za dobrze
         RysujKonstelacje("przed.txt", przed);
         RysujKonstelacje("po.txt", po);
 
 #endif //rysujKonstelacje
 
 #if demoduluj
-        const auto skupionePoKorekcie = o.skupWidmo(noweDane, *ciagI, *ciagQ, *ciagWalsha, a.offset);
-        
         // 26.66667ms to 34133 probek. 
-        // po skupieniu mamy przeplywnosc 4.8k. 
-        // 26.666667ms w 4.8k to 128. 34133/128 = 266.6640625
-        const auto przedzialCalkowania = 266;    
+        // po skupieniu mamy przeplecione bity o przeplywnosci 4.8k. 
+        // 26.666667ms w 4.8k to 128 bity. symbol to 2 bity (QPSK) (64 symbole?)
+        // 34133/128 = 266.6640625
+
+        // 34133/64 symbole - 533.32 probki/symbol
+        const auto przedzialCalkowania = 533;    
         const auto bity = o.demodulacja(skupionePoKorekcie, przedzialCalkowania);
 
         cout << "mam " << bity.size() << " bitow:\n";
@@ -157,10 +167,22 @@ void asd(int plikidx)
         stringstream s;
         for (size_t idRozplecionego = 0; idRozplecionego < rozplecione.size(); idRozplecionego++)
         {
-            if (idRozplecionego != 0 && (idRozplecionego % dlugoscRamkiPrzedRozplotem == 0))
-                cout << "\n";
+            //if (idRozplecionego != 0 && (idRozplecionego % dlugoscRamkiPrzedRozplotem == 0))
+            //    cout << "\n";
+            //cout << rozplecione[idRozplecionego];
             s << rozplecione[idRozplecionego];
-            cout << rozplecione[idRozplecionego];
+        }
+
+        // todo: ktore brac z powtorzenia?
+        stringstream odrzuconePowtorki;
+        auto str = s.str();
+        for (size_t asd = 0; asd < str.size(); asd++)
+        {
+            if (asd % 2 == 0)
+            {
+                odrzuconePowtorki << str[asd];
+                cout << str[asd];
+            }
         }
 
         cout << "\nzdekodowane\n\n";
@@ -170,16 +192,20 @@ void asd(int plikidx)
         polynomials.push_back(491);
         polynomials.push_back(369);
 
+        // todo: dostaje 24 bity zamiast 32 na wyjsciu dekodera :(
         ViterbiCodec codec(9, polynomials);
 
-        cout << codec.Decode(s.str());
+       // cout << codec.Decode(s.str());
+        cout << codec.Decode(odrzuconePowtorki.str());
 #endif //demoduluj
 
         cout << "\n\n";
     }
     
-
+#if demoduluj
     system("Pause");
+#endif
+
 	cout << "\n";
 }
 

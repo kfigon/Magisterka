@@ -1,5 +1,23 @@
-﻿Build started 2017-07-30 19:01:03.
+﻿Build started 2017-08-05 13:54:07.
+     1>Project "C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\Magisterka\Magisterka.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TP /errorReport:prompt RamkaSyncCh.cpp
+         RamkaSyncCh.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Release\Magisterka.exe" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Release\Magisterka.pdb" /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Release\Magisterka.lib" /MACHINE:X64 x64\Release\AproksymatorLiniowy.obj
+         x64\Release\FileReader.obj
+         x64\Release\GeneratorCiagow.obj
+         x64\Release\Odbiornik.obj
+         x64\Release\RamkaSyncCh.obj
+         x64\Release\RejestrPrzesuwny.obj
+         x64\Release\Source.obj
+         x64\Release\Sygnal.obj
+         x64\Release\viterbi.obj
+         Generating code
+         Finished generating code
+         Magisterka.vcxproj -> C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Release\Magisterka.exe
+     1>Done Building Project "C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\Magisterka\Magisterka.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.07
+Time Elapsed 00:00:03.22

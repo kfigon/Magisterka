@@ -1,8 +1,21 @@
-﻿Build started 2017-07-30 19:01:03.
-     1>Project "C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\Testy\Testy.vcxproj" on node 2 (Clean target(s)).
-     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppClean.targets(76,5): warning : The process cannot access the file 'c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\testy\x64\release\vc120.pdb' because it is being used by another process.
-     1>Done Building Project "C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\Testy\Testy.vcxproj" (Clean target(s)).
+﻿Build started 2017-08-05 13:54:07.
+     1>Project "C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\Testy\Testy.vcxproj" on node 3 (Build target(s)).
+     1>Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Release\Testy.dll" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\UnitTest\lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Release\Testy.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Release\Testy.lib" /MACHINE:X64 /DLL x64\Release\stdafx.obj
+         x64\Release\TestyAproksymatora.obj
+         x64\Release\TestyCzytaniaPliku.obj
+         x64\Release\TestyGeneratora.obj
+         x64\Release\TestyOdbiornika.obj
+         x64\Release\TestyRamek.obj
+         x64\Release\TestyRejestruPrzesuwnego.obj
+         x64\Release\TestySygnalu.obj
+     1>LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/LTCG' specification
+            Creating library C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Release\Testy.lib and object C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Release\Testy.exp
+     1>TestyRamek.obj : error LNK2001: unresolved external symbol "public: void __cdecl ParserRamek::dopisz(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)" (?dopisz@ParserRamek@@QEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z)
+     1>TestyRamek.obj : error LNK2001: unresolved external symbol "public: class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > __cdecl ParserRamek::getFrame(void)" (?getFrame@ParserRamek@@QEAA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ)
+     1>C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Release\Testy.dll : fatal error LNK1120: 2 unresolved externals
+     1>Done Building Project "C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\Testy\Testy.vcxproj" (Build target(s)) -- FAILED.
 
-Build succeeded.
+Build FAILED.
 
-Time Elapsed 00:00:00.09
+Time Elapsed 00:00:00.62

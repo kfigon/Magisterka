@@ -96,7 +96,10 @@ std::vector<complex<long long>> Odbiornik::liczKorelacje(const std::vector<Data>
 
     cout << "Skupiam widmo...\n";
 
-    const auto zakres = dane.size() / 2 + 1;
+
+    KalkulatorDlugosciCiagow kalkulatorDlugosciCiagow{ getCzestotliwoscProbkowania(), getCzestotliwoscSygnalu() }; 
+    const auto zakres = kalkulatorDlugosciCiagow.ileProbek(ciagI.getDlugosc()) +1; 
+    
     std::vector<complex<long long>> out(zakres, 0);
     
     SpeedTester speedTester;
@@ -149,7 +152,7 @@ std::vector<complex<long long>> Odbiornik::mnozenieZespoloneISumowanie(const std
         return std::vector<complex<long long>>{};
     }
 
-    KalkulatorDlugosciCiagow k{ Stale::CZESTOTLIWOSC_PROBKOWANIA_DANYCH_MHZ * 1000, Stale::SZYBKOSC_TRANSMISJI_CIAGU_ROZPRASZAJACEGO_MHZ * 1000 };
+    KalkulatorDlugosciCiagow k{ getCzestotliwoscProbkowania(), getCzestotliwoscSygnalu()};
     const auto ileProbekNaCiagWzorcowy = k.ileProbek(ciagI.getDlugosc());
 
     const auto dlugoscWyjscia =  ileProbekNaCiagWzorcowy / dlugoscPodCiagow;
@@ -312,15 +315,18 @@ std::vector<complex<double>> Odbiornik::wyznaczKorekte(const std::vector<double>
 
 std::vector<complex<long long>> Odbiornik::skupWidmo(const std::vector<Data>& dane, const SygnalBipolarny& ciagI, const SygnalBipolarny& ciagQ, const SygnalBipolarny& ciagWalsha, size_t offsetPn)
 {
-    if (dane.size() < ciagI.getDlugosc())
+    if (dane.size() < ciagI.getDlugosc() + offsetPn)
     {
-        cout << "Podano za krotki ciag probek! Dane: " << dane.size() << ", ciag wzorcowy " << ciagI.getDlugosc() << "\n";
+        cout << "Podano za krotki ciag probek! Dane: " << dane.size() << ", ciag wzorcowy " << ciagI.getDlugosc() << ", offset: " << offsetPn << "\n";
         assert(false);
 
         return std::vector<complex<long long>>{};
     }
 
-    std::vector<complex<long long>> out(dane.size() - offsetPn, 0);
+    KalkulatorDlugosciCiagow k{ getCzestotliwoscProbkowania(), getCzestotliwoscSygnalu() };
+    const auto ileProbekNaCiagWzorcowy = k.ileProbek(ciagI.getDlugosc());
+
+    std::vector<complex<long long>> out(ileProbekNaCiagWzorcowy, 0);
 
 
     size_t indeksDanych = offsetPn;
@@ -376,9 +382,9 @@ std::vector<complex<long long>> Odbiornik::korygujFaze(const std::vector<complex
     return out;
 }
 
-std::vector<int> Odbiornik::demodulacja(const std::vector<complex<long long>>& skupioneWidmo, int przedzialSumowania)
+std::vector<int> Odbiornik::demodulacja(const std::vector<complex<long long>>& skupioneWidmo, int przedzialCalkowania)
 {
-    const size_t ile = 2 * static_cast<int>(ceil(static_cast<float>(skupioneWidmo.size()) / static_cast<float>(przedzialSumowania)));
+    const size_t ile = 2 *(skupioneWidmo.size() / przedzialCalkowania);
 
     std::vector<int> out(ile,0);
     
@@ -387,7 +393,7 @@ std::vector<int> Odbiornik::demodulacja(const std::vector<complex<long long>>& s
     {
         // calkowanie
         std::complex<long long> zakumulowaneProbki = 0;
-        for (size_t j = 0; j < przedzialSumowania; j++)
+        for (size_t j = 0; j < przedzialCalkowania; j++)
         {
             if (idProbek >= skupioneWidmo.size())
                 break;
@@ -400,8 +406,8 @@ std::vector<int> Odbiornik::demodulacja(const std::vector<complex<long long>>& s
         const auto re = zakumulowaneProbki.real();
         const auto im = zakumulowaneProbki.imag();
 
-        int bit0 = 0; // bit pierwszy
-        int bit1 = 0; // drugi
+        int bit0 = 0; // bit pierwszy Yi
+        int bit1 = 0; // drugi         Yq (3.1.3.1.16 spec)
         
         // pierwsza cwiartka
         if (re >= 0 && im >= 0)
@@ -429,6 +435,17 @@ std::vector<int> Odbiornik::demodulacja(const std::vector<complex<long long>>& s
     }
 
     return out;
+}
+
+std::string Odbiornik::toString(const std::vector<int>& ciag)
+{
+    std::stringstream s;
+    for (auto bit : ciag)
+    {
+        s << bit;
+    }
+
+    return s.str();
 }
 
 std::vector<int> Rozplatacz::rozplot(const std::vector<int>& ciag) const

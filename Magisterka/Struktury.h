@@ -23,6 +23,9 @@ namespace Stale
 	const double SZYBKOSC_TRANSMISJI_DANYCH_KHZ = 19.2;
 
 	const int ILOSC_CIAGOW_PN_NA_STACJE = 3;
+
+    const long long CZESTOTLIWOSC_PROBKOWANIA_HZ = 1280000;
+    const long long CZESTOTLIWOSC_SYGNALU_HZ = 1228800;
 }
 
 

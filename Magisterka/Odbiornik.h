@@ -19,58 +19,88 @@ void RysujKonstelacje(const std::string& sciezkaDoPliku, const std::vector<compl
 
 class KalkulatorDlugosciCiagow
 {
-    // KHz
-    double mCzestotliwoscProbkowania = 1;
-    double mCzestotliwosc = 1;
+    // Hz
+    const long long mCzestotliwoscProbkowania;;
+    const long long mCzestotliwosc;;
 public:
-    KalkulatorDlugosciCiagow(double czProbkowania, double czSygnalu) :
+    // dane w Hz
+    KalkulatorDlugosciCiagow(long long czProbkowania=1, long long czSygnalu=1) :
         mCzestotliwoscProbkowania(czProbkowania),
         mCzestotliwosc(czSygnalu)
-    {}
-
-    KalkulatorDlugosciCiagow()
     {}
 
     // w [ms]
     double liczCzasTrwaniaSygnaluWzorcowego(size_t dlugoscCiaguWzorcowego) const
     {
-        return static_cast<double>(dlugoscCiaguWzorcowego) / (mCzestotliwosc);
+        return static_cast<double>(1000 * dlugoscCiaguWzorcowego) / static_cast<double>(mCzestotliwosc);
     }
 
     size_t ileProbek(size_t dlugoscCiaguWzorcowego) const 
     { 
         const double czasTrwaniaCiaguMs = liczCzasTrwaniaSygnaluWzorcowego(dlugoscCiaguWzorcowego);
-        const double licznik = mCzestotliwoscProbkowania*czasTrwaniaCiaguMs;
+        const double licznik = static_cast<double>(mCzestotliwoscProbkowania)*czasTrwaniaCiaguMs;
         const double mianownik = 1000;
 
-        return static_cast<size_t>(licznik * 1000 / mianownik);
+        return static_cast<size_t>(licznik / mianownik);
     }
 };
 
+
 class Odbiornik
 {
+
     // fs danych = 1,28MHz, szybkosc transmisji 1,2288Mcps
     // wiec sie rozjedzie po 24 probkach
     // skip dane, skip ciag - stosunek czestotliwosci probkowania np 25/24
     // jesli jest 2/3 (dane 3, ciag 2)
+    int mSkipDane;
+    int mSkipCiag;
 
-    const int mSkipDane;
-    const int mSkipCiag;
+    const long long mCzestotliwosc;
+    const long long mCzestotliwoscProbkowania;
 public:
-    Odbiornik(int skipDane = 0, int skipCiag = 0) :
-        mSkipDane(skipDane),
-        mSkipCiag(skipCiag)
-    {}
-
-    // niedopasowanie czestotliwosci probkowania powoduje potrzebe
-    // wyliczenia docelowych dlugosci ciagow
-    double getWspolczynnikProporcjonalnosciCiagow() const
+    // dane w Hz
+    Odbiornik(long long czestotliwoscProbkowania = 1, long long czestotliwosc = 1) :
+        mCzestotliwosc(czestotliwosc),
+        mCzestotliwoscProbkowania(czestotliwoscProbkowania)
     {
-        if (mSkipCiag == 0)
-            return 1;
+        // zalozenie - cz. probkowania >= czestotliwosc sygnalu.
+        assert(mCzestotliwoscProbkowania >= mCzestotliwosc);
 
-        return (static_cast<double>(mSkipDane) / static_cast<double>(mSkipCiag));
+        if (mCzestotliwosc == mCzestotliwoscProbkowania)
+        {
+            mSkipCiag = 0;
+            mSkipDane = 0;
+        }
+        else
+        {
+            const auto nwd = liczNwd(czestotliwosc, czestotliwoscProbkowania);
+            mSkipDane = czestotliwoscProbkowania/ nwd;
+            mSkipCiag = czestotliwosc / nwd;
+        }
     }
+
+    int getSkipDane() const { return mSkipDane; }
+    int getSkipCiag() const { return mSkipCiag; }
+
+    // w Hz
+    long long getCzestotliwoscProbkowania() const { return mCzestotliwoscProbkowania; }
+    // w Hz
+    long long getCzestotliwoscSygnalu() const { return mCzestotliwosc; }
+
+    static int liczNwd(int a, int b)
+    {
+        if (a == b)
+        {
+            return a;
+        }
+
+        int mniejsza = (a < b) ? a : b;
+        int roznica = abs(a - b);
+
+        return liczNwd(mniejsza, roznica);
+    }
+
 
     std::vector<complex<long long>> liczKorelacje(const std::vector<Data>& dane, const SygnalBipolarny& ciagI);
 
@@ -107,14 +137,17 @@ public:
     std::vector<double> aproksymujFazyDoKorekty(const std::vector<double>& rozwinietaFaza, int dlugoscPodciagu);
     
     std::vector<complex<double>> wyznaczKorekte(const std::vector<double>& zaproksymowaneFazy);
+   
     __forceinline 
         complex<double> wyznaczKorekte(double faza);
 
     std::vector<complex<long long>> skupWidmo(const std::vector<Data>& dane, const SygnalBipolarny& ciagI, const SygnalBipolarny& ciagQ, const SygnalBipolarny& ciagWalsha, size_t offsetPn);
     std::vector<complex<long long>> korygujFaze(const std::vector<complex<long long>>& skupionyCiag, const std::vector<complex<double>>& korektyFazy);
     // przedzial calkowania
-    std::vector<int> demodulacja(const std::vector<complex<long long>>& skupioneWidmo, int przedzialSumowania);
+    std::vector<int> demodulacja(const std::vector<complex<long long>>& skupioneWidmo, int przedzialCalkowania);
     std::vector<int> rozplot(const std::vector<int>& dane);
+
+    static std::string toString(const std::vector<int>& ciag);
 };
 
 // klasa do obslugi operacji rozplotu
