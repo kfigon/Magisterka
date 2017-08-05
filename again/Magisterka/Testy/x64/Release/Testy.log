@@ -1,5 +1,55 @@
-﻿Build started 2017-08-02 21:59:36.
+﻿Build started 2017-08-05 13:14:05.
+     1>Project "C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\Testy\Testy.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /IC:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\Magisterka /I"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\UnitTest\include" /Zi /nologo /W3 /WX- /O2 /Oi /GL /D WIN32 /D NDEBUG /D _WINDLL /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"x64\Release\Testy.pch" /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TP /FC /errorReport:prompt TestyOdbiornika.cpp
+         TestyOdbiornika.cpp
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\sygnal.h(41): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.h(77): warning C4244: 'argument' : conversion from '__int64' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.h(78): warning C4244: '=' : conversion from '__int64' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.h(79): warning C4244: '=' : conversion from '__int64' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.h(171): warning C4244: 'return' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(124): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(173): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(214): warning C4267: '=' : conversion from 'size_t' to 'UINT', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(216): warning C4244: '=' : conversion from 'double' to '__int64', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(273): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(276): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(289): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(342): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(343): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(344): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(444): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\testy\testyodbiornika.cpp(140): warning C4244: 'argument' : conversion from '__int64' to 'double', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\testy\testyodbiornika.cpp(169): warning C4244: 'argument' : conversion from '__int64' to 'double', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\aproksymatorliniowy.h(33): warning C4244: '+=' : conversion from 'const double' to 'float', possible loss of data
+                 c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\aproksymatorliniowy.h(24) : while compiling class template member function 'AproksymatorLiniowy<double>::AproksymatorLiniowy(const std::vector<WartosciFunkcji<double>,std::allocator<_Ty>> &)'
+                 with
+                 [
+                     _Ty=WartosciFunkcji<double>
+                 ]
+                 c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(279) : see reference to function template instantiation 'AproksymatorLiniowy<double>::AproksymatorLiniowy(const std::vector<WartosciFunkcji<double>,std::allocator<_Ty>> &)' being compiled
+                 with
+                 [
+                     _Ty=WartosciFunkcji<double>
+                 ]
+                 c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(279) : see reference to class template instantiation 'AproksymatorLiniowy<double>' being compiled
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\aproksymatorliniowy.h(35): warning C4244: '+=' : conversion from 'const double' to 'float', possible loss of data
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Release\Testy.dll" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\UnitTest\lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Release\Testy.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Release\Testy.lib" /MACHINE:X64 /DLL x64\Release\stdafx.obj
+         x64\Release\TestyAproksymatora.obj
+         x64\Release\TestyCzytaniaPliku.obj
+         x64\Release\TestyGeneratora.obj
+         x64\Release\TestyOdbiornika.obj
+         x64\Release\TestyRejestruPrzesuwnego.obj
+         x64\Release\TestySygnalu.obj
+     1>LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/LTCG' specification
+            Creating library C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Release\Testy.lib and object C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Release\Testy.exp
+         Generating code
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.h(112): warning C4724: potential mod by 0
+         Finished generating code
+         Testy.vcxproj -> C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Release\Testy.dll
+     1>Done Building Project "C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\Testy\Testy.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.07
+Time Elapsed 00:00:05.99

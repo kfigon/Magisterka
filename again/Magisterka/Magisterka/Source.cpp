@@ -114,7 +114,7 @@ void asd(int plikidx)
 
 #if rysujKonselacje
 
-        // todo: 
+        // todo algorytm: 
         // - jak juz mam korelacje to wszystko robic kawalkami o dlugosci 26.66667ms
         // - korekta na caly ciag wzorcowy
         // - skupianie o czasie trwania wzorca
@@ -144,7 +144,7 @@ void asd(int plikidx)
             po[j] = sumPo;
         }
 
-        
+        // todo: te konstelacje nie wygladaja za dobrze
         RysujKonstelacje("przed.txt", przed);
         RysujKonstelacje("po.txt", po);
 

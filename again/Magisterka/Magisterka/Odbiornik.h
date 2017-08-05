@@ -145,6 +145,8 @@ public:
     // przedzial calkowania
     std::vector<int> demodulacja(const std::vector<complex<long long>>& skupioneWidmo, int przedzialCalkowania);
     std::vector<int> rozplot(const std::vector<int>& dane);
+
+    //static std::string toString(const std::vector<int>& ciag);
 };
 
 // klasa do obslugi operacji rozplotu

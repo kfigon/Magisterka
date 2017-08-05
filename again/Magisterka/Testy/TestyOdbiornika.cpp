@@ -55,43 +55,6 @@ namespace Testy
     TEST_CLASS(TestyOdbiornika)
 	{
 	public:
-
-        TEST_METHOD(wyliczanieSkipow_czestotliwoscTakieSame_1_1)
-        {
-            // czestotliwosc rowne 1Hz
-            Odbiornik o{ 1, 1 };
-            Assert::AreEqual(0, o.getSkipDane());
-            Assert::AreEqual(0, o.getSkipCiag());
-        }
-
-        TEST_METHOD(wyliczanieSkipow_czestotliwoscTakieSame_200_200)
-        {
-            Odbiornik o{ 200, 200 };
-            Assert::AreEqual(0, o.getSkipDane());
-            Assert::AreEqual(0, o.getSkipCiag());
-        }
-
-        TEST_METHOD(wyliczanieSkipow_1_28M_1_2288M)
-        {
-            Odbiornik o{ static_cast<long long>(1.28 * 1000000), static_cast<long long>(1.2288 * 1000000) };
-            Assert::AreEqual(25, o.getSkipDane());
-            Assert::AreEqual(24, o.getSkipCiag());
-        }
-
-        TEST_METHOD(wyliczanieSkipow_24_25)
-        {
-            Odbiornik o{ 25,24};
-            Assert::AreEqual(25, o.getSkipDane());
-            Assert::AreEqual(24, o.getSkipCiag());
-        }
-
-        TEST_METHOD(wyliczanieSkipow_5_4)
-        {
-            Odbiornik o{ 5,4 };
-            Assert::AreEqual(5, o.getSkipDane());
-            Assert::AreEqual(4, o.getSkipCiag());
-        }
-
         TEST_METHOD(korelacja)
         {
             std::vector<Data> dane{
@@ -122,79 +85,6 @@ namespace Testy
                 const auto modul = sqrt(c.real()*c.real() + c.imag()*c.imag());
                 AreAlmostEqual(expected[i], modul);
             }
-        }
-
-        TEST_METHOD(skipowanie_takieSameCzestotliwosci_brakPowtarzania)
-        {
-            Odbiornik o{};
-
-            Assert::IsFalse(o.czySkipowac());
-
-            size_t idCiagu = 0;
-            size_t idDanych = 0;
-            for (idDanych = 0; idDanych < 50; idDanych++)
-            {
-                o.aktualizujIndeksCiagu(idCiagu, idDanych);
-                idCiagu++;
-            }
-
-            Assert::AreEqual(idDanych, idCiagu);
-        }
-
-        TEST_METHOD(skipowanie_2do3)
-        {
-            Odbiornik o{3,2};
-
-            Assert::IsTrue(o.czySkipowac());
-
-            size_t idCiagu = 0;
-            size_t idDanych = 0;
-            for (idDanych = 0; idDanych < 24; idDanych++)
-            {
-                o.aktualizujIndeksCiagu(idCiagu, idDanych);
-                idCiagu++;
-            }
-
-            // potwarzanie powinno wystapic 8 razy
-            // dla idDanych 2,5,8,11,14,17,20 i 23
-            Assert::AreEqual(idDanych, idCiagu+8);
-        }
-
-        TEST_METHOD(skipowanie_2do3_offset2)
-        {
-            Odbiornik o{ 3, 2 };
-            
-            size_t idCiagu = 0;
-            const size_t offset = 2;
-
-            o.aktualizujIndeksCiagu(idCiagu, 2-offset);
-            Assert::AreEqual<size_t>(0, idCiagu, L"powinno nie zmienic");
-            
-            idCiagu++;
-            o.aktualizujIndeksCiagu(idCiagu, 3-offset);
-            Assert::AreEqual<size_t>(1, idCiagu, L"nie powinno zmienic");
-
-            idCiagu++;
-            o.aktualizujIndeksCiagu(idCiagu, 4-offset);
-            Assert::AreEqual<size_t>(1, idCiagu, L"element powinien byc powtorzony");
-        }
-
-        TEST_METHOD(skipowanie_4do5)
-        {
-            Odbiornik o{ 5,4 };
-
-            Assert::IsTrue(o.czySkipowac());
-
-            size_t idCiagu = 0;
-            size_t idDanych = 0;
-            for (idDanych = 0; idDanych < 30; idDanych++)
-            {
-                o.aktualizujIndeksCiagu(idCiagu, idDanych);
-                idCiagu++;
-            }
-
-            // potwarzanie powinno wystapic 6 razy
-            Assert::AreEqual(idDanych, idCiagu + 6);
         }
 
         // czestotliwosc - ile razy ma byc powtorzony symbol
@@ -321,41 +211,6 @@ namespace Testy
                 AreAlmostEqual(expected[i], wynik[i]);
         }
 
-        std::vector<int> wygenerujExpectedDlaRozplatacza()
-        {
-            // dane ida 1,1,2,2,3,3,4,4,5,5,6,6... 64,64
-            std::vector<int> expected(128, 0);
-
-            // potrzebny licznik do 2
-            int licznik = 1;    
-            for (size_t i = 0; i < expected.size(); i++)
-            {
-                if (i != 0 && i % 2 == 0)
-                    licznik++;
-                expected[i] = licznik;
-            }
-
-            return expected;
-        }
-
-        TEST_METHOD(rozplot1)
-        {
-            Rozplatacz r;
-
-            std::vector<int> splecione{1,33,17,49,9,41,25,57,5,37,21,53,13,45,29,61,
-            3,35,19,51,11,43,27,59,7,39,23,55,15,47,31,63,
-            2,34,18,50,10,42,26,58,6,38,22,54,14,46,30,62,
-            4,36,20,52,12,44,28,60,8,40,24,56,16,48,32,64,
-            1,33,17,49,9,41,25,57,5,37,21,53,13,45,29,61,
-            3,35,19,51,11,43,27,59,7,39,23,55,15,47,31,63,
-            2,34,18,50,10,42,26,58,6,38,22,54,14,46,30,62,
-            4,36,20,52,12,44,28,60,8,40,24,56,16,48,32,64};
-
-            const auto expected = wygenerujExpectedDlaRozplatacza();
-
-            porownajCiagi(expected, r.rozplot(splecione));
-        }
-
         TEST_METHOD(aproksymacjaFazy)
         {
             const std::vector<double> dane{ 1.50, 1.65, 1.8, 1.95, 2.1 };
@@ -464,7 +319,125 @@ namespace Testy
 
             sprawdzajCiagi(expected, wynik);
         }
+    };
 
+    // nie jest to skipowanie, tylko powtarzanie
+    TEST_CLASS(TestyDopasowaniaCzestotliwosciProbek)
+    {
+
+        TEST_METHOD(wyliczanieSkipow_czestotliwoscTakieSame_1_1)
+        {
+            // czestotliwosc rowne 1Hz
+            Odbiornik o{ 1, 1 };
+            Assert::AreEqual(0, o.getSkipDane());
+            Assert::AreEqual(0, o.getSkipCiag());
+        }
+
+        TEST_METHOD(wyliczanieSkipow_czestotliwoscTakieSame_200_200)
+        {
+            Odbiornik o{ 200, 200 };
+            Assert::AreEqual(0, o.getSkipDane());
+            Assert::AreEqual(0, o.getSkipCiag());
+        }
+
+        TEST_METHOD(wyliczanieSkipow_1_28M_1_2288M)
+        {
+            Odbiornik o{ static_cast<long long>(1.28 * 1000000), static_cast<long long>(1.2288 * 1000000) };
+            Assert::AreEqual(25, o.getSkipDane());
+            Assert::AreEqual(24, o.getSkipCiag());
+        }
+
+        TEST_METHOD(wyliczanieSkipow_24_25)
+        {
+            Odbiornik o{ 25, 24 };
+            Assert::AreEqual(25, o.getSkipDane());
+            Assert::AreEqual(24, o.getSkipCiag());
+        }
+
+        TEST_METHOD(wyliczanieSkipow_5_4)
+        {
+            Odbiornik o{ 5, 4 };
+            Assert::AreEqual(5, o.getSkipDane());
+            Assert::AreEqual(4, o.getSkipCiag());
+        }
+
+        TEST_METHOD(skipowanie_takieSameCzestotliwosci_brakPowtarzania)
+        {
+            Odbiornik o{};
+
+            Assert::IsFalse(o.czySkipowac());
+
+            size_t idCiagu = 0;
+            size_t idDanych = 0;
+            for (idDanych = 0; idDanych < 50; idDanych++)
+            {
+                o.aktualizujIndeksCiagu(idCiagu, idDanych);
+                idCiagu++;
+            }
+
+            Assert::AreEqual(idDanych, idCiagu);
+        }
+
+
+        TEST_METHOD(skipowanie_2do3)
+        {
+            Odbiornik o{ 3, 2 };
+
+            Assert::IsTrue(o.czySkipowac());
+
+            size_t idCiagu = 0;
+            size_t idDanych = 0;
+            for (idDanych = 0; idDanych < 24; idDanych++)
+            {
+                o.aktualizujIndeksCiagu(idCiagu, idDanych);
+                idCiagu++;
+            }
+
+            // potwarzanie powinno wystapic 8 razy
+            // dla idDanych 2,5,8,11,14,17,20 i 23
+            Assert::AreEqual(idDanych, idCiagu + 8);
+        }
+
+        TEST_METHOD(skipowanie_2do3_offset2)
+        {
+            Odbiornik o{ 3, 2 };
+
+            size_t idCiagu = 0;
+            const size_t offset = 2;
+
+            o.aktualizujIndeksCiagu(idCiagu, 2 - offset);
+            Assert::AreEqual<size_t>(0, idCiagu, L"powinno nie zmienic");
+
+            idCiagu++;
+            o.aktualizujIndeksCiagu(idCiagu, 3 - offset);
+            Assert::AreEqual<size_t>(1, idCiagu, L"nie powinno zmienic");
+
+            idCiagu++;
+            o.aktualizujIndeksCiagu(idCiagu, 4 - offset);
+            Assert::AreEqual<size_t>(1, idCiagu, L"element powinien byc powtorzony");
+        }
+
+        TEST_METHOD(skipowanie_4do5)
+        {
+            Odbiornik o{ 5, 4 };
+
+            Assert::IsTrue(o.czySkipowac());
+
+            size_t idCiagu = 0;
+            size_t idDanych = 0;
+            for (idDanych = 0; idDanych < 30; idDanych++)
+            {
+                o.aktualizujIndeksCiagu(idCiagu, idDanych);
+                idCiagu++;
+            }
+
+            // potwarzanie powinno wystapic 6 razy
+            Assert::AreEqual(idDanych, idCiagu + 6);
+        }
+    };
+
+    TEST_CLASS(TestyDemodulatora)
+    {
         TEST_METHOD(demodulator_calkowaniePo1)
         {
             std::vector<complex<long long>> dane{ { -2, -1 }, { 3, 1 }, { 4, 4 },
@@ -472,21 +445,21 @@ namespace Testy
 
             Odbiornik o;
             const auto wynik = o.demodulacja(dane, 1);
-            std::vector<int> expected{1,1,  0,0,  0,0,  
-            1,0,  0,1,  1,1,  0,0};
-            
+            std::vector<int> expected{ 1, 1, 0, 0, 0, 0,
+                1, 0, 0, 1, 1, 1, 0, 0 };
+
             porownajCiagi(expected, wynik);
         }
 
         TEST_METHOD(demodulator_calkowaniePo3)
         {
             std::vector<complex<long long>> dane{ { -2, -1 }, { 3, 1 }, { 4, 4 },
-            { -5, 2 }, { 3, -4 }, { -1, -5 }, 
+            { -5, 2 }, { 3, -4 }, { -1, -5 },
             { 3, 2 } }; // wolna probka, odrzucona
 
             Odbiornik o;
             const auto wynik = o.demodulacja(dane, 3);
-            std::vector<int> expected{ 0,0,  1,1};
+            std::vector<int> expected{ 0, 0, 1, 1 };
 
             porownajCiagi(expected, wynik);
         }
@@ -515,6 +488,42 @@ namespace Testy
         TEST_METHOD(rozplataczGetId18)
         {
             Assert::AreEqual(36, r.getId(18));
+        }
+
+
+        std::vector<int> wygenerujExpectedDlaRozplatacza(size_t ileBitow)
+        {
+            // dane ida 1,1,2,2,3,3,4,4,5,5,6,6... 64,64
+            std::vector<int> expected(ileBitow, 0);
+
+            // potrzebny licznik do 2
+            int licznik = 1;
+            for (size_t i = 0; i < expected.size(); i++)
+            {
+                if (i != 0 && i % 2 == 0)
+                    licznik++;
+                expected[i] = licznik;
+            }
+
+            return expected;
+        }
+
+        TEST_METHOD(rozplot1)
+        {
+            Rozplatacz rozplatacz;
+
+            std::vector<int> splecione{ 1, 33, 17, 49, 9, 41, 25, 57, 5, 37, 21, 53, 13, 45, 29, 61,
+                3, 35, 19, 51, 11, 43, 27, 59, 7, 39, 23, 55, 15, 47, 31, 63,
+                2, 34, 18, 50, 10, 42, 26, 58, 6, 38, 22, 54, 14, 46, 30, 62,
+                4, 36, 20, 52, 12, 44, 28, 60, 8, 40, 24, 56, 16, 48, 32, 64,
+                1, 33, 17, 49, 9, 41, 25, 57, 5, 37, 21, 53, 13, 45, 29, 61,
+                3, 35, 19, 51, 11, 43, 27, 59, 7, 39, 23, 55, 15, 47, 31, 63,
+                2, 34, 18, 50, 10, 42, 26, 58, 6, 38, 22, 54, 14, 46, 30, 62,
+                4, 36, 20, 52, 12, 44, 28, 60, 8, 40, 24, 56, 16, 48, 32, 64 };
+
+            const auto expected = wygenerujExpectedDlaRozplatacza(128);
+
+            porownajCiagi(expected, rozplatacz.rozplot(splecione));
         }
     };
 
