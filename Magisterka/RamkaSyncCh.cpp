@@ -147,6 +147,7 @@ unsigned int RamkaSyncCh::getCrc() const
     return binaryToInt(crcRaw);
 }
 
+// todo: jak?
 bool RamkaSyncCh::checkCrc() const
 {
     const auto odczytaneCrc = getCrc();

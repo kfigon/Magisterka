@@ -12,13 +12,13 @@ namespace Microsoft
         {
             template<> static std::wstring ToString<RamkaSyncCh::Status>(const RamkaSyncCh::Status& s)
             {
-                const auto msg = RamkaSyncCh::statusToString(s);
-                
+                const auto msg = RamkaSyncCh::statusToString(s);                
                 return std::wstring (msg.begin(), msg.end());
             }
         }
     }
 }
+
 namespace Testy
 {
     using namespace std;

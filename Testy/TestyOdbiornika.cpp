@@ -801,9 +801,6 @@ namespace Testy
 
     TEST_CLASS(TestyKalkulatoraDlugosciCiagow)
     {
-        // todo: policzyc jeszcze raz na papierze te dlugosci i uzyc kalkulatora do
-        // okreslenia tych czestotliwosci i dlugosci wynikowych ciagow skladowych
-
         // ile probek danych (fs=1.28MHz) przypada na
         // 32768 (2^15) ciagu wzorcowego PN o predkosci 1.2288 Mcps
         // czas transmisji 26.66666667 ms
