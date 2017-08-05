@@ -1,7 +1,7 @@
 #include "RamkaSyncCh.h"
 
 
-void ParserRamek::dopisz(const std::string& bity)
+void PreprocesorRamek::dopisz(const std::string& bity)
 {
     for (char b : bity)
     {
@@ -9,7 +9,7 @@ void ParserRamek::dopisz(const std::string& bity)
     }
 }
 
-std::string ParserRamek::getFrame()
+std::string PreprocesorRamek::getFrame()
 {
     const auto rozmiar = getStreamSize();
 
@@ -45,7 +45,7 @@ std::string ParserRamek::getFrame()
     return out;
 }
 
-bool ParserRamek::sprawdzPoprawnoscCiagu()
+bool PreprocesorRamek::sprawdzPoprawnoscCiagu()
 {
     const auto rozmiar = getStreamSize();
     if (rozmiar < ROZMIAR_RAMKI)
@@ -84,40 +84,87 @@ bool ParserRamek::sprawdzPoprawnoscCiagu()
 
 RamkaSyncCh::Status RamkaSyncCh::czyOk() const
 {
-    return RamkaSyncCh::Status::UnknownError;
+    if (mRamka.size() < RozmiaryRamkiSyncCh::MINIMALNY_ROZMIAR_RAMKI)
+    {
+        return Status::ZaKrotkaRamka;
+    }
+    else if (mRamka.size() > RozmiaryRamkiSyncCh::MAKSYMALNY_ROZMIAR_RAMKI)
+    {
+        return Status::ZaDlugaRamka;
+    }
+    
+    const auto msgLen = getMsgLen();
+    if (mRamka.size() < msgLen)
+    {
+        return Status::ZaMaleMsg;
+    }
+    else if (mRamka.size() > msgLen)
+    {
+        return Status::ZaDuzeMsg;
+    }
+    else if (mRamka.size() == msgLen && checkCrc())
+    {
+        return Status::Ok;
+    }
+
+    return Status::UnknownError;
 }
 
 std::string RamkaSyncCh::getHeaderRaw() const
 {
-    return "";
+    return mRamka.substr(0, RozmiaryRamkiSyncCh::ROZMIAR_NAGLOWKA);
 }
 
 std::string RamkaSyncCh::getBodyRaw() const
 {
-    return "";
+    const int rozmiarDanych = getBodySize();
+    return mRamka.substr(RozmiaryRamkiSyncCh::ROZMIAR_NAGLOWKA, rozmiarDanych);
 }
 
 std::string RamkaSyncCh::getCrcRaw() const
 {
-    return "";
+    const int rozmiarDanych = getBodySize();
+    const auto start = RozmiaryRamkiSyncCh::ROZMIAR_NAGLOWKA + rozmiarDanych;
+    const auto stop = start + RozmiaryRamkiSyncCh::ROZMIAR_CRC;
+    
+    return mRamka.substr(start, stop);
 }
 
-int RamkaSyncCh::getHeader() const
+int RamkaSyncCh::getMsgLen() const
 {
-    return 0;
+    const auto header = getHeaderRaw();
+    return binaryToInt(header) * 8;
 }
 
 int RamkaSyncCh::getBodySize() const
 {
-    return 0;
+    return getMsgLen() - RozmiaryRamkiSyncCh::ROZMIAR_CRC - RozmiaryRamkiSyncCh::ROZMIAR_NAGLOWKA;
 }
 
 unsigned int RamkaSyncCh::getCrc() const
 {
-    return 0;
+    const auto crcRaw = getCrcRaw();
+    return binaryToInt(crcRaw);
 }
 
 bool RamkaSyncCh::checkCrc() const
 {
+    const auto odczytaneCrc = getCrc();
+    const auto rozmiarDanychINaglowka = RozmiaryRamkiSyncCh::ROZMIAR_NAGLOWKA + getBodySize();
     return false;
+}
+
+unsigned long long RamkaSyncCh::binaryToInt(const std::string& data) const
+{
+    // zalozenie: big endian (po ludzku)
+
+    unsigned long long out = 0;
+    for (size_t i = 0; i < data.size(); i++)
+    {
+        if (data[data.size()-1-i] == '1')
+        {
+            out += pow(2, i);
+        }
+    }
+    return out;
 }

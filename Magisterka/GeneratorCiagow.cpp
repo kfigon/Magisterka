@@ -18,27 +18,29 @@ std::unique_ptr<SygnalBipolarny> GeneratorCiagow::generujCiagPn(RejestrPrzesuwny
 	int iloscZerPodRzad = 0;
 	int indeksPierwszejJedynkiPoZerach = 0;
 
-	for (size_t i = 0; i < ciagBinarny.size(); i++)
-	{
-		const auto wygenerowanyBit = rejestr.getVal();
-		ciagBinarny[i] = wygenerowanyBit;
-		if (wygenerowanyBit == 0)
-		{
-			iloscZerPodRzad++;
-			if (iloscZerPodRzad == 14)
-			{
-				DbgPrint("14 zer pod rzad pod indeksem %d\n", i);
-				i++;
-				// wstawiamy dodatkowe zero po 14 zerach. Jest 15 zer na samym koncu
-				ciagBinarny[i] = 0;
-				// kolejny element bedzie jedynka, wiec zaznaczamy jego pozycje, 
-				// zeby potem stworzyc poprawny ciag PN
-				indeksPierwszejJedynkiPoZerach = i + 1;
-			}
-		}
-		else
-			iloscZerPodRzad = 0;
-	}
+    for (size_t i = 0; i < ciagBinarny.size(); i++)
+    {
+        const auto wygenerowanyBit = rejestr.getVal();
+        ciagBinarny[i] = wygenerowanyBit;
+        if (wygenerowanyBit == 0)
+        {
+            iloscZerPodRzad++;
+            if (iloscZerPodRzad == 14)
+            {
+                DbgPrint("14 zer pod rzad pod indeksem %d\n", i);
+                i++;
+                // wstawiamy dodatkowe zero po 14 zerach. Jest 15 zer na samym koncu
+                ciagBinarny[i] = 0;
+                // kolejny element bedzie jedynka, wiec zaznaczamy jego pozycje, 
+                // zeby potem stworzyc poprawny ciag PN
+                indeksPierwszejJedynkiPoZerach = i + 1;
+            }
+        }
+        else
+        {
+            iloscZerPodRzad = 0;
+        }
+    }
 	return std::make_unique<SygnalBipolarny>(ciagBinarny, indeksPierwszejJedynkiPoZerach);
 }
 
@@ -94,7 +96,9 @@ void GeneratorCiagow::dopiszCiag(std::vector<int>& ciag, size_t& indeksCiagu, bo
 std::vector<int> GeneratorCiagow::zamienNaBinarne(int num)
 {
     if (num == 0)
+    {
         return std::vector<int>{0};
+    }
 
     std::vector<int> bin(liczIleBitowTrzeba(num), 0);
 
@@ -116,9 +120,10 @@ std::vector<int> GeneratorCiagow::zamienNaBinarne(int num)
 int GeneratorCiagow::liczIleBitowTrzeba(int num)
 {
     int bity = 0;
-    for (size_t i = 0; num > 0; num>>=1)
+    for (size_t i = 0; num > 0; num >>= 1)
+    {
         bity++;
-
+    }
     return bity;
 }
 

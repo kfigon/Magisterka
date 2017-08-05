@@ -23,9 +23,9 @@ namespace Testy
 {
     using namespace std;
 
-    TEST_CLASS(TestyParseraRamki)
+    TEST_CLASS(TestyPreprocesoraRamek)
     {
-        ParserRamek p;
+        PreprocesorRamek p;
 
         TEST_METHOD(getSize)
         {
@@ -136,7 +136,7 @@ namespace Testy
         }
     };
 
-    TEST_CLASS(TestyDepeszy)
+    TEST_CLASS(TestParseraRamek)
     {
     public:
         TEST_METHOD(poprawnoscRamki_zaKrotkaRamka1)
@@ -147,18 +147,31 @@ namespace Testy
 
         TEST_METHOD(poprawnoscRamki_zaKrotkaRamka2)
         {
-            RamkaSyncCh ramka{ "1001010110" };
+            RamkaSyncCh ramka{ "101000100011111111101010101010101110101" };
             Assert::AreEqual<RamkaSyncCh::Status>(RamkaSyncCh::Status::ZaKrotkaRamka, ramka.czyOk());
         }
 
-        TEST_METHOD(poprawnoscRamki_invalidBodyLen1)
+        TEST_METHOD(poprawnoscRamki_zaDlugaRamka)
         {
-            Assert::Fail();
+            std::string dane(2041, '1');
+            RamkaSyncCh ramka{ dane };
+            Assert::AreEqual<RamkaSyncCh::Status>(RamkaSyncCh::Status::ZaDlugaRamka, ramka.czyOk());
         }
 
-        TEST_METHOD(poprawnoscRamki_invalidBodyLen2)
+        TEST_METHOD(poprawnoscRamki_zaKrotkieBodyLen1)
+        {
+             // 8 bajtow ramka
+            // 64-8-30 = 26 ciala
+            RamkaSyncCh r{ "000010001111110001101011110111101111111000110101111011110100010" };
+            Assert::AreEqual<RamkaSyncCh::Status>(RamkaSyncCh::Status::ZaMaleMsg, r.czyOk());
+        }
+
+        TEST_METHOD(poprawnoscRamki_zaDlugieBodyLen2)
         {   
-            Assert::Fail();
+            // 8 bajtow ramka
+            // 64-8-30 = 26 ciala
+            RamkaSyncCh r{ "00001000111111000110110111110111101111111000110101111011110100010" };
+            Assert::AreEqual<RamkaSyncCh::Status>(RamkaSyncCh::Status::ZaDuzeMsg, r.czyOk());
         }
 
         TEST_METHOD(poprawnoscRamki_niewlasciweCrc)
@@ -171,34 +184,99 @@ namespace Testy
             Assert::Fail();
         }
 
-        TEST_METHOD(getHeaderRaw)
+        TEST_METHOD(getHeaderRaw1)
         {
-            Assert::Fail();
+            RamkaSyncCh r{ "0101000100011111111101010101010101110101" };
+            Assert::AreEqual(string{ "01010001" }, r.getHeaderRaw());
+        }
+
+        TEST_METHOD(getHeaderRaw2)
+        {
+            RamkaSyncCh r{ "01010001" };
+            Assert::AreEqual(string{ "01010001" }, r.getHeaderRaw());
         }
 
         TEST_METHOD(getBodyRaw)
         {
-            Assert::Fail();
+            // 2 bity ciala - rozmiar 40 bitow
+            // 40/8 = 5 bajtow w headerze
+            // crc pomijam
+            RamkaSyncCh r{ "0000010111" };
+            Assert::AreEqual(string{ "11" }, r.getBodyRaw());
         }
 
         TEST_METHOD(getBodyRaw2)
         {
-            Assert::Fail();
+            // 3 bity ciala - rozmiar 41 bitow
+            // 41/8 = 5.125 w headerze->6 bajtow czyli 6*8 = 48 calosci
+            // zakladam ze dodane beda zera
+            RamkaSyncCh r{ "0000011000000111" };
+            Assert::AreEqual(string{ "00000111" }, r.getBodyRaw());
+        }
+
+        TEST_METHOD(getBodyRaw3)
+        {
+            // 32 bity ciala - rozmiar 70 bitow
+            // 70 bitow kodujemy na 9 bajtach
+            // zakladam ze dodane beda zera
+            RamkaSyncCh r{ "0000100110000000100000100001000000010000" };
+            Assert::AreEqual(string{ "10000000100000100001000000010000" }, r.getBodyRaw());
+        }
+
+        TEST_METHOD(getBodyRaw4)
+        {
+            // 26 bity ciala - rozmiar 64 bity
+            // 8 bajtow
+            RamkaSyncCh r{ "0000100011111100011010111101111011" };
+            Assert::AreEqual(string{ "11111100011010111101111011" }, r.getBodyRaw());
         }
 
         TEST_METHOD(getCrcRaw)
         {
-            Assert::Fail();
+            // 2 bity ciala - rozmiar 40 bitow
+            // 40/8 = 5 bajtow w headerze
+            RamkaSyncCh r{ "0000010100111111000110101111011110100010" };
+            Assert::AreEqual(string{"111111000110101111011110100010"}, r.getCrcRaw());
+        }
+
+        TEST_METHOD(getCrc)
+        {
+            // 2 bity ciala - rozmiar 40 bitow
+            // 40/8 = 5 bajtow w headerze
+            // crc pomijam
+            RamkaSyncCh r{ "0000010100111111000110101111011110100010" };
+            Assert::AreEqual<unsigned int>(1058731938, r.getCrc());
+        }
+
+
+        TEST_METHOD(getMsgLen0)
+        {
+            RamkaSyncCh r{ "00000000" };
+            Assert::AreEqual(0, r.getMsgLen());
         }
 
         TEST_METHOD(getMsgLen1)
         {
-            Assert::Fail();
+            RamkaSyncCh r{ "11111111" };
+            Assert::AreEqual(2040, r.getMsgLen());
         }
 
         TEST_METHOD(getMsgLen2)
         {
-            Assert::Fail();
+            RamkaSyncCh r{ "11001011" };
+            Assert::AreEqual(1624, r.getMsgLen());
+        }
+
+        TEST_METHOD(getMsgLen3)
+        {
+            RamkaSyncCh r{ "11000101" };
+            Assert::AreEqual(1576, r.getMsgLen());
+        }
+
+        TEST_METHOD(getMsgLen4)
+        {
+            RamkaSyncCh r{ "00000001" };
+            Assert::AreEqual(8, r.getMsgLen());
         }
 
         TEST_METHOD(checkCrc_valid)
