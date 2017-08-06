@@ -10,9 +10,9 @@ namespace Microsoft
     {
         namespace CppUnitTestFramework
         {
-            template<> static std::wstring ToString<RamkaSyncCh::Status>(const RamkaSyncCh::Status& s)
+            template<> static std::wstring ToString<StatusRamki>(const StatusRamki& s)
             {
-                const auto msg = RamkaSyncCh::statusToString(s);                
+                const auto msg = RamkaSyncCh::StatusRamkiToString(s);
                 return std::wstring (msg.begin(), msg.end());
             }
         }
@@ -116,7 +116,6 @@ namespace Testy
             Assert::IsFalse(p.sprawdzPoprawnoscCiagu());
         }
 
-
         TEST_METHOD(get_2Ramki)
         {
             p.dopisz("1000000010000010000100000001000000000000101000100101000100010000");
@@ -130,9 +129,48 @@ namespace Testy
             Assert::AreEqual(string{ "00000001000001000010000000100000000000101000100101000100010000" }, p.getFrame());
         }
 
-        TEST_METHOD(szukajPoczatkuWStrumieniu)
+        TEST_METHOD(szukajPoczatkuWStrumieniu_ok)
         {
-            // todo: ?
+            p.dopisz("10000000001111111000101010010101");
+            p.dopisz("00000010101010101010101101110010");
+            p.dopisz("01101011011101010101000001011100");
+
+            Assert::IsTrue(p.sprawdzPoprawnoscCiagu());
+            p.odrzucNiepoprawnaCzescRamki();
+
+            Assert::IsTrue(p.sprawdzPoprawnoscCiagu());
+            Assert::AreEqual(string{ "000000000111111100010101001010100000101010101010101011011100101101011011101010101000001011100" },
+                p.getFrame());        
+        }
+
+        TEST_METHOD(szukajPoczatkuWStrumieniu_drugaRamkaNaPoczatku)
+        {
+            p.dopisz("00000010101010101010101101110010");
+            p.dopisz("01101011011101010101000001011100");
+            p.dopisz("10000000001111111000101010010101");
+            p.dopisz("00000010101010101010101101110010");
+            
+            Assert::IsFalse(p.sprawdzPoprawnoscCiagu());
+            p.odrzucNiepoprawnaCzescRamki();
+
+            Assert::IsTrue(p.sprawdzPoprawnoscCiagu(), L"ramka nie zostala odrzucona");
+            Assert::AreEqual(string{ "00000000011111110001010100101010000010101010101010101101110010" },
+                p.getFrame());
+        }
+
+        TEST_METHOD(szukajPoczatkuWStrumieniu_trzeciaRamkaNaPoczatku)
+        {
+            p.dopisz("01101011011101010101000001011100");
+            p.dopisz("10000000001111111000101010010101");
+            p.dopisz("00000010101010101010101101110010");
+            p.dopisz("00000000001111111000101010010101");
+            
+            Assert::IsFalse(p.sprawdzPoprawnoscCiagu());
+            p.odrzucNiepoprawnaCzescRamki();
+
+            Assert::IsTrue(p.sprawdzPoprawnoscCiagu(), L"ramka nie zostala odrzucona");
+            Assert::AreEqual(string{ "000000000111111100010101001010100000101010101010101011011100100000000001111111000101010010101" },
+                p.getFrame());
         }
     };
 
@@ -142,20 +180,20 @@ namespace Testy
         TEST_METHOD(poprawnoscRamki_zaKrotkaRamka1)
         {
             RamkaSyncCh ramka{ "1" };
-            Assert::AreEqual<RamkaSyncCh::Status>(RamkaSyncCh::Status::ZaKrotkaRamka, ramka.czyOk());
+            Assert::AreEqual<StatusRamki>(StatusRamki::ZaKrotkaRamka, ramka.czyOk());
         }
 
         TEST_METHOD(poprawnoscRamki_zaKrotkaRamka2)
         {
             RamkaSyncCh ramka{ "101000100011111111101010101010101110101" };
-            Assert::AreEqual<RamkaSyncCh::Status>(RamkaSyncCh::Status::ZaKrotkaRamka, ramka.czyOk());
+            Assert::AreEqual<StatusRamki>(StatusRamki::ZaKrotkaRamka, ramka.czyOk());
         }
 
         TEST_METHOD(poprawnoscRamki_zaDlugaRamka)
         {
             std::string dane(2041, '1');
             RamkaSyncCh ramka{ dane };
-            Assert::AreEqual<RamkaSyncCh::Status>(RamkaSyncCh::Status::ZaDlugaRamka, ramka.czyOk());
+            Assert::AreEqual<StatusRamki>(StatusRamki::ZaDlugaRamka, ramka.czyOk());
         }
 
         TEST_METHOD(poprawnoscRamki_zaKrotkieBodyLen1)
@@ -163,7 +201,7 @@ namespace Testy
              // 8 bajtow ramka
             // 64-8-30 = 26 ciala
             RamkaSyncCh r{ "000010001111110001101011110111101111111000110101111011110100010" };
-            Assert::AreEqual<RamkaSyncCh::Status>(RamkaSyncCh::Status::ZaMaleMsg, r.czyOk());
+            Assert::AreEqual<StatusRamki>(StatusRamki::ZaMaleMsg, r.czyOk());
         }
 
         TEST_METHOD(poprawnoscRamki_zaDlugieBodyLen2)
@@ -171,7 +209,7 @@ namespace Testy
             // 8 bajtow ramka
             // 64-8-30 = 26 ciala
             RamkaSyncCh r{ "00001000111111000110110111110111101111111000110101111011110100010" };
-            Assert::AreEqual<RamkaSyncCh::Status>(RamkaSyncCh::Status::ZaDuzeMsg, r.czyOk());
+            Assert::AreEqual<StatusRamki>(StatusRamki::ZaDuzeMsg, r.czyOk());
         }
 
         TEST_METHOD(poprawnoscRamki_niewlasciweCrc)

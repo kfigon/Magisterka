@@ -12,34 +12,39 @@ namespace RozmiaryRamkiSyncCh
     const int MAKSYMALNY_ROZMIAR_RAMKI = 2040; //8+2002+30
 }
 
+enum class StatusRamki : int
+{
+    UnknownError = 0,
+    ZaKrotkaRamka = 1,
+    ZaDlugaRamka = 2,
+    NiewlasciweCRC = 3,
+    ZaMaleMsg = 4,
+    ZaDuzeMsg = 5,
+    Ok = 6
+};
+
+
 // todo: zalozenie (moze bledne - big endian)
+// 8 bitow MSG_LEN | 2-2002 bitow message body | 30 CRC
+// tutaj zakladam ze bity sa od MSB-LSB
+// 00000101 -> 5
 class RamkaSyncCh
 {
     const std::string mRamka;
    
 public:
-    enum class Status : int
-    {
-        UnknownError = 0,
-        ZaKrotkaRamka = 1,
-        ZaDlugaRamka =2,
-        NiewlasciweCRC = 3,
-        ZaMaleMsg = 4,
-        ZaDuzeMsg = 5,
-        Ok = 6
-    };
     
-    static std::string statusToString(Status s)
+    static std::string StatusRamkiToString(StatusRamki s)
     {
         switch (s)
         {
-        case RamkaSyncCh::Status::UnknownError: return "UnknownError";
-        case RamkaSyncCh::Status::ZaKrotkaRamka: return "ZaKrotkaRamka";
-        case RamkaSyncCh::Status::ZaDlugaRamka: return "ZaDlugaRamka";
-        case RamkaSyncCh::Status::NiewlasciweCRC: return "NiewlasciweCRC";
-        case RamkaSyncCh::Status::ZaMaleMsg:  return "ZaMaleMsg";
-        case RamkaSyncCh::Status::ZaDuzeMsg:  return "ZaDuzeMsg";
-        case RamkaSyncCh::Status::Ok: return "Ok";
+        case StatusRamki::UnknownError: return "UnknownError";
+        case StatusRamki::ZaKrotkaRamka: return "ZaKrotkaRamka";
+        case StatusRamki::ZaDlugaRamka: return "ZaDlugaRamka";
+        case StatusRamki::NiewlasciweCRC: return "NiewlasciweCRC";
+        case StatusRamki::ZaMaleMsg:  return "ZaMaleMsg";
+        case StatusRamki::ZaDuzeMsg:  return "ZaDuzeMsg";
+        case StatusRamki::Ok: return "Ok";
         }
     }
 
@@ -49,7 +54,7 @@ public:
 
     ~RamkaSyncCh() = default;
 
-    Status czyOk() const;
+    StatusRamki czyOk() const;
 
     std::string getHeaderRaw() const;
     std::string getBodyRaw() const;
@@ -72,7 +77,6 @@ class PreprocesorRamek
 {
     // pojedyncza ramka ma 32 bity
     const int ROZMIAR_RAMKI = 32;
-
     std::stringstream mStream;
 
 public:
@@ -87,6 +91,8 @@ public:
 
     // czysci bufor!
     std::string getFrame();
+
+    void odrzucNiepoprawnaCzescRamki();
 
     size_t getStreamSize()
     {
@@ -107,15 +113,15 @@ public:
 
     bool sprawdzPoprawnoscCiagu();
 
-    size_t getRozmiarPoOdrzuceniu()
+    size_t getRozmiarPoOdrzuceniuSOM()
     {
         const auto rozmiar = getStreamSize();
         return rozmiar - rozmiar / ROZMIAR_RAMKI;
     }
 
 private:
-    void flush()
-    {
-        mStream.str(std::string());
-    }
+    void flush() { mStream.str(std::string()); }
+
+    std::string getSOMs() const;
+    int ileZerDoPrzodu(int startIdx, const std::string& data) const;
 };

@@ -20,7 +20,7 @@ std::string PreprocesorRamek::getFrame()
         return out;
     }
 
-    std::string out(getRozmiarPoOdrzuceniu(), '0');
+    std::string out(getRozmiarPoOdrzuceniuSOM(), '0');
     char znak = 0;
     int i = 0;  // indeks do liczenia jak daleko jestesmy w sturmieniu
     int indeksOut = 0;
@@ -45,6 +45,20 @@ std::string PreprocesorRamek::getFrame()
     return out;
 }
 
+std::string PreprocesorRamek::getSOMs() const
+{
+    const std::string data = mStream.str();
+    std::string out;
+
+    for (size_t i = 0; i < data.size(); i += 32)
+    {
+        // co 32 bity SOM
+        out += data[i];
+    }
+
+    return out;
+}
+
 bool PreprocesorRamek::sprawdzPoprawnoscCiagu()
 {
     const auto rozmiar = getStreamSize();
@@ -53,61 +67,111 @@ bool PreprocesorRamek::sprawdzPoprawnoscCiagu()
         return false;
     }
 
-    const std::string out = mStream.str();
-
-    for (size_t i = 0; i < out.size(); i+=32)
+    const auto bitySom = getSOMs();
+    for (size_t i = 0; i < bitySom.size(); i++)
     {
-        const int numerRamkiWSekwencji = static_cast<int>(i / ROZMIAR_RAMKI);
-        
-        // start of message bit
-        const auto bitSOM = out[i];
-        // co trzecia ramka ma miec jeden
-        if (numerRamkiWSekwencji % 3 == 0) // ramki 0,3,6,9
+        if (i % 3 == 0)
         {
-            if (bitSOM == '0')
+            if (bitySom[i] != '1')
             {
                 return false;
             }
         }
-        else // ramki 1,2, 4,5, 7,8...
+        else
         {
-            if (bitSOM == '1')
+            if (bitySom[i] != '0')
             {
                 return false;
             }
         }
     }
-
     return true;
 }
 
+int PreprocesorRamek::ileZerDoPrzodu(int startIdx, const std::string& data) const
+{
+    int ileZer = 0;
+    for (size_t i = startIdx; i < data.size(); i++)
+    {
+        if (data[i] == '0')
+        {
+            ileZer++;
+        }
+        else
+        {
+            break;
+        }
+    }
+    return ileZer;
+}
 
-RamkaSyncCh::Status RamkaSyncCh::czyOk() const
+void PreprocesorRamek::odrzucNiepoprawnaCzescRamki()
+{
+    if (sprawdzPoprawnoscCiagu())
+    {
+        return;
+    }
+
+    const auto bitySOM = getSOMs();
+    std::string out = mStream.str();
+    flush();
+
+#define min(a,b) ((a < b) ? a : b )
+
+    // skoro tu weszlismy to na pewno nie byla na poczatku. Nie chcemy usuwac
+    // danych jesli byly zera poprzedzone jedynka
+    bool czyBylaJedynka = false;
+    for (size_t i = 0; i < bitySOM.size(); i++)
+    {
+        const auto bit = bitySOM[i];
+        const auto ileZer = ileZerDoPrzodu(i, bitySOM);
+
+        if (!czyBylaJedynka)
+        {
+            if (ileZer != 0)
+            {
+                const auto start = i*ROZMIAR_RAMKI;
+                const auto stop = min((i + ileZer)*ROZMIAR_RAMKI, out.size());
+                out.erase(start, stop);
+                i += (ileZer - 1);
+                czyBylaJedynka = false;
+            }
+            else
+            {
+                czyBylaJedynka = true;
+            }
+        }
+    }
+
+    mStream << out;
+}
+
+StatusRamki RamkaSyncCh::czyOk() const
 {
     if (mRamka.size() < RozmiaryRamkiSyncCh::MINIMALNY_ROZMIAR_RAMKI)
     {
-        return Status::ZaKrotkaRamka;
+        return StatusRamki::ZaKrotkaRamka;
     }
     else if (mRamka.size() > RozmiaryRamkiSyncCh::MAKSYMALNY_ROZMIAR_RAMKI)
     {
-        return Status::ZaDlugaRamka;
+        return StatusRamki::ZaDlugaRamka;
     }
     
     const auto msgLen = getMsgLen();
     if (mRamka.size() < msgLen)
     {
-        return Status::ZaMaleMsg;
+        return StatusRamki::ZaMaleMsg;
     }
     else if (mRamka.size() > msgLen)
     {
-        return Status::ZaDuzeMsg;
+        return StatusRamki::ZaDuzeMsg;
     }
     else if (mRamka.size() == msgLen && checkCrc())
     {
-        return Status::Ok;
+        return StatusRamki::Ok;
     }
 
-    return Status::UnknownError;
+    return StatusRamki::UnknownError;
 }
 
 std::string RamkaSyncCh::getHeaderRaw() const

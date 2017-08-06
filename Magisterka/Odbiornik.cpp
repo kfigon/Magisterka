@@ -348,7 +348,7 @@ std::vector<complex<long long>> Odbiornik::skupWidmo(const std::vector<Data>& da
 
         std::complex<long long> x{ ciagReal, ciagImag };
         std::complex<long long> y{ daneReal, daneImag };
-        std::complex<long long>z{ ciagRealWalsh, 0 };
+        std::complex<long long> z{ ciagRealWalsh, 0 };
 
         indeksDanych++;
         indeksCiagu++;
