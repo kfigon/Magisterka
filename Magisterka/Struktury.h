@@ -63,3 +63,28 @@ struct Data
 	{}
 
 };
+
+struct WspolrzednaGeograficzne
+{
+    int stopnie;
+    int minuty;
+    int sekundy;
+
+    WspolrzednaGeograficzne(int st = 0, int min = 0, int sek = 0) :
+        stopnie(st),
+        minuty(min),
+        sekundy(sek)
+    {}
+};
+
+struct PozycjaGeograficzna
+{
+    WspolrzednaGeograficzne dlugosc;
+    WspolrzednaGeograficzne szerokosc;
+
+    PozycjaGeograficzna(const WspolrzednaGeograficzne& dl = {}, const WspolrzednaGeograficzne& szer = {}) :
+        dlugosc(dl),
+        szerokosc(szer)
+    {}
+};
+

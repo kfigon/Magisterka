@@ -118,6 +118,7 @@
     <ClCompile Include="AproksymatorLiniowy.cpp" />
     <ClCompile Include="FileReader.cpp" />
     <ClCompile Include="GeneratorCiagow.cpp" />
+    <ClCompile Include="KalkulatorOdleglosci.cpp" />
     <ClCompile Include="Odbiornik.cpp" />
     <ClCompile Include="RamkaSyncCh.cpp" />
     <ClCompile Include="RejestrPrzesuwny.cpp" />
@@ -129,6 +130,7 @@
     <ClInclude Include="AproksymatorLiniowy.h" />
     <ClInclude Include="FileReader.h" />
     <ClInclude Include="GeneratorCiagow.h" />
+    <ClInclude Include="KalkulatorOdleglosci.h" />
     <ClInclude Include="Odbiornik.h" />
     <ClInclude Include="RamkaSyncCh.h" />
     <ClInclude Include="RejestrPrzesuwny.h" />

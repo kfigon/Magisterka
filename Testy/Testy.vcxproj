@@ -164,6 +164,7 @@
     <ClCompile Include="TestyAproksymatora.cpp" />
     <ClCompile Include="TestyCzytaniaPliku.cpp" />
     <ClCompile Include="TestyGeneratora.cpp" />
+    <ClCompile Include="TestyObliczenGeograficznych.cpp" />
     <ClCompile Include="TestyOdbiornika.cpp" />
     <ClCompile Include="TestyRamek.cpp" />
     <ClCompile Include="TestyRejestruPrzesuwnego.cpp" />
