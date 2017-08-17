@@ -320,11 +320,27 @@ namespace Testy
             sprawdzajCiagi(expected, wynik);
         }
 
-        TEST_METHOD(odbiornikToString)
+        TEST_METHOD(ToString)
         {
             const std::vector<int> ciag{ 1, 1, 1, 0, 0, 1, 0, 1 };
-
             Assert::AreEqual(std::string{ "11100101" }, Odbiornik::toString(ciag));
+        }
+
+        TEST_METHOD(odrzucPowtorzenia_1)
+        {
+            const std::string data = "11000100101011";
+            const auto wynik = Odbiornik::odrzucPowtorzenia(data, 1);
+
+            Assert::AreEqual(std::string{ "1000111" }, wynik);
+        }
+
+        TEST_METHOD(odrzucPowtorzenia_2)
+        {
+            const std::string data = "11000100101011";
+            const auto wynik = Odbiornik::odrzucPowtorzenia(data, 2);
+
+            Assert::AreEqual(std::string{ "1010001" }, wynik);
+
         }
     };
 

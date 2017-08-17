@@ -148,6 +148,12 @@ public:
     std::vector<int> rozplot(const std::vector<int>& dane);
 
     static std::string toString(const std::vector<int>& ciag);
+    
+    // start - odrzuca co drugi bit zaczynajac od pierwszego albo drugiego
+    // data: 1234
+    // start == 1 -> 13
+    // start == 2 -> 24
+    static std::string odrzucPowtorzenia(const std::string& data, int start);
 };
 
 // klasa do obslugi operacji rozplotu

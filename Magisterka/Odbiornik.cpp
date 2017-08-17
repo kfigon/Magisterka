@@ -448,6 +448,20 @@ std::string Odbiornik::toString(const std::vector<int>& ciag)
     return s.str();
 }
 
+std::string Odbiornik::odrzucPowtorzenia(const std::string& data, int start)
+{
+    std::stringstream out;
+    for (size_t i = 0; i < data.size(); i++)
+    {
+        if (i % 2 == (start-1))
+        {
+            out << data[i];
+        }
+    }
+
+    return out.str();
+}
+
 std::vector<int> Rozplatacz::rozplot(const std::vector<int>& ciag) const
 {
     std::vector<int> out(ciag.size(), 0);
