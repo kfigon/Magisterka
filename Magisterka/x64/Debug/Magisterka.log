@@ -1,8 +1,56 @@
-﻿Build started 2017-08-17 19:56:13.
+﻿Build started 2017-08-19 13:32:32.
      1>Project "C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\Magisterka\Magisterka.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /sdl /Od /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt KalkulatorOdleglosci.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /sdl /Od /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt FileReader.cpp GeneratorCiagow.cpp KalkulatorOdleglosci.cpp Odbiornik.cpp RejestrPrzesuwny.cpp Source.cpp
+         FileReader.cpp
+         Generating Code...
+         Compiling...
+         Source.cpp
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Sygnal.h(41): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Odbiornik.h(77): warning C4244: 'argument' : conversion from '__int64' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Odbiornik.h(78): warning C4244: '=' : conversion from '__int64' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Odbiornik.h(79): warning C4244: '=' : conversion from '__int64' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Odbiornik.h(178): warning C4244: 'return' : conversion from 'double' to 'int', possible loss of data
+     1>Source.cpp(221): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+         RejestrPrzesuwny.cpp
+         Odbiornik.cpp
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Sygnal.h(41): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Odbiornik.h(77): warning C4244: 'argument' : conversion from '__int64' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Odbiornik.h(78): warning C4244: '=' : conversion from '__int64' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Odbiornik.h(79): warning C4244: '=' : conversion from '__int64' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Odbiornik.h(178): warning C4244: 'return' : conversion from 'double' to 'int', possible loss of data
+     1>Odbiornik.cpp(124): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>Odbiornik.cpp(173): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>Odbiornik.cpp(214): warning C4267: '=' : conversion from 'size_t' to 'UINT', possible loss of data
+     1>Odbiornik.cpp(216): warning C4244: '=' : conversion from 'double' to '__int64', possible loss of data
+     1>Odbiornik.cpp(273): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
+     1>Odbiornik.cpp(276): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
+     1>Odbiornik.cpp(289): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>Odbiornik.cpp(342): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>Odbiornik.cpp(343): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>Odbiornik.cpp(344): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>Odbiornik.cpp(469): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\AproksymatorLiniowy.h(33): warning C4244: '+=' : conversion from 'const double' to 'float', possible loss of data
+                 c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\AproksymatorLiniowy.h(24) : while compiling class template member function 'AproksymatorLiniowy<double>::AproksymatorLiniowy(const std::vector<WartosciFunkcji<double>,std::allocator<_Ty>> &)'
+                 with
+                 [
+                     _Ty=WartosciFunkcji<double>
+                 ]
+                 Odbiornik.cpp(279) : see reference to function template instantiation 'AproksymatorLiniowy<double>::AproksymatorLiniowy(const std::vector<WartosciFunkcji<double>,std::allocator<_Ty>> &)' being compiled
+                 with
+                 [
+                     _Ty=WartosciFunkcji<double>
+                 ]
+                 Odbiornik.cpp(279) : see reference to class template instantiation 'AproksymatorLiniowy<double>' being compiled
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\AproksymatorLiniowy.h(35): warning C4244: '+=' : conversion from 'const double' to 'float', possible loss of data
          KalkulatorOdleglosci.cpp
+     1>KalkulatorOdleglosci.cpp(34): warning C4244: 'return' : conversion from 'double' to 'int', possible loss of data
+         GeneratorCiagow.cpp
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Sygnal.h(41): warning C4018: '<' : signed/unsigned mismatch
+     1>GeneratorCiagow.cpp(36): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
+     1>GeneratorCiagow.cpp(52): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
+     1>GeneratorCiagow.cpp(106): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
+         Generating Code...
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Debug\Magisterka.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Debug\Magisterka.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Debug\Magisterka.lib" /MACHINE:X64 x64\Debug\AproksymatorLiniowy.obj
          x64\Debug\FileReader.obj
@@ -19,4 +67,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:02.11
+Time Elapsed 00:00:09.83

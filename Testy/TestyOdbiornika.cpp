@@ -340,7 +340,11 @@ namespace Testy
             const auto wynik = Odbiornik::odrzucPowtorzenia(data, 2);
 
             Assert::AreEqual(std::string{ "1010001" }, wynik);
+        }
 
+        TEST_METHOD(bierzKolejneProbki)
+        {
+            Assert::Fail();
         }
     };
 

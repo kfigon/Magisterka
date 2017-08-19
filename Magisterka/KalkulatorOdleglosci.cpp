@@ -20,6 +20,17 @@ namespace KalkulatorOdleglosci
 
     int liczOdleglosc(const PozycjaGeograficzna& a, const PozycjaGeograficzna& b)
     {
-        return 0;
+        const double pi = 3.14159;
+
+        const auto x = b.szerokosc.getPostacDziesietna() - a.szerokosc.getPostacDziesietna();
+        const auto y = b.dlugosc.getPostacDziesietna() - a.dlugosc.getPostacDziesietna();
+
+        const auto kosinus = cos(a.szerokosc.getPostacDziesietna()*pi / 180);
+        const auto mnoznik = 40075.704 / 360;
+
+        const auto kwadrat = x*x;
+        const auto drugiKwadrat = (kosinus*y)*(kosinus*y);
+        
+        return sqrt(kwadrat + drugiKwadrat) * mnoznik * 1000;
     }
 }
