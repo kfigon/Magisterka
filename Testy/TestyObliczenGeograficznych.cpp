@@ -6,6 +6,30 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
+namespace Microsoft
+{
+    namespace VisualStudio
+    {
+        namespace CppUnitTestFramework
+        {
+            template<>
+            static std::wstring ToString<WspolrzednaGeograficzna>(const WspolrzednaGeograficzna& wsp)
+            {
+                std::wstringstream s;
+                s << wsp.getStopnie() << "-" << wsp.getMinuty() << "-" << wsp.getSekundy();
+                return s.str();
+            }
+
+            template<>
+            static std::wstring ToString<PozycjaGeograficzna>(const PozycjaGeograficzna& poz) 
+            {
+
+                return L"Koordynaty nie sa rowne. Dlugosc: " + ToString(poz.dlugosc) + L" Szerokosc: " + ToString(poz.szerokosc);
+            }
+        }
+    }
+}
+
 namespace Testy
 {
     TEST_CLASS(TestyObliczenGeograficznych)
@@ -21,7 +45,7 @@ namespace Testy
         }
 
     public:
-        TEST_METHOD(pozycjaOdbiornika)
+        TEST_METHOD(lateracja)
         {
             std::vector<PozycjaGeograficzna> stacje(3);
             stacje[0] = PozycjaGeograficzna{ { 121.963477 }, { 37.418436 } };
@@ -38,20 +62,9 @@ namespace Testy
             PozycjaGeograficzna expected{ { 121.961954 }, { 37.417959 } };
             const auto wynik = KalkulatorOdleglosci::lateracja(stacje, odleglosci);
 
-            Assert::AreEqual(expected.dlugosc.stopnie, wynik.dlugosc.stopnie);
-            Assert::AreEqual(expected.dlugosc.minuty, wynik.dlugosc.minuty);
-            Assert::AreEqual(expected.dlugosc.sekundy, wynik.dlugosc.sekundy);
-
-            Assert::AreEqual(expected.szerokosc.stopnie, wynik.szerokosc.stopnie);
-            Assert::AreEqual(expected.szerokosc.minuty, wynik.szerokosc.minuty);
-            Assert::AreEqual(expected.szerokosc.sekundy, wynik.szerokosc.sekundy);
+            Assert::AreEqual<PozycjaGeograficzna>(expected, wynik);
 
             Assert::Fail();
-        }
-
-        TEST_METHOD(przeciecieOkregow)
-        {
-
         }
 
         TEST_METHOD(liczOdleglosc1)
@@ -96,26 +109,61 @@ namespace Testy
 
         TEST_METHOD(postacDziesietnaNaWspolrzedne1)
         {
-            WspolrzednaGeograficzne wsp{ 50.06966 };
-            Assert::AreEqual(50, wsp.stopnie);
-            Assert::AreEqual(4, wsp.minuty);
-            Assert::AreEqual(10, wsp.sekundy);
+            WspolrzednaGeograficzna wsp{ 50.06966 };
+            Assert::AreEqual(50, wsp.getStopnie());
+            Assert::AreEqual(4, wsp.getMinuty());
+            Assert::AreEqual(10, wsp.getSekundy());
         }
 
         TEST_METHOD(postacDziesietnaNaWspolrzedne2)
         {
-            WspolrzednaGeograficzne wsp{ 19.79925 };
-            Assert::AreEqual(19, wsp.stopnie);
-            Assert::AreEqual(47, wsp.minuty);
-            Assert::AreEqual(57, wsp.sekundy);
+            WspolrzednaGeograficzna wsp{ 19.79925 };
+            Assert::AreEqual(19, wsp.getStopnie());
+            Assert::AreEqual(47, wsp.getMinuty());
+            Assert::AreEqual(57, wsp.getSekundy());
         }
 
         TEST_METHOD(postacDziesietnaNaWspolrzedne3)
         {
-            WspolrzednaGeograficzne wsp{ 21.012 };
-            Assert::AreEqual(21, wsp.stopnie);
-            Assert::AreEqual(0, wsp.minuty);
-            Assert::AreEqual(43, wsp.sekundy);  // blad zaokraglenia tu wchodzi
+            WspolrzednaGeograficzna wsp{ 21.012 };
+            Assert::AreEqual(21, wsp.getStopnie());
+            Assert::AreEqual(0, wsp.getMinuty());
+            Assert::AreEqual(43, wsp.getSekundy());  // blad zaokraglenia tu wchodzi
+        }
+
+        TEST_METHOD(dodawanieWspolrzednych)
+        {
+            WspolrzednaGeograficzna a{ 1,2,3 };
+            WspolrzednaGeograficzna b{ 3, 4, 5 };
+
+            WspolrzednaGeograficzna expected{ 4, 6, 8 };
+            Assert::AreEqual<WspolrzednaGeograficzna>(expected, a + b);
+        }
+
+        TEST_METHOD(odejmowanieWspolrzednych)
+        {
+            WspolrzednaGeograficzna a{ 1, 2, 3 };
+            WspolrzednaGeograficzna b{ 3, 4, 5 };
+
+            WspolrzednaGeograficzna expected{ 2,2,2};
+            Assert::AreEqual<WspolrzednaGeograficzna>(expected, b-a);
+        }
+
+        TEST_METHOD(mnozenieWspolrzednych)
+        {
+            WspolrzednaGeograficzna a{ 1, 2, 3 };
+            WspolrzednaGeograficzna b{ 3, 4, 5 };
+
+            WspolrzednaGeograficzna expected{ 3,8,15 };
+            Assert::AreEqual<WspolrzednaGeograficzna>(expected, a * b);
+        }
+
+        TEST_METHOD(overflowMinut)
+        {
+            WspolrzednaGeograficzna a{ 1, 60, 3 };
+            WspolrzednaGeograficzna expected{ 2, 0, 3 };
+            Assert::AreEqual<WspolrzednaGeograficzna>(expected, a);
+
         }
     };
 }

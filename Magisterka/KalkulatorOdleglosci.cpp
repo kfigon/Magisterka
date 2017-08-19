@@ -13,6 +13,12 @@ namespace KalkulatorOdleglosci
             assert(stacje.size() == odleglosci.size());
             return PozycjaGeograficzna{};
         }
+        else if (stacje.size() != 3 && odleglosci.size() != 3)
+        {
+            // w tej chwili nie wspieramy innego niz trilateracja
+            return PozycjaGeograficzna{};
+        }
+
         PozycjaGeograficzna out{};
         
         return out;
