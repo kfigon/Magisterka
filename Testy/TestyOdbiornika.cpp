@@ -3,7 +3,6 @@
 #include "Struktury.h"
 #include "Odbiornik.cpp"
 
-
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 // kompilator mial problemy z porownywaniem long longa...

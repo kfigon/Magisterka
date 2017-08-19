@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Odbiornik.h"
 #include "SpeedTest.h"
 
@@ -460,6 +462,11 @@ std::string Odbiornik::odrzucPowtorzenia(const std::string& data, int start)
     }
 
     return out.str();
+}
+
+void Odbiornik::obrobkaKanaluSynchronizacyjnego(const std::vector<int>& bity)
+{
+    // todo: problemy z odlaczeniem viterbiego w testach :O
 }
 
 std::vector<int> Rozplatacz::rozplot(const std::vector<int>& ciag) const

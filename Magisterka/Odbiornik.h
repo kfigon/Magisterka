@@ -154,6 +154,11 @@ public:
     // start == 1 -> 13
     // start == 2 -> 24
     static std::string odrzucPowtorzenia(const std::string& data, int start);
+
+    // gdy juz dostane wystarczajaco dlugi ciag bitow
+    // nastepuje rozplot, odrzucanie powtorek i dekodowanie.
+    // potem interpretacja danych
+    void obrobkaKanaluSynchronizacyjnego(const std::vector<int>& bity);
 };
 
 // klasa do obslugi operacji rozplotu

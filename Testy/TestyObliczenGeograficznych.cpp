@@ -24,7 +24,7 @@ namespace Microsoft
             static std::wstring ToString<PozycjaGeograficzna>(const PozycjaGeograficzna& poz) 
             {
 
-                return L"Koordynaty nie sa rowne. Dlugosc: " + ToString(poz.dlugosc) + L" Szerokosc: " + ToString(poz.szerokosc);
+                return L"Dlugosc: " + ToString(poz.dlugosc) + L". Szerokosc: " + ToString(poz.szerokosc);
             }
         }
     }
@@ -163,7 +163,6 @@ namespace Testy
             WspolrzednaGeograficzna a{ 1, 60, 3 };
             WspolrzednaGeograficzna expected{ 2, 0, 3 };
             Assert::AreEqual<WspolrzednaGeograficzna>(expected, a);
-
         }
     };
 }
