@@ -200,7 +200,7 @@ void asd(int plikidx)
 #endif //rysujKorektyFaz
 
         const auto skupionePrzedKorekta = o.skupWidmo(dane, *ciagI, *ciagQ, *ciagWalsha, prazekKorelacji.offset);
-        const auto skupionePoKorekcie = o.skupWidmo(noweDane, *ciagI, *ciagQ, *ciagWalsha, prazekKorelacji.offset); //o.korygujFaze(skupionePrzedKorekta, korekty);
+        const auto skupionePoKorekcie = o.korygujFaze(skupionePrzedKorekta, korekty); //o.skupWidmo(noweDane, *ciagI, *ciagQ, *ciagWalsha, prazekKorelacji.offset); 
 
 #if rysujKonselacje
 
