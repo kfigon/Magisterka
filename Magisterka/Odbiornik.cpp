@@ -300,7 +300,21 @@ complex<double> Odbiornik::wyznaczKorekte(double faza)
     const auto real = cos(faza);
     const auto imag = sin(faza);
 
-    return complex<double>{ real, -1 * imag };
+    int mnoznikReal = 1;
+    int mnoznikImag = -1;
+
+    // todo: czyzby to byl sposob na korekte?
+    // ale wtedy korekty faz wychodza brzydko
+    const double pi = 3.1415;
+    if (faza >= 0 && faza < pi / 2) {
+        mnoznikReal = 1;
+        mnoznikImag = 0;
+    } else {//if (faza >= pi/2 && faza < pi) {
+        mnoznikReal = 0;
+        mnoznikImag = -1;
+    } 
+
+    return complex<double>{mnoznikReal* real, mnoznikImag* imag };
 }
 
 std::vector<complex<double>> Odbiornik::wyznaczKorekte(const std::vector<double>& zaproksymowaneFazy)

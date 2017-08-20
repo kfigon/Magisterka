@@ -22,6 +22,8 @@ if os.path.isfile(sciezkaDoPliku):
         imag = [[i][0][1] for i in dane]
         plt.scatter(real,imag)
         plt.grid()
+        plt.axhline(0, color = 'black')
+        plt.axvline(0, color = 'black')
         plt.show()
 
 else:

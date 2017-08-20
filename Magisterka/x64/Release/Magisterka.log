@@ -1,12 +1,51 @@
-﻿Build started 2017-08-05 13:54:07.
+﻿Build started 2017-08-20 13:31:20.
      1>Project "C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\Magisterka\Magisterka.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TP /errorReport:prompt RamkaSyncCh.cpp
-         RamkaSyncCh.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TP /errorReport:prompt Odbiornik.cpp Source.cpp
+         Odbiornik.cpp
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Sygnal.h(41): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Odbiornik.h(78): warning C4244: 'argument' : conversion from '__int64' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Odbiornik.h(79): warning C4244: '=' : conversion from '__int64' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Odbiornik.h(80): warning C4244: '=' : conversion from '__int64' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Odbiornik.h(184): warning C4244: 'return' : conversion from 'double' to 'int', possible loss of data
+     1>Odbiornik.cpp(126): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>Odbiornik.cpp(175): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>Odbiornik.cpp(216): warning C4267: '=' : conversion from 'size_t' to 'UINT', possible loss of data
+     1>Odbiornik.cpp(218): warning C4244: '=' : conversion from 'double' to '__int64', possible loss of data
+     1>Odbiornik.cpp(275): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
+     1>Odbiornik.cpp(278): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
+     1>Odbiornik.cpp(291): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>Odbiornik.cpp(358): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>Odbiornik.cpp(359): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>Odbiornik.cpp(360): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>Odbiornik.cpp(490): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\AproksymatorLiniowy.h(33): warning C4244: '+=' : conversion from 'const double' to 'float', possible loss of data
+                 c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\AproksymatorLiniowy.h(24) : while compiling class template member function 'AproksymatorLiniowy<double>::AproksymatorLiniowy(const std::vector<WartosciFunkcji<double>,std::allocator<_Ty>> &)'
+                 with
+                 [
+                     _Ty=WartosciFunkcji<double>
+                 ]
+                 Odbiornik.cpp(281) : see reference to function template instantiation 'AproksymatorLiniowy<double>::AproksymatorLiniowy(const std::vector<WartosciFunkcji<double>,std::allocator<_Ty>> &)' being compiled
+                 with
+                 [
+                     _Ty=WartosciFunkcji<double>
+                 ]
+                 Odbiornik.cpp(281) : see reference to class template instantiation 'AproksymatorLiniowy<double>' being compiled
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\AproksymatorLiniowy.h(35): warning C4244: '+=' : conversion from 'const double' to 'float', possible loss of data
+         Source.cpp
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Sygnal.h(41): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Odbiornik.h(78): warning C4244: 'argument' : conversion from '__int64' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Odbiornik.h(79): warning C4244: '=' : conversion from '__int64' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Odbiornik.h(80): warning C4244: '=' : conversion from '__int64' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Odbiornik.h(184): warning C4244: 'return' : conversion from 'double' to 'int', possible loss of data
+     1>Source.cpp(50): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>Source.cpp(189): warning C4244: 'initializing' : conversion from 'double' to 'const short', possible loss of data
+     1>Source.cpp(190): warning C4244: 'initializing' : conversion from 'double' to 'const short', possible loss of data
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Release\Magisterka.exe" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Release\Magisterka.pdb" /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Release\Magisterka.lib" /MACHINE:X64 x64\Release\AproksymatorLiniowy.obj
          x64\Release\FileReader.obj
          x64\Release\GeneratorCiagow.obj
+         x64\Release\KalkulatorOdleglosci.obj
          x64\Release\Odbiornik.obj
          x64\Release\RamkaSyncCh.obj
          x64\Release\RejestrPrzesuwny.obj
@@ -20,4 +59,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:03.22
+Time Elapsed 00:00:04.72

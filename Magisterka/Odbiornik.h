@@ -8,6 +8,7 @@
 #include "AproksymatorLiniowy.h"
 #include <complex>
 
+
 void PrzygotujPlikDanychKorelacji(const std::string& sciezka, const std::vector<WynikKorelacji>& wynikKorelacji);
 void PrzygotujPlikDanychKorelacji(const std::string& sciezka, const std::vector<double>& wynikKorelacji);
 void PrzygotujPlikDanychKorelacji(const std::string& sciezka, const std::vector<complex<long long>>& liczbyZespolone);

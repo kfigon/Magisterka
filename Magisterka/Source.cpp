@@ -129,8 +129,8 @@ void asd(int plikidx)
     }
 
     // flagi konfiguracyjne
-#define rysujKonselacje 0
-#define rysujKorektyFaz 0
+#define rysujKonselacje 1
+#define rysujKorektyFaz 1
 #define rysujRozwiniecia 0
 #define rysujKorelacje 0
 #define demoduluj 1
@@ -161,9 +161,10 @@ void asd(int plikidx)
         const auto prazekKorelacji = pikiKorelacji[i];
         cout << "[" << i << "] " << "offset " << prazekKorelacji.offset << " val: " << prazekKorelacji.wartosc << "\n";
 
-
         // todo: wyniesc to wszystko ponizej do osobnej funkcji i agregowac bity, ktore wypluwa demodulator
         // potem to wszystko (jak sie uzbiera ich troche) wrzucic do obrobki kanalu synchronizacyjnego
+        
+        
         const auto wynikMnozenia = o.mnozenieZespoloneISumowanie(dane, *ciagI, prazekKorelacji.offset, domyslnaDlugoscCiagowDoZfazowania);
         const auto katyI = o.liczWartosciKatow(wynikMnozenia);
         const auto rozwinieteFazy = o.rozwinFaze(katyI);
@@ -199,7 +200,7 @@ void asd(int plikidx)
 #endif //rysujKorektyFaz
 
         const auto skupionePrzedKorekta = o.skupWidmo(dane, *ciagI, *ciagQ, *ciagWalsha, prazekKorelacji.offset);
-        const auto skupionePoKorekcie = o.korygujFaze(skupionePrzedKorekta, korekty);
+        const auto skupionePoKorekcie = o.skupWidmo(noweDane, *ciagI, *ciagQ, *ciagWalsha, prazekKorelacji.offset); //o.korygujFaze(skupionePrzedKorekta, korekty);
 
 #if rysujKonselacje
 
@@ -219,7 +220,7 @@ void asd(int plikidx)
         std::vector<complex<long long>> przed(skupionePrzedKorekta.size() / krokSumy, 0);
         std::vector<complex<long long>> po(skupionePoKorekcie.size() / krokSumy, 0);
 
-        for (size_t j = 0; j < przed.size() - 2; j++)
+        for (size_t j = 0; j < przed.size() - 1; j++)
         {
             complex<long long> sumPrzed{ 0, 0 };
             complex<long long> sumPo{ 0, 0 };
@@ -254,6 +255,9 @@ void asd(int plikidx)
         Rozplatacz r;
         const int dlugoscRamkiPrzedRozplotem = 128; // 4.8kbps * 26.6...7 ms
         const auto rozplecione = o.toString(r.rozplot(bity));
+
+        cout<<"rozmplecione: \n";
+        cout<<rozplecione<<"\n";
 
         // todo: ktore brac z powtorzenia?
         const auto odrzuconePowtorki = o.odrzucPowtorzenia(rozplecione, 1);
