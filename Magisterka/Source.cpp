@@ -19,6 +19,14 @@ void zrzucCiagDoPliku(const string& sciezka, SygnalBipolarny& sygnal);
 void rysujDane(const std::vector<Data>& dane);
 void asd(int plikidx);
 
+// na wyjsciu rozplecione
+std::string demodulacjaFragmentuPn(const vector<Data>& dane,
+    Odbiornik& o,
+    const std::unique_ptr<SygnalBipolarny>& ciagI,
+    const std::unique_ptr<SygnalBipolarny>& ciagQ,
+    const std::unique_ptr<SygnalBipolarny>& ciagWalsha,
+    ULONGLONG offset);
+
 int main()
 {
 	// zrzuty dla dra Sadowskiego
@@ -117,7 +125,7 @@ void asd(int plikidx)
 
     //const size_t rozmiarTablicy = czytacz.liczWymaganyRozmiarTablicyNaCalyPlik();
     KalkulatorDlugosciCiagow k{ Stale::CZESTOTLIWOSC_PROBKOWANIA_HZ, Stale::CZESTOTLIWOSC_SYGNALU_HZ };
-    const size_t rozmiarTablicy = k.ileProbek(GeneratorCiagow::DLUGOSC_CIAGU_PN * 2); //GeneratorCiagow::DLUGOSC_CIAGU_PN * 2;
+    const size_t rozmiarTablicy = k.ileProbek(GeneratorCiagow::DLUGOSC_CIAGU_PN * 8); //GeneratorCiagow::DLUGOSC_CIAGU_PN * 2;
 
     BinaryReader czytacz{ pliki[plikidx] };
     const auto dane = czytacz.Czytaj(rozmiarTablicy);
@@ -129,8 +137,8 @@ void asd(int plikidx)
     }
 
     // flagi konfiguracyjne
-#define rysujKonselacje 1
-#define rysujKorektyFaz 1
+#define rysujKonselacje 0
+#define rysujKorektyFaz 0
 #define rysujRozwiniecia 0
 #define rysujKorelacje 0
 #define demoduluj 1
@@ -148,10 +156,6 @@ void asd(int plikidx)
 #endif //rysujKorelacje
 
     const long long domyslnyProgKorelacji = 9000000;    // 7000000
-    // w celu wyznaczenia korekty biore tylo probkowe
-    // odcinki ciagu danych i je sumuje. Faza tak czy siak powinna dac 0, wiec bedize to
-    // uzyte do korekty
-    const auto domyslnaDlugoscCiagowDoZfazowania = 2096;
 
     const auto pikiKorelacji = o.znajdzMaksimaKorelacji(wynikKorelacji, domyslnyProgKorelacji);
     cout << "znalazlem " << pikiKorelacji.size() << " prazki: \n\n";
@@ -164,103 +168,24 @@ void asd(int plikidx)
         // todo: wyniesc to wszystko ponizej do osobnej funkcji i agregowac bity, ktore wypluwa demodulator
         // potem to wszystko (jak sie uzbiera ich troche) wrzucic do obrobki kanalu synchronizacyjnego
         
+        const auto dlugosc = k.ileProbek(GeneratorCiagow::DLUGOSC_CIAGU_PN * 6);
+        const auto dlugoscCiaguPnWCzestotliwoscProbkowaniaDanych = k.ileProbek(GeneratorCiagow::DLUGOSC_CIAGU_PN);
+
+        std::stringstream out;
+        for (size_t i = prazekKorelacji.offset; i < prazekKorelacji.offset + dlugosc; i+=dlugoscCiaguPnWCzestotliwoscProbkowaniaDanych)
+        {        
+            cout << "licz dla offsetu: " << i << "\n";
+            auto rozplecione = demodulacjaFragmentuPn(dane, o, ciagI, ciagQ, ciagWalsha, i);
+            out << rozplecione;
+        }
         
-        const auto wynikMnozenia = o.mnozenieZespoloneISumowanie(dane, *ciagI, prazekKorelacji.offset, domyslnaDlugoscCiagowDoZfazowania);
-        const auto katyI = o.liczWartosciKatow(wynikMnozenia);
-        const auto rozwinieteFazy = o.rozwinFaze(katyI);
+        cout<<"wynik\n\n";
+        cout<<out.str();
 
-#if rysujRozwiniecia
-        RysujWykres({ "katyI.txt", "rozwiniecieFaz.txt" }, katyI, rozwinieteFazy);
-#endif //rysujRozwiniecia
-
-        const auto aproksymacjeFazy = o.aproksymujFazyDoKorekty(rozwinieteFazy, domyslnaDlugoscCiagowDoZfazowania);
-        const auto korekty = o.wyznaczKorekte(aproksymacjeFazy);
-
-#if rysujKorektyFaz
-        // zastosowanie korekty
-        std::vector<Data> noweDane(dane);
-        for (size_t j = 0; j < korekty.size(); j++)
-        {
-            std::complex<double> d{
-            static_cast<double>(noweDane[j + prazekKorelacji.offset].I),
-            static_cast<double>(noweDane[j + prazekKorelacji.offset].Q) };
-
-            const auto w = d*korekty[j];
-            const short re = w.real();
-            const short im = w.imag();
-            noweDane[j + prazekKorelacji.offset].I = re;
-            noweDane[j + prazekKorelacji.offset].Q = im;
-        }
-
-        // katy po korekcji
-        const auto wynikMnozenia2 = o.mnozenieZespoloneISumowanie(noweDane, *ciagI, prazekKorelacji.offset, domyslnaDlugoscCiagowDoZfazowania);
-        const auto nowekatyI = o.liczWartosciKatow(wynikMnozenia2);
-        RysujWykres({ "katyI.txt", "noweKaty.txt" }, katyI, nowekatyI);
-
-#endif //rysujKorektyFaz
-
-        const auto skupionePrzedKorekta = o.skupWidmo(dane, *ciagI, *ciagQ, *ciagWalsha, prazekKorelacji.offset);
-        const auto skupionePoKorekcie = o.korygujFaze(skupionePrzedKorekta, korekty); //o.skupWidmo(noweDane, *ciagI, *ciagQ, *ciagWalsha, prazekKorelacji.offset); 
-
-#if rysujKonselacje
-
-        // todo algorytm: 
-        // - jak juz mam korelacje to wszystko robic kawalkami o dlugosci 26.66667ms
-        // - korekta na caly ciag wzorcowy
-        // - skupianie o czasie trwania wzorca
-        // - kolejne probki przesuniete o 26.66667ms
-        // - piki korelacji bardzo ladnie widac na wielokrotnosciach 34133 probek:
-        //      30538, 64671, 98804 (wszystko oddalone o 34133)
-        // moze byc koniecznosc zachowania tego samego powtarzania probek wzorca w kolejnyc wielokrotnosciach
-
-
-        const int krokSumy = 533;
-        //const int krokSumy = 266;
-
-        std::vector<complex<long long>> przed(skupionePrzedKorekta.size() / krokSumy, 0);
-        std::vector<complex<long long>> po(skupionePoKorekcie.size() / krokSumy, 0);
-
-        for (size_t j = 0; j < przed.size() - 1; j++)
-        {
-            complex<long long> sumPrzed{ 0, 0 };
-            complex<long long> sumPo{ 0, 0 };
-
-            for (size_t k = j*krokSumy; k < (j + 1)*krokSumy; k++)
-            {
-                sumPrzed += skupionePrzedKorekta[k];
-                sumPo += skupionePoKorekcie[k];
-            }
-            przed[j] = sumPrzed;
-            po[j] = sumPo;
-        }
-
-        // todo: te konstelacje nie wygladaja za dobrze
-        RysujKonstelacje("przed.txt", przed);
-        RysujKonstelacje("po.txt", po);
-
-#endif //rysujKonstelacje
-
-#if demoduluj
-        // 26.66667ms to 34133 probek. 
-        // po skupieniu mamy przeplecione bity o przeplywnosci 4.8k. 
-        // 26.666667ms w 4.8k to 128 bity. symbol to 2 bity (QPSK) (64 symbole?)
-        // 34133/128 = 266.6640625
-
-        // 34133/64 symbole - 533.32 probki/symbol
-        const auto przedzialCalkowania = 533;
-        const auto bity = o.demodulacja(skupionePoKorekcie, przedzialCalkowania);
-
-        // obrobka kanalu synchronizacyjnego
-        cout << "mam " << bity.size() << " bitow:\n";
-        Rozplatacz r;
-        const int dlugoscRamkiPrzedRozplotem = 128; // 4.8kbps * 26.6...7 ms
-        const auto rozplecione = o.toString(r.rozplot(bity));
-
-        cout<<"rozmplecione: \n";
-        cout<<rozplecione<<"\n";
+        const auto outStr = out.str();
 
         // todo: ktore brac z powtorzenia?
-        const auto odrzuconePowtorki = o.odrzucPowtorzenia(rozplecione, 1);
+        const auto odrzuconePowtorki = o.odrzucPowtorzenia(outStr, 1);
 
         cout << "\nzdekodowane\n\n";
 
@@ -270,13 +195,10 @@ void asd(int plikidx)
         polynomials.push_back(369);
 
         // todo: dostaje 24 bity zamiast 32 na wyjsciu dekodera :(
+        // puncturing (3.1.31.7.1)?
         ViterbiCodec codec(9, polynomials);
 
         cout << codec.Decode(odrzuconePowtorki);
-
-
-#endif //demoduluj
-
         cout << "\n\n";
     }
 
@@ -286,4 +208,111 @@ void asd(int plikidx)
 #endif
 
     cout << "\n";
+}
+
+std::string demodulacjaFragmentuPn(const vector<Data>& dane,
+    Odbiornik& o,
+    const std::unique_ptr<SygnalBipolarny>& ciagI,
+    const std::unique_ptr<SygnalBipolarny>& ciagQ,
+    const std::unique_ptr<SygnalBipolarny>& ciagWalsha,
+    ULONGLONG offset)
+{
+    // w celu wyznaczenia korekty biore tylo probkowe
+    // odcinki ciagu danych i je sumuje. Faza tak czy siak powinna dac 0, wiec bedize to
+    // uzyte do korekty
+    const auto domyslnaDlugoscCiagowDoZfazowania = 2096;
+
+    const auto wynikMnozenia = o.mnozenieZespoloneISumowanie(dane, *ciagI, offset, domyslnaDlugoscCiagowDoZfazowania);
+    const auto katyI = o.liczWartosciKatow(wynikMnozenia);
+    const auto rozwinieteFazy = o.rozwinFaze(katyI);
+
+#if rysujRozwiniecia
+    RysujWykres({ "katyI.txt", "rozwiniecieFaz.txt" }, katyI, rozwinieteFazy);
+#endif //rysujRozwiniecia
+
+    const auto aproksymacjeFazy = o.aproksymujFazyDoKorekty(rozwinieteFazy, domyslnaDlugoscCiagowDoZfazowania);
+    const auto korekty = o.wyznaczKorekte(aproksymacjeFazy);
+
+#if rysujKorektyFaz
+    // zastosowanie korekty
+    std::vector<Data> noweDane(dane);
+    for (size_t j = 0; j < korekty.size(); j++)
+    {
+        std::complex<double> d{
+        static_cast<double>(noweDane[j + offset].I),
+        static_cast<double>(noweDane[j + offset].Q) };
+
+        const auto w = d*korekty[j];
+        const short re = w.real();
+        const short im = w.imag();
+        noweDane[j + offset].I = re;
+        noweDane[j + offset].Q = im;
+    }
+
+    // katy po korekcji
+    const auto wynikMnozenia2 = o.mnozenieZespoloneISumowanie(noweDane, *ciagI, offset, domyslnaDlugoscCiagowDoZfazowania);
+    const auto nowekatyI = o.liczWartosciKatow(wynikMnozenia2);
+    RysujWykres({ "katyI.txt", "noweKaty.txt" }, katyI, nowekatyI);
+
+#endif //rysujKorektyFaz
+
+    const auto skupionePrzedKorekta = o.skupWidmo(dane, *ciagI, *ciagQ, *ciagWalsha, offset);
+    const auto skupionePoKorekcie = o.korygujFaze(skupionePrzedKorekta, korekty); //o.skupWidmo(noweDane, *ciagI, *ciagQ, *ciagWalsha, prazekKorelacji.offset); 
+
+#if rysujKonselacje
+
+    // todo algorytm: 
+    // - jak juz mam korelacje to wszystko robic kawalkami o dlugosci 26.66667ms
+    // - korekta na caly ciag wzorcowy
+    // - skupianie o czasie trwania wzorca
+    // - kolejne probki przesuniete o 26.66667ms
+    // - piki korelacji bardzo ladnie widac na wielokrotnosciach 34133 probek:
+    //      30538, 64671, 98804 (wszystko oddalone o 34133)
+    // moze byc koniecznosc zachowania tego samego powtarzania probek wzorca w kolejnyc wielokrotnosciach
+
+
+    const int krokSumy = 533;
+    //const int krokSumy = 266;
+
+    std::vector<complex<long long>> przed(skupionePrzedKorekta.size() / krokSumy, 0);
+    std::vector<complex<long long>> po(skupionePoKorekcie.size() / krokSumy, 0);
+
+    for (size_t j = 0; j < przed.size() - 1; j++)
+    {
+        complex<long long> sumPrzed{ 0, 0 };
+        complex<long long> sumPo{ 0, 0 };
+
+        for (size_t k = j*krokSumy; k < (j + 1)*krokSumy; k++)
+        {
+            sumPrzed += skupionePrzedKorekta[k];
+            sumPo += skupionePoKorekcie[k];
+        }
+        przed[j] = sumPrzed;
+        po[j] = sumPo;
+    }
+
+    // todo: te konstelacje nie wygladaja za dobrze
+    RysujKonstelacje("przed.txt", przed);
+    RysujKonstelacje("po.txt", po);
+
+#endif //rysujKonstelacje
+
+#if demoduluj
+    // 26.66667ms to 34133 probek. 
+    // po skupieniu mamy przeplecione bity o przeplywnosci 4.8k. 
+    // 26.666667ms w 4.8k to 128 bity. symbol to 2 bity (QPSK) (64 symbole?)
+    // 34133/128 = 266.6640625
+
+    // 34133/64 symbole - 533.32 probki/symbol
+    const auto przedzialCalkowania = 533;
+    const auto bity = o.demodulacja(skupionePoKorekcie, przedzialCalkowania);
+
+    // obrobka kanalu synchronizacyjnego
+    cout << "mam " << bity.size() << " bitow:\n";
+    Rozplatacz r;
+    const int dlugoscRamkiPrzedRozplotem = 128; // 4.8kbps * 26.6...7 ms
+    const auto rozplecione = o.toString(r.rozplot(bity));
+#endif //demoduluj
+
+    return rozplecione;
 }
