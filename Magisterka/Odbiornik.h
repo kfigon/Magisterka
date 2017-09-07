@@ -144,8 +144,9 @@ public:
 
     std::vector<complex<long long>> skupWidmo(const std::vector<Data>& dane, const SygnalBipolarny& ciagI, const SygnalBipolarny& ciagQ, const SygnalBipolarny& ciagWalsha, size_t offsetPn);
     std::vector<complex<long long>> korygujFaze(const std::vector<complex<long long>>& skupionyCiag, const std::vector<complex<double>>& korektyFazy);
-    // przedzial calkowania
+
     std::vector<int> demodulacja(const std::vector<complex<long long>>& skupioneWidmo, int przedzialCalkowania);
+    std::vector<std::complex<long long>> calkowanie(const std::vector<complex<long long>>& skupioneWidmo, int przedzialCalkowania);
     std::vector<int> rozplot(const std::vector<int>& dane);
 
     static std::string toString(const std::vector<int>& ciag);

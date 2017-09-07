@@ -22,7 +22,7 @@ namespace Microsoft
 
 namespace Testy
 {
-    void sprawdzajCiagi(const std::vector<complex<long long>>& expected, const std::vector<complex<long long>>& wynik)
+    void porownajCiagi(const std::vector<complex<long long>>& expected, const std::vector<complex<long long>>& wynik)
     {
         Assert::AreEqual(expected.size(), wynik.size(), L"nieprawidlowe dlugosci ciagow");
         for (size_t i = 0; i < expected.size(); i++)
@@ -40,6 +40,7 @@ namespace Testy
             Assert::AreEqual(expected[i], actual[i], (L"nie zgadza sie, idx: " + std::to_wstring(i)).c_str());
         }
     }
+
 
     void AreAlmostEqual(double exp, double val, double tolerance = 0.01)
     {
@@ -273,7 +274,7 @@ namespace Testy
             std::vector<complex<long long>> expected{ { -3, -1 }, { 1, 3 }, { 4, -2 }, { -8, 0 },
             { -7, 3 }};
 
-            sprawdzajCiagi(expected, wynik);
+            porownajCiagi(expected, wynik);
         }
 
         TEST_METHOD(skupienieWidma_offset1)
@@ -294,7 +295,7 @@ namespace Testy
             std::vector<complex<long long>> expected{ { -3, 1 }, { 2, 4 }, { 8, 0 }, { -7, 3 },
             { -7, -1 }};
 
-            sprawdzajCiagi(expected, wynik);
+            porownajCiagi(expected, wynik);
         }
 
         TEST_METHOD(korekcjaFazy)
@@ -316,7 +317,7 @@ namespace Testy
             { -5, 0},
             { -4, 0} };
 
-            sprawdzajCiagi(expected, wynik);
+            porownajCiagi(expected, wynik);
         }
 
         TEST_METHOD(ToString)
@@ -486,6 +487,43 @@ namespace Testy
             Odbiornik o;
             const auto wynik = o.demodulacja(dane, 3);
             std::vector<int> expected{ 0, 0, 1, 1 };
+
+            porownajCiagi(expected, wynik);
+        }
+
+        TEST_METHOD(calkowanie_po1)
+        {
+            std::vector<complex<long long>> dane{ { -2, -1 }, { 3, 1 }, { 4, 4 },
+            { -5, 2 }, { 3, -4 }, { -1, -5 }, { 3, 2 } };
+
+            Odbiornik o;
+            const auto wynik = o.calkowanie(dane, 1);
+            std::vector<complex<long long>> expected{ { -2, -1 }, { 3, 1 }, { 4, 4 },
+            { -5, 2 }, { 3, -4 }, { -1, -5 }, { 3, 2 } };
+
+            porownajCiagi(expected, wynik);
+        }
+
+        TEST_METHOD(calkowanie_po3)
+        {
+            std::vector<complex<long long>> dane{ { -2, -1 }, { 3, 1 }, { 4, 4 },
+            { -5, 2 }, { 3, -4 }, { -1, -5 }};
+
+            Odbiornik o;
+            const auto wynik = o.calkowanie(dane, 3);
+            std::vector<complex<long long>> expected{ { 5, 4 }, {-3,-7} };
+
+            porownajCiagi(expected, wynik);
+        }
+
+        TEST_METHOD(calkowanie_po3_1left)
+        {
+            std::vector<complex<long long>> dane{ { -2, -1 }, { 3, 1 }, { 4, 4 },
+            { -5, 2 }, { 3, -4 }, { -1, -5 }, { 3, 2 } };
+
+            Odbiornik o;
+            const auto wynik = o.calkowanie(dane, 3);
+            std::vector<complex<long long>> expected{ { 5, 4 }, { -3, -7 } };
 
             porownajCiagi(expected, wynik);
         }
@@ -693,7 +731,7 @@ namespace Testy
             std::vector<complex<long long>> expected = { { 1, -1 }, { -7, -5 },
             { 8, 6 }, { -2, 3 }, { -3, -4 } };
 
-            sprawdzajCiagi(expected, wynik);
+            porownajCiagi(expected, wynik);
         }
 
         TEST_METHOD(mnozenieZespoloneISumowanie_offset1_podciag2)
@@ -704,7 +742,7 @@ namespace Testy
             std::vector<complex<long long>> expected = { { 1, 0 }, { -9, -6 }, { 4, 9 },
             { 2, 1 }, { -4, -6 } };
 
-            sprawdzajCiagi(expected, wynik);
+            porownajCiagi(expected, wynik);
         }
 
         TEST_METHOD(mnozenieZespoloneISumowanie_offset2_podciag_2)
@@ -714,7 +752,7 @@ namespace Testy
 
             std::vector<complex<long long>> expected = { { 1, 3 }, { -8, -6 }, { 4, 7 }, { -1, -2 }, { -1, 0 } };
 
-            sprawdzajCiagi(expected, wynik);
+            porownajCiagi(expected, wynik);
 
         }
 
@@ -725,7 +763,7 @@ namespace Testy
 
             std::vector<complex<long long>> expected = { {-4,1}, {1,3}, {-3,-5} };
 
-            sprawdzajCiagi(expected, wynik);
+            porownajCiagi(expected, wynik);
         }
 
         /*TEST_METHOD(mnozenieZespoloneISumowanie_offset0_podciag_2_skip2do3)

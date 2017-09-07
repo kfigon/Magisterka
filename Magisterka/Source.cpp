@@ -130,10 +130,10 @@ void asd(int plikidx)
 
     // flagi konfiguracyjne
 #define rysujKonselacje 1
-#define rysujKorektyFaz 1
+#define rysujKorektyFaz 0
 #define rysujRozwiniecia 0
 #define rysujKorelacje 0
-#define demoduluj 1
+#define demoduluj 0
 
     Odbiornik o{ Stale::CZESTOTLIWOSC_PROBKOWANIA_HZ, Stale::CZESTOTLIWOSC_SYGNALU_HZ };
     const auto ciagI = GeneratorCiagow::generujCiagI();

@@ -398,6 +398,26 @@ std::vector<complex<long long>> Odbiornik::korygujFaze(const std::vector<complex
     return out;
 }
 
+std::vector<std::complex<long long>> Odbiornik::calkowanie(const std::vector<complex<long long>>& skupioneWidmo, int przedzialCalkowania)
+{
+    const auto outSize = skupioneWidmo.size() / przedzialCalkowania;
+    std::vector<std::complex<long long>> out(outSize, {});
+
+    int indeksSkupionego = 0;
+    for (size_t outIdx = 0; outIdx < out.size(); outIdx++)
+    {
+        std::complex<long long> wynikIteracji{};
+        for (size_t calkIdx = 0; calkIdx < przedzialCalkowania; calkIdx++)
+        {
+            wynikIteracji += skupioneWidmo[indeksSkupionego];
+            indeksSkupionego++;
+        }
+        out[outIdx] = wynikIteracji;
+    }
+
+    return out;
+}
+
 std::vector<int> Odbiornik::demodulacja(const std::vector<complex<long long>>& skupioneWidmo, int przedzialCalkowania)
 {
     const size_t ile = 2 *(skupioneWidmo.size() / przedzialCalkowania);

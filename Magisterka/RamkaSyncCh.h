@@ -24,7 +24,7 @@ enum class StatusRamki : int
 };
 
 
-// todo: zalozenie (moze bledne - big endian)
+// zalozenie (wyglada dobrze - big endian)
 // 8 bitow MSG_LEN | 2-2002 bitow message body | 30 CRC
 // tutaj zakladam ze bity sa od MSB-LSB
 // 00000101 -> 5

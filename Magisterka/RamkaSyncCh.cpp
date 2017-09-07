@@ -211,7 +211,7 @@ unsigned int RamkaSyncCh::getCrc() const
     return binaryToInt(crcRaw);
 }
 
-// todo: jak?
+// todo: wyklad dr marczaka
 bool RamkaSyncCh::checkCrc() const
 {
     const auto odczytaneCrc = getCrc();

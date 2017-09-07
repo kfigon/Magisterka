@@ -104,8 +104,6 @@ namespace KalkulatorOdleglosci
     // odleglosc w metrach
     int liczOdleglosc(const PozycjaGeograficzna& a, const PozycjaGeograficzna& b);
     
-    // todo: multilateracja - wiecej niz 3 zrodla
-
     // lateracja hiperboliczna
     // in: wspolrzedne geograficzne stacji i odpowiadajace im odleglosci w metrach
     PozycjaGeograficzna lateracja(const std::vector<PozycjaGeograficzna>& stacje, const std::vector<int>& odleglosci);
