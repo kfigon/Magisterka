@@ -15,6 +15,10 @@ public:
 	int ileWartosciMozeWygenerowac() const { return static_cast<int>(pow(2, getDlugoscRejestruWBitach()) - 1); }
 	int getDlugoscRejestruWBitach() const { return static_cast<int>(mStan.size()); }
 
+    void ustawStan(const std::vector<int>& stan) {
+        mStan = stan;
+    }
+
 private:
 	std::vector<int> mStan;
 	const std::vector<int> mOdczepy;

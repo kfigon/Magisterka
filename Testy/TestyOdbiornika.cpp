@@ -527,6 +527,53 @@ namespace Testy
 
             porownajCiagi(expected, wynik);
         }
+
+        TEST_METHOD(demodulatorBpsk_decyzja1)
+        {
+            Odbiornik o;
+            Assert::AreEqual(0, o.decyzjaBpsk({ 1, 0 }));
+            Assert::AreEqual(0, o.decyzjaBpsk({ 3, 0 }));
+        }
+
+        TEST_METHOD(demodulatorBpsk_decyzja2)
+        {
+            Odbiornik o;
+            Assert::AreEqual(0, o.decyzjaBpsk({ 1, 1 }));
+            Assert::AreEqual(0, o.decyzjaBpsk({ 3, -1 }));
+        }
+
+        TEST_METHOD(demodulatorBpsk_decyzja3)
+        {
+            Odbiornik o;
+            Assert::AreEqual(0, o.decyzjaBpsk({ 0, 0 }));
+            Assert::AreEqual(0, o.decyzjaBpsk({ 0, 1 }));
+        }
+
+        TEST_METHOD(demodulatorBpsk_decyzja4)
+        {
+            Odbiornik o;
+            Assert::AreEqual(1, o.decyzjaBpsk({ -1, 0 }));
+            Assert::AreEqual(1, o.decyzjaBpsk({ -3, 1 }));
+        }
+
+        TEST_METHOD(demodulatorBpsk_decyzja5)
+        {
+            Odbiornik o;
+            Assert::AreEqual(1, o.decyzjaBpsk({ -1, -4 }));
+            Assert::AreEqual(1, o.decyzjaBpsk({ -3, -1 }));
+        }
+
+        TEST_METHOD(demodulatorBpsk)
+        {
+            std::vector<complex<long long>> dane{ { -2, -1 }, { 3, 1 }, { 4, 4 },
+            { -5, 2 }, { 3, -4 }, { -1, -5 } };
+
+            Odbiornik o;
+            const auto wynik = o.demodulacjaBsk(dane);
+            std::vector<int> expected{ 1, 0, 0, 1, 0, 1 };
+            
+            porownajCiagi(expected, wynik);
+        }
     };
 
     TEST_CLASS(TestyRozplatacza_7_1)

@@ -163,8 +163,8 @@ void asd(int plikidx)
 
         // todo: wyniesc to wszystko ponizej do osobnej funkcji i agregowac bity, ktore wypluwa demodulator
         // potem to wszystko (jak sie uzbiera ich troche) wrzucic do obrobki kanalu synchronizacyjnego
-        
-        
+
+
         const auto wynikMnozenia = o.mnozenieZespoloneISumowanie(dane, *ciagI, prazekKorelacji.offset, domyslnaDlugoscCiagowDoZfazowania);
         const auto katyI = o.liczWartosciKatow(wynikMnozenia);
         const auto rozwinieteFazy = o.rozwinFaze(katyI);
@@ -177,26 +177,27 @@ void asd(int plikidx)
         const auto korekty = o.wyznaczKorekte(aproksymacjeFazy);
 
 #if rysujKorektyFaz
-        // zastosowanie korekty
-        std::vector<Data> noweDane(dane);
-        for (size_t j = 0; j < korekty.size(); j++)
         {
-            std::complex<double> d{
-            static_cast<double>(noweDane[j + prazekKorelacji.offset].I),
-            static_cast<double>(noweDane[j + prazekKorelacji.offset].Q) };
+            // zastosowanie korekty
+            std::vector<Data> noweDane(dane);
+            for (size_t j = 0; j < korekty.size(); j++)
+            {
+                std::complex<double> d{
+                static_cast<double>(noweDane[j + prazekKorelacji.offset].I),
+                static_cast<double>(noweDane[j + prazekKorelacji.offset].Q) };
 
-            const auto w = d*korekty[j];
-            const short re = w.real();
-            const short im = w.imag();
-            noweDane[j + prazekKorelacji.offset].I = re;
-            noweDane[j + prazekKorelacji.offset].Q = im;
+                const auto w = d*korekty[j];
+                const short re = w.real();
+                const short im = w.imag();
+                noweDane[j + prazekKorelacji.offset].I = re;
+                noweDane[j + prazekKorelacji.offset].Q = im;
+            }
+
+            // katy po korekcji
+            const auto wynikMnozenia2 = o.mnozenieZespoloneISumowanie(noweDane, *ciagI, prazekKorelacji.offset, domyslnaDlugoscCiagowDoZfazowania);
+            const auto nowekatyI = o.liczWartosciKatow(wynikMnozenia2);
+            RysujWykres({ "katyI.txt", "noweKaty.txt" }, katyI, nowekatyI);
         }
-
-        // katy po korekcji
-        const auto wynikMnozenia2 = o.mnozenieZespoloneISumowanie(noweDane, *ciagI, prazekKorelacji.offset, domyslnaDlugoscCiagowDoZfazowania);
-        const auto nowekatyI = o.liczWartosciKatow(wynikMnozenia2);
-        RysujWykres({ "katyI.txt", "noweKaty.txt" }, katyI, nowekatyI);
-
 #endif //rysujKorektyFaz
 
         const auto skupionePrzedKorekta = o.skupWidmo(dane, *ciagI, *ciagQ, *ciagWalsha, prazekKorelacji.offset);
@@ -214,25 +215,9 @@ void asd(int plikidx)
         // moze byc koniecznosc zachowania tego samego powtarzania probek wzorca w kolejnyc wielokrotnosciach
 
 
-        const int krokSumy = 533;
-        //const int krokSumy = 266;
-
-        std::vector<complex<long long>> przed(skupionePrzedKorekta.size() / krokSumy, 0);
-        std::vector<complex<long long>> po(skupionePoKorekcie.size() / krokSumy, 0);
-
-        for (size_t j = 0; j < przed.size() - 1; j++)
-        {
-            complex<long long> sumPrzed{ 0, 0 };
-            complex<long long> sumPo{ 0, 0 };
-
-            for (size_t k = j*krokSumy; k < (j + 1)*krokSumy; k++)
-            {
-                sumPrzed += skupionePrzedKorekta[k];
-                sumPo += skupionePoKorekcie[k];
-            }
-            przed[j] = sumPrzed;
-            po[j] = sumPo;
-        }
+        const int krokCalkowania = 533;
+        const auto przed = o.calkowanie(skupionePrzedKorekta, krokCalkowania);
+        const auto po = o.calkowanie(skupionePoKorekcie, krokCalkowania);
 
         // todo: te konstelacje nie wygladaja za dobrze
         RysujKonstelacje("przed.txt", przed);
@@ -243,7 +228,7 @@ void asd(int plikidx)
 #if demoduluj
         // 26.66667ms to 34133 probek. 
         // po skupieniu mamy przeplecione bity o przeplywnosci 4.8k. 
-        // 26.666667ms w 4.8k to 128 bity. symbol to 2 bity (QPSK) (64 symbole?)
+        // 26.666667ms w 4.8k to 128 bity. symbol to 2 bity (QPSK) (64 symbole)
         // 34133/128 = 266.6640625
 
         // 34133/64 symbole - 533.32 probki/symbol

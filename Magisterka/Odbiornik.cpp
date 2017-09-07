@@ -401,10 +401,10 @@ std::vector<complex<long long>> Odbiornik::korygujFaze(const std::vector<complex
 std::vector<std::complex<long long>> Odbiornik::calkowanie(const std::vector<complex<long long>>& skupioneWidmo, int przedzialCalkowania)
 {
     const auto outSize = skupioneWidmo.size() / przedzialCalkowania;
-    std::vector<std::complex<long long>> out(outSize, {});
+    std::vector<std::complex<long long>> symbole(outSize, {});
 
     int indeksSkupionego = 0;
-    for (size_t outIdx = 0; outIdx < out.size(); outIdx++)
+    for (size_t symboleIdx = 0; symboleIdx < symbole.size(); symboleIdx++)
     {
         std::complex<long long> wynikIteracji{};
         for (size_t calkIdx = 0; calkIdx < przedzialCalkowania; calkIdx++)
@@ -412,12 +412,28 @@ std::vector<std::complex<long long>> Odbiornik::calkowanie(const std::vector<com
             wynikIteracji += skupioneWidmo[indeksSkupionego];
             indeksSkupionego++;
         }
-        out[outIdx] = wynikIteracji;
+        symbole[symboleIdx] = wynikIteracji;
     }
 
+    return symbole;
+}
+
+std::vector<int> Odbiornik::demodulacjaBsk(const std::vector<complex<long long>>& symbole)
+{
+    std::vector<int> out(symbole.size(), 0);
+    for (size_t i = 0; i < out.size(); i++)
+    {
+        out[i] = decyzjaBpsk(symbole[i]);
+    }
     return out;
 }
 
+int Odbiornik::decyzjaBpsk(std::complex<long long> symbol) const
+{
+    return (symbol.real() >= 0) ? 0 : 1;
+}
+
+// todo: do wyrzucenia
 std::vector<int> Odbiornik::demodulacja(const std::vector<complex<long long>>& skupioneWidmo, int przedzialCalkowania)
 {
     const size_t ile = 2 *(skupioneWidmo.size() / przedzialCalkowania);

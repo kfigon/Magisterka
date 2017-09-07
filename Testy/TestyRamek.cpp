@@ -327,4 +327,94 @@ namespace Testy
             Assert::Fail();
         }
     };
+
+    TEST_CLASS(TestyCrc)
+    {
+        class CrcCalc
+        {
+            const string mWielomian;
+        public:
+            CrcCalc(const string& wielomian):
+                mWielomian(wielomian)
+            {}
+
+            int getCrcLen() const { return mWielomian.size() - 1; }
+
+            // wiadomosc bez CRC
+            string liczCrc(const string& msg) const
+            {
+                string paddedMsg = msg + getPadding();
+
+                for (size_t i = 0; i < paddedMsg.size() - 2*mWielomian.size(); i++)
+                {
+                    for (size_t polyIdx = 0; polyIdx < mWielomian.size(); polyIdx++)
+                    {
+                        const auto msgIdx = i + polyIdx;
+                        // todo
+                        paddedMsg[msgIdx] = xor(paddedMsg[msgIdx], mWielomian[polyIdx]);
+                        polyIdx++;
+                    }
+                }
+
+                return getCrcBits(paddedMsg);
+            }
+
+            bool sprawdzPoprawnoscWiadomosci(const string& msg) const
+            {
+                // policz bez crc.
+                // wyodrebnij crc
+                // porownaj
+
+                // albo przejdz algorytm jeszcze raz i sprawdz czy 0
+                return false;
+            }
+
+        private:
+            char xor(char a, char b) const { return (a == b) ? '0' : '1'; }
+            
+            string getCrcBits(const string& msg) const { return msg.substr(msg.size() - mWielomian.size() + 1, msg.size()); }
+            
+            string getPadding() const { return std::string(getCrcLen(), '0'); }
+        };
+
+        TEST_METHOD(crcCalc_1)
+        {
+            const string msg = "11010011101100";
+            const string poly = "1011";
+
+            CrcCalc c{ poly };
+            Assert::AreEqual(3, c.getCrcLen(), L"niewlasciwa dlugosc crc");
+
+            Assert::AreEqual<string>("100", c.liczCrc(msg), L"niewlasciwe crc");
+
+            const string msgWithCrc = "11010011101100100";
+            Assert::IsTrue(c.sprawdzPoprawnoscWiadomosci(msgWithCrc), L"crc powinno byc ok");
+        }
+
+        TEST_METHOD(crcCalc_2)
+        {
+            const string msg = "1010111";
+            const string poly = "100000111";
+
+            CrcCalc c{ poly };
+            Assert::AreEqual(8, c.getCrcLen(), L"niewlasciwa dlugosc crc");
+
+            Assert::AreEqual<string>("10100010", c.liczCrc(msg), L"niewlasciwe crc");
+
+            const string msgWithCrc = "101011110100010";
+            Assert::IsTrue(c.sprawdzPoprawnoscWiadomosci(msgWithCrc), L"crc powinno byc ok");
+        }
+
+
+        TEST_METHOD(badCrcs)
+        {
+            const string poly = "1011";
+            CrcCalc c{ poly };
+
+            Assert::IsFalse(c.sprawdzPoprawnoscWiadomosci("11010011101100101"));
+            Assert::IsFalse(c.sprawdzPoprawnoscWiadomosci("11010011100100100"));
+            Assert::IsFalse(c.sprawdzPoprawnoscWiadomosci("11010011111100100"));
+            Assert::IsFalse(c.sprawdzPoprawnoscWiadomosci("11010111101100100"));
+        }
+    };
 }

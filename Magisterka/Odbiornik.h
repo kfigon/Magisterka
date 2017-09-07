@@ -146,6 +146,12 @@ public:
     std::vector<complex<long long>> korygujFaze(const std::vector<complex<long long>>& skupionyCiag, const std::vector<complex<double>>& korektyFazy);
 
     std::vector<int> demodulacja(const std::vector<complex<long long>>& skupioneWidmo, int przedzialCalkowania);
+    std::vector<int> demodulacjaBsk(const std::vector<complex<long long>>& zakumulowaneProbki);
+    
+    // zwraca bit na podstawie symbolu
+    __forceinline
+        int decyzjaBpsk(std::complex<long long> symbol) const;
+
     std::vector<std::complex<long long>> calkowanie(const std::vector<complex<long long>>& skupioneWidmo, int przedzialCalkowania);
     std::vector<int> rozplot(const std::vector<int>& dane);
 
