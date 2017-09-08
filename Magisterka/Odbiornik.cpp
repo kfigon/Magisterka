@@ -344,7 +344,6 @@ std::vector<complex<long long>> Odbiornik::skupWidmo(const std::vector<Data>& da
 
     std::vector<complex<long long>> out(ileProbekNaCiagWzorcowy, 0);
 
-
     size_t indeksDanych = offsetPn;
     size_t indeksCiagu = 0;
 

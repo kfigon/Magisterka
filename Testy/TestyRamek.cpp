@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 #include "RamkaSyncCh.cpp"
+#include <vector>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -330,91 +331,121 @@ namespace Testy
 
     TEST_CLASS(TestyCrc)
     {
-        class CrcCalc
+        // left shift register
+        class Reg
         {
-            const string mWielomian;
+            std::vector<int> mState;
         public:
-            CrcCalc(const string& wielomian):
-                mWielomian(wielomian)
+            Reg(size_t len) :
+                mState(len, 0)
             {}
 
-            int getCrcLen() const { return mWielomian.size() - 1; }
-
-            // wiadomosc bez CRC
-            string liczCrc(const string& msg) const
+            void calculate(const std::vector<int>& polynomial, const std::vector<int>& data)
             {
-                string paddedMsg = msg + getPadding();
+                // clear state
+                for (auto& bit : mState)
+                    bit = 0;
 
-                for (size_t i = 0; i < paddedMsg.size() - 2*mWielomian.size(); i++)
+                for (auto bit : data)
                 {
-                    for (size_t polyIdx = 0; polyIdx < mWielomian.size(); polyIdx++)
+                    shift(bit);
+                    if (isMsbOne())
+                        xor(polynomial);
+                }
+            }
+            const std::vector<int> getCrc() const { return mState; }
+            bool isCrcGood() const
+            {
+                for (auto bit : mState)
+                {
+                    if (bit != 0)
                     {
-                        const auto msgIdx = i + polyIdx;
-                        // todo
-                        paddedMsg[msgIdx] = xor(paddedMsg[msgIdx], mWielomian[polyIdx]);
-                        polyIdx++;
+                        return false;
                     }
                 }
-
-                return getCrcBits(paddedMsg);
-            }
-
-            bool sprawdzPoprawnoscWiadomosci(const string& msg) const
-            {
-                // policz bez crc.
-                // wyodrebnij crc
-                // porownaj
-
-                // albo przejdz algorytm jeszcze raz i sprawdz czy 0
-                return false;
+                return true;
             }
 
         private:
-            char xor(char a, char b) const { return (a == b) ? '0' : '1'; }
-            
-            string getCrcBits(const string& msg) const { return msg.substr(msg.size() - mWielomian.size() + 1, msg.size()); }
-            
-            string getPadding() const { return std::string(getCrcLen(), '0'); }
+            void shift(int bit)
+            {
+                for (size_t i = 1; i < mState.size(); i++)
+                {
+                    mState[i - 1] = mState[i];
+                }
+                mState[mState.size() - 1] = bit;
+            }
+            bool isMsbOne() const { return (mState[0] == 1); }
+
+            void xor(const std::vector<int>& polynomial)
+            {
+                for (size_t i = 0; i < mState.size(); i++)
+                {
+                    mState[i] = mState[i] ^ polynomial[i];
+                }
+            }
         };
-
-        TEST_METHOD(crcCalc_1)
+        
+        void sprawdz(const std::vector<int>& expected, const std::vector<int>& wynik)
         {
-            const string msg = "11010011101100";
-            const string poly = "1011";
-
-            CrcCalc c{ poly };
-            Assert::AreEqual(3, c.getCrcLen(), L"niewlasciwa dlugosc crc");
-
-            Assert::AreEqual<string>("100", c.liczCrc(msg), L"niewlasciwe crc");
-
-            const string msgWithCrc = "11010011101100100";
-            Assert::IsTrue(c.sprawdzPoprawnoscWiadomosci(msgWithCrc), L"crc powinno byc ok");
+            Assert::AreEqual(expected.size(), wynik.size(), L"dlugosci!");
+            for (size_t i = 0; i < expected.size(); i++)
+            {
+                Assert::AreEqual(expected[i], wynik[i]);
+            }
         }
 
-        TEST_METHOD(crcCalc_2)
+        TEST_METHOD(asd)
         {
-            const string msg = "1010111";
-            const string poly = "100000111";
+            // padding dodany!
 
-            CrcCalc c{ poly };
-            Assert::AreEqual(8, c.getCrcLen(), L"niewlasciwa dlugosc crc");
+            //b11000010 00000000), Polynomial = b100011101
+            std::vector<int> dane{ 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }; //padding8
+            const std::vector<int> poly{ 1, 0, 0, 0, 1, 1, 1, 0, 1 };//9
 
-            Assert::AreEqual<string>("10100010", c.liczCrc(msg), L"niewlasciwe crc");
+            Reg r{ poly.size() };
+            r.calculate(poly, dane);
+            const auto wynik = r.getCrc();
+            const std::vector<int> expected{ 0, 0, 0, 0, 0, 1, 1, 1, 1 };//9
+            sprawdz(expected, wynik);
+        }
+        
+        TEST_METHOD(asd1)
+        {
+            std::vector<int> dane{ 1,1,0,1,0,0,1,1,1,0,1,1,0,0,0,0,0};//padding 3
+            const std::vector<int> poly{ 1,0,1,1};
 
-            const string msgWithCrc = "101011110100010";
-            Assert::IsTrue(c.sprawdzPoprawnoscWiadomosci(msgWithCrc), L"crc powinno byc ok");
+            Reg r{ poly.size() };
+            r.calculate(poly, dane);
+
+            const auto wynik = r.getCrc();
+            const std::vector<int> expected{ 0,1,0,0 };
+            sprawdz(expected, wynik);
         }
 
+        TEST_METHOD(asd2)
+        {
+            std::vector<int> dane{ 1,0,1,0,1,1,1,0,0,0,0,0,0,0 ,0};//padding 8
+            const std::vector<int> poly{ 1,0,0,0,0,0,1,1,1 };//9
 
+            Reg r{ poly.size() };
+            r.calculate(poly, dane);
+
+            const auto wynik = r.getCrc();
+            const std::vector<int> expected{ 0,1,0,1,0,0,0,1,0 };//9
+            sprawdz(expected, wynik);
+        }
+        
         TEST_METHOD(badCrcs)
         {
+            Assert::Fail();
             const string poly = "1011";
-            CrcCalc c{ poly };
+        /*    CrcCalc c{ poly };
 
             Assert::IsFalse(c.sprawdzPoprawnoscWiadomosci("11010011101100101"));
             Assert::IsFalse(c.sprawdzPoprawnoscWiadomosci("11010011100100100"));
             Assert::IsFalse(c.sprawdzPoprawnoscWiadomosci("11010011111100100"));
-            Assert::IsFalse(c.sprawdzPoprawnoscWiadomosci("11010111101100100"));
+            Assert::IsFalse(c.sprawdzPoprawnoscWiadomosci("11010111101100100"));*/
         }
     };
 }

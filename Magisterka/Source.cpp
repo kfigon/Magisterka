@@ -138,10 +138,12 @@ void asd(int plikidx)
     Odbiornik o{ Stale::CZESTOTLIWOSC_PROBKOWANIA_HZ, Stale::CZESTOTLIWOSC_SYGNALU_HZ };
     const auto ciagI = GeneratorCiagow::generujCiagI();
     const auto ciagQ = GeneratorCiagow::generujCiagQ();
-    const auto ciagWalsha = GeneratorCiagow::generujCiagWalsha(32); // ciag Walsha32 do skupienia kanalu synchronizacyjnego
+    // todo: 32 do synchro
+    const auto ciagWalsha = GeneratorCiagow::generujCiagWalsha(0); // ciag Walsha32 do skupienia kanalu synchronizacyjnego
 
-    const auto wynikZespolony = o.liczKorelacje(dane, *ciagI);
-    const auto wynikKorelacji = o.liczModuly(wynikZespolony);
+    // todo: uncomment
+    //const auto wynikZespolony = o.liczKorelacje(dane, *ciagI);
+    //const auto wynikKorelacji = o.liczModuly(wynikZespolony);
 
 #if rysujKorelacje
     RysujWykres("korelacja.txt", wynikKorelacji);
@@ -153,7 +155,18 @@ void asd(int plikidx)
     // uzyte do korekty
     const auto domyslnaDlugoscCiagowDoZfazowania = 2096;
 
-    const auto pikiKorelacji = o.znajdzMaksimaKorelacji(wynikKorelacji, domyslnyProgKorelacji);
+    //    const auto pikiKorelacji = o.znajdzMaksimaKorelacji(wynikKorelacji, domyslnyProgKorelacji);
+    //    [0] offset 1266 val: 19575512
+    //    [1] offset 10777 val : 9987865
+    //    [2] offset 20940 val : 27329830
+    //    [3] offset 20941 val : 19925612
+    //    [4] offset 21207 val : 18924286
+    //    [5] offset 30537 val : 25115077
+    //    [6] offset 30538 val : 34816201
+
+    std::vector<WynikKorelacji> pikiKorelacji{ { 1266, 19575512 }, { 10777, 9987865 }, { 20940, 27329830 },
+    { 20941, 19925612 }, { 21207, 18924286 }, { 30537, 25115077 }, { 30538, 34816201 } };
+
     cout << "znalazlem " << pikiKorelacji.size() << " prazki: \n\n";
 
     for (size_t i = 0; i < pikiKorelacji.size(); i++)
@@ -201,7 +214,7 @@ void asd(int plikidx)
 #endif //rysujKorektyFaz
 
         const auto skupionePrzedKorekta = o.skupWidmo(dane, *ciagI, *ciagQ, *ciagWalsha, prazekKorelacji.offset);
-        const auto skupionePoKorekcie = o.korygujFaze(skupionePrzedKorekta, korekty); //o.skupWidmo(noweDane, *ciagI, *ciagQ, *ciagWalsha, prazekKorelacji.offset); 
+        const auto skupionePoKorekcie = o.korygujFaze(skupionePrzedKorekta, korekty);
 
 #if rysujKonselacje
 
