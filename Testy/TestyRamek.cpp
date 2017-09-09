@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 #include "RamkaSyncCh.cpp"
-#include <vector>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -331,71 +330,13 @@ namespace Testy
 
     TEST_CLASS(TestyCrc)
     {
-        class CrcChecker
-        {
-            // stan rejestru przesuwnego
-            string mState;
-        public:
-            // ilosc komorek rejestru (stopien wielomianu + 1)
-            CrcChecker(size_t len) :
-                mState(len, '0')
-            {}
-
-            bool isCrcOk(const string& msg, const string& poly)
-            {
-                for (auto bit : msg)
-                {
-                    shift(bit);
-                    if (isMsbOne())
-                    {
-                        xor(poly);
-                    }
-                }
-
-                // wszystko powinno byc 0
-                // todo: wszystkie czy tylko te gdzie CRC?
-                for (auto bit : mState)
-                {
-                    if (bit != '0')
-                    {
-                        return false;
-                    }
-                }
-                return true;
-            }
-
-            // rozmiar wielomianu
-            int getCrcLen() const { return mState.size() - 1; }
-        private:
-            char xor(char a, char b) const { return (a == b) ? '0' : '1'; }
-
-            void xor(const string& poly)
-            {
-                for (size_t i = 0; i < mState.size(); i++)
-                {
-                    mState[i] = xor(mState[i], poly[i]);
-                }
-            }
-
-            void shift(char x)
-            {
-                for (size_t i = 1; i < mState.size(); i++)
-                {
-                    mState[i - 1] = mState[i];
-                }
-                mState[mState.size() - 1] = x;
-            }
-
-            bool isMsbOne() const { return (mState[0] == '1'); }
-        };
-
         // https://en.wikipedia.org/wiki/Cyclic_redundancy_check
         TEST_METHOD(crcWiki1)
         {
             const string msgWithCrc = "11010011101100100";  // 3 ostatnie bity to CRC (len-1)
             const string poly = "1011";
 
-            CrcChecker c{ 4 };
+            CrcChecker c{ 3 };
             Assert::IsTrue(c.isCrcOk(msgWithCrc, poly));
         }
 
@@ -404,7 +345,7 @@ namespace Testy
             const string msgWithCrc = "11010001101100100";  // 3 ostatnie bity to CRC
             const string poly = "1011";
 
-            CrcChecker c{ 4 };
+            CrcChecker c{ 3 };
             Assert::IsFalse(c.isCrcOk(msgWithCrc, poly));
         }
 
@@ -413,7 +354,7 @@ namespace Testy
             const string msgWithCrc = "10010011101100100";  // 3 ostatnie bity to CRC
             const string poly = "1011";
 
-            CrcChecker c{ 4 };
+            CrcChecker c{ 3 };
             Assert::IsFalse(c.isCrcOk(msgWithCrc, poly));
         }
 
@@ -422,7 +363,7 @@ namespace Testy
             const string msgWithCrc = "11010111101101100";  // 3 ostatnie bity to CRC
             const string poly = "1011";
 
-            CrcChecker c{ 4 };
+            CrcChecker c{ 3 };
             Assert::IsFalse(c.isCrcOk(msgWithCrc, poly));
         }
 
@@ -432,7 +373,7 @@ namespace Testy
             const string msgWithCrc = "010101111111010110100010";  // 8 ostatnich bity to CRC
             const string poly = "100000111"; //9
 
-            CrcChecker c{ 9 };
+            CrcChecker c{ 8 };
             Assert::IsTrue(c.isCrcOk(msgWithCrc, poly));
         }
 
@@ -441,7 +382,7 @@ namespace Testy
             const string msgWithCrc = "010101101111010110100010";  // 8 ostatnich bity to CRC
             const string poly = "100000111"; //9
 
-            CrcChecker c{ 9 };
+            CrcChecker c{ 8 };
             Assert::IsFalse(c.isCrcOk(msgWithCrc, poly));
         }
 
@@ -450,7 +391,7 @@ namespace Testy
             const string msgWithCrc = "010101111111010110101010";  // 8 ostatnich bity to CRC
             const string poly = "100000111"; //9
 
-            CrcChecker c{ 9 };
+            CrcChecker c{ 8 };
             Assert::IsFalse(c.isCrcOk(msgWithCrc, poly));
         }
 
@@ -459,7 +400,7 @@ namespace Testy
             const string msgWithCrc = "011111111111010110101010";  // 8 ostatnich bity to CRC
             const string poly = "100000111"; //9
 
-            CrcChecker c{ 9 };
+            CrcChecker c{ 8 };
             Assert::IsFalse(c.isCrcOk(msgWithCrc, poly));
         }
 
@@ -469,7 +410,7 @@ namespace Testy
             const string msgWithCrc = "1100001000001111";  // 8 ostatnich bity to CRC (00001111) 0x0f          
             const string poly = "100011101"; //len 9
 
-            CrcChecker c{ 9 };
+            CrcChecker c{ 8 };
             Assert::IsTrue(c.isCrcOk(msgWithCrc, poly));
         }
 
@@ -478,7 +419,7 @@ namespace Testy
             const string msgWithCrc = "1101001000001111";  // 8 ostatnich bity to CRC (00001111) 0x0f
             const string poly = "100011101"; //len 9
 
-            CrcChecker c{ 9 };
+            CrcChecker c{ 8 };
             Assert::IsFalse(c.isCrcOk(msgWithCrc, poly));
         }
 
@@ -487,7 +428,7 @@ namespace Testy
             const string msgWithCrc = "1100001010001111";  // 8 ostatnich bity to CRC (00001111) 0x0f
             const string poly = "100011101"; //len 9
 
-            CrcChecker c{ 9 };
+            CrcChecker c{ 8 };
             Assert::IsFalse(c.isCrcOk(msgWithCrc, poly));
         }
 
@@ -496,7 +437,7 @@ namespace Testy
             const string msgWithCrc = "1100001000001101";  // 8 ostatnich bity to CRC (00001111) 0x0f
             const string poly = "100011101"; //len 9
 
-            CrcChecker c{ 9 };
+            CrcChecker c{ 8 };
             Assert::IsFalse(c.isCrcOk(msgWithCrc, poly));
         }
 
@@ -505,35 +446,98 @@ namespace Testy
             const string msgWithCrc = "1100001000101111";  // 8 ostatnich bity to CRC (00001111) 0x0f
             const string poly = "100011101"; //len 9
 
-            CrcChecker c{ 9 };
+            CrcChecker c{ 8 };
             Assert::IsFalse(c.isCrcOk(msgWithCrc, poly));
         }
 
         TEST_METHOD(crc_4)
-        {                                                                                   // ta jedynka "dodana" zawsze w reprezentacji wielomianowej
-            const string msgWithCrc = "000000010000001000011101";  // 8 ostatnich bity to CRC ((1)0001 1101) 0x1D
+        {
+                                                                                            // ta jedynka "dodana" zawsze w reprezentacji wielomianowej
+            const string msgWithCrc = "000000010000001001110110";  // 8 ostatnich bity to CRC ((1)0001 1101) 0x1D
             const string poly = "100011101"; //len 9
 
-            CrcChecker c{ 9 };
+            CrcChecker c{ 8 };
             Assert::IsTrue(c.isCrcOk(msgWithCrc, poly));
         }
         // to samo co poprzednio, ale bez "paddingu" na poczatku
         TEST_METHOD(crc_4_2)
         {                                                                                   // ta jedynka "dodana" zawsze w reprezentacji wielomianowej
-            const string msgWithCrc = "10000001000011101";  // 8 ostatnich bity to CRC ((1)0001 1101) 0x1D
+            const string msgWithCrc = "10000001001110110";  // 8 ostatnich bity to CRC ((1)0001 1101) 0x1D
             const string poly = "100011101"; //len 9
 
-            CrcChecker c{ 9 };
+            CrcChecker c{ 8 };
             Assert::IsTrue(c.isCrcOk(msgWithCrc, poly));
         }
 
         TEST_METHOD(crc_5)
         {
-            const string msgWithCrc = "000000010000001000001001101110011"; // 00001001101110011 CRC
-            const string poly = "10001000000100001";
+            const string msgWithCrc = "00000001000000100001001101110011"; // 0001001101110011 CRC
+            const string poly = "10001000000100001"; // 0x1021
 
-            CrcChecker c{ 17 };
+            CrcChecker c{ 16 };
             Assert::IsTrue(c.isCrcOk(msgWithCrc, poly));
         }
+
+        TEST_METHOD(crc_5_error1)
+        {
+            const string msgWithCrc = "00010001000000100001001101110011"; // 0001001101110011 CRC
+            const string poly = "10001000000100001"; // 0x1021
+
+            CrcChecker c{ 16 };
+            Assert::IsFalse(c.isCrcOk(msgWithCrc, poly));
+        }
+
+        TEST_METHOD(crc_5_error2)
+        {
+            const string msgWithCrc = "00000001000000100000001101110011"; // 0001001101110011 CRC
+            const string poly = "10001000000100001"; // 0x1021
+
+            CrcChecker c{ 16 };
+            Assert::IsFalse(c.isCrcOk(msgWithCrc, poly));
+        }
+
+        TEST_METHOD(crc_5_error3)
+        {
+            const string msgWithCrc = "00000001000000100001001101110001"; 
+            const string poly = "10001000000100001"; // 0x1021
+
+            CrcChecker c{ 16 };
+            Assert::IsFalse(c.isCrcOk(msgWithCrc, poly));
+        }
+
+        // http://depa.usst.edu.cn/chenjq/www2/software/crc/CRC_Javascript/CRCcalculation.htm
+        TEST_METHOD(crc_6)
+        {
+            const string msg = "10100100101101101100011111101110"; //A4B6C7EE
+            const string crc = "10101101111010000001111101110000"; //ADE81F70
+            const string msgWithCrc = msg + crc;
+            const string poly = "000110010101000001110010100110010"; // 0x32A0E532
+
+            CrcChecker c{ 32 };
+            Assert::IsTrue(c.isCrcOk(msgWithCrc, poly));
+        }
+
+        TEST_METHOD(crc_6_error1)
+        {
+            const string msg = "10100101101101101100011111101110"; //A4B6C7EE
+            const string crc = "10101101111010000001111101110000"; //ADE81F70
+            const string msgWithCrc = msg + crc;
+            const string poly = "000110010101000001110010100110010"; // 0x32A0E532
+
+            CrcChecker c{ 32 };
+            Assert::IsFalse(c.isCrcOk(msgWithCrc, poly));
+        }
+
+        TEST_METHOD(crc_6_error2)
+        {
+            const string msg = "10100101111101101100010110101110"; //A4B6C7EE
+            const string crc = "10101101111010000001111101110000"; //ADE81F70
+            const string msgWithCrc = msg + crc;
+            const string poly = "000110010101000001110010100110010"; // 0x32A0E532
+
+            CrcChecker c{ 32 };
+            Assert::IsFalse(c.isCrcOk(msgWithCrc, poly));
+        }
+
     };
 }

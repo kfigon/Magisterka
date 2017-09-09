@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <sstream>
+#include <assert.h>
 
 namespace RozmiaryRamkiSyncCh
 {
@@ -124,4 +125,65 @@ private:
 
     std::string getSOMs() const;
     int ileZerDoPrzodu(int startIdx, const std::string& data) const;
+};
+
+class CrcChecker
+{
+    // stan rejestru przesuwnego
+    std::string mState;
+public:
+    // ilosc komorek rejestru + 1 (stopien wielomianu + 1)
+    // CRC16 -> CrcChecker(16)
+    // crc3 -> CrcChecker(3)
+    // wielomian wtedy trzeba podac kolejno 17 i 4
+    CrcChecker(size_t len) :
+        mState(len + 1, '0')
+    {}
+
+    bool isCrcOk(const std::string& msg, const std::string& poly)
+    {
+        assert(poly.size() == mState.size());
+
+        for (auto bit : msg)
+        {
+            shift(bit);
+            if (isMsbOne())
+            {
+                xor(poly);
+            }
+        }
+
+        // wszystko powinno byc 0
+        // todo: wszystkie czy tylko te gdzie CRC?
+        for (auto bit : mState)
+        {
+            if (bit != '0')
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+private:
+    char xor(char a, char b) const { return (a == b) ? '0' : '1'; }
+
+    void xor(const std::string& poly)
+    {
+        for (size_t i = 0; i < mState.size(); i++)
+        {
+            mState[i] = xor(mState[i], poly[i]);
+        }
+    }
+
+    void shift(char x)
+    {
+        for (size_t i = 1; i < mState.size(); i++)
+        {
+            mState[i - 1] = mState[i];
+        }
+        mState[mState.size() - 1] = x;
+    }
+
+    bool isMsbOne() const { return (mState[0] == '1'); }
 };
