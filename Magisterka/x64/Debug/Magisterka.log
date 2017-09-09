@@ -1,12 +1,28 @@
-﻿Build started 2017-09-09 18:10:52.
+﻿Build started 2017-09-09 20:19:34.
      1>Project "C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\Magisterka\Magisterka.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /sdl /Od /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt RamkaSyncCh.cpp
-         RamkaSyncCh.cpp
-     1>RamkaSyncCh.cpp(127): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>RamkaSyncCh.cpp(200): warning C4244: 'return' : conversion from 'unsigned __int64' to 'int', possible loss of data
-     1>RamkaSyncCh.cpp(211): warning C4244: 'return' : conversion from 'unsigned __int64' to 'unsigned int', possible loss of data
-     1>RamkaSyncCh.cpp(231): warning C4244: '+=' : conversion from 'double' to 'unsigned __int64', possible loss of data
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /sdl /Od /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt Source.cpp
+         Source.cpp
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Sygnal.h(41): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Odbiornik.h(78): warning C4244: 'argument' : conversion from '__int64' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Odbiornik.h(79): warning C4244: '=' : conversion from '__int64' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Odbiornik.h(80): warning C4244: '=' : conversion from '__int64' to 'int', possible loss of data
+     1>Source.cpp(50): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Odbiornik.h(195): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+                 c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Odbiornik.h(192) : while compiling class template member function 'std::vector<std::complex<__int64>,std::allocator<_Ty>> Rozplatacz<std::complex<__int64>>::rozplot(const std::vector<_Ty,std::allocator<_Ty>> &) const'
+                 with
+                 [
+                     _Ty=std::complex<__int64>
+                 ]
+                 Source.cpp(246) : see reference to function template instantiation 'std::vector<std::complex<__int64>,std::allocator<_Ty>> Rozplatacz<std::complex<__int64>>::rozplot(const std::vector<_Ty,std::allocator<_Ty>> &) const' being compiled
+                 with
+                 [
+                     _Ty=std::complex<__int64>
+                 ]
+                 Source.cpp(245) : see reference to class template instantiation 'Rozplatacz<std::complex<__int64>>' being compiled
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Odbiornik.h(201): warning C4244: 'return' : conversion from 'double' to 'int', possible loss of data
+                 c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Odbiornik.h(201) : while compiling class template member function 'int Rozplatacz<std::complex<__int64>>::getId(int) const'
+                 c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Odbiornik.h(195) : see reference to function template instantiation 'int Rozplatacz<std::complex<__int64>>::getId(int) const' being compiled
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Debug\Magisterka.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Debug\Magisterka.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Debug\Magisterka.lib" /MACHINE:X64 x64\Debug\AproksymatorLiniowy.obj
          x64\Debug\fec.obj
@@ -24,4 +40,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:03.14
+Time Elapsed 00:00:02.63

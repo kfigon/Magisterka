@@ -211,12 +211,18 @@ unsigned int RamkaSyncCh::getCrc() const
     return binaryToInt(crcRaw);
 }
 
-// todo: wyklad dr marczaka
 bool RamkaSyncCh::checkCrc() const
 {
-    const auto odczytaneCrc = getCrc();
-    const auto rozmiarDanychINaglowka = RozmiaryRamkiSyncCh::ROZMIAR_NAGLOWKA + getBodySize();
-    return false;
+    //const auto odczytaneCrc = getCrc();
+    //const auto rozmiarDanychINaglowka = RozmiaryRamkiSyncCh::ROZMIAR_NAGLOWKA + getBodySize();
+
+    // x^16 + x^15 + x^14 + x^11 + x^6 + x^5 + x^2 + x + 1
+    const std::string wielomian = "11100100001100111";
+
+    //RozmiaryRamkiSyncCh::ROZMIAR_CRC
+    CrcChecker c{ static_cast<size_t>(16) };
+
+    return c.isCrcOk(mRamka, wielomian);
 }
 
 unsigned long long RamkaSyncCh::binaryToInt(const std::string& data) const

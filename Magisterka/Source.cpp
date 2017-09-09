@@ -130,11 +130,11 @@ void asd(int plikidx)
 
     // flagi konfiguracyjne
 #define liczKorelacje 0
-#define rysujKonselacje 1
-#define rysujKorektyFaz 1
+#define rysujKonselacje 0
+#define rysujKorektyFaz 0
 #define rysujRozwiniecia 0
 #define rysujKorelacje 0
-#define demoduluj 0
+#define demoduluj 1
 
     Odbiornik o{ Stale::CZESTOTLIWOSC_PROBKOWANIA_HZ, Stale::CZESTOTLIWOSC_SYGNALU_HZ };
     const auto ciagI = GeneratorCiagow::generujCiagI();
@@ -240,32 +240,22 @@ void asd(int plikidx)
         // 34133/128 = 266.6640625
 
         const auto przedzialCalkowania = 266;
-        const auto bity = o.demodulacja(skupionePoKorekcie, przedzialCalkowania);
+        const auto symbole = o.calkowanie(skupionePoKorekcie, przedzialCalkowania);
+        
+        Rozplatacz<std::complex<long long>> r;
+        const auto rozplecione = r.rozplot(symbole);
+        const auto zdemodulowane = o.demodulacjaBsk(rozplecione);
+        const auto bityPowtorzone = o.toString(zdemodulowane);
 
-        // obrobka kanalu synchronizacyjnego
-        cout << "mam " << bity.size() << " bitow:\n";
-        Rozplatacz r;
-        const int dlugoscRamkiPrzedRozplotem = 128; // 4.8kbps * 26.6...7 ms
-        const auto rozplecione = o.toString(r.rozplot<int>(bity));
+        for (auto b : bityPowtorzone)
+            cout << b;
 
-        cout<<"rozmplecione: \n";
-        cout<<rozplecione<<"\n";
+        cout << "\nusuniete powtorzenia\n";
+        const auto symboleOdrzucone = o.odrzucPowtorzenia(rozplecione);
+        const auto bityOdrzucone = o.toString(o.demodulacjaBsk(symboleOdrzucone));
 
-        // todo: ktore brac z powtorzenia?
-        const auto odrzuconePowtorki = o.odrzucPowtorzenia(rozplecione, 1);
-
-        cout << "\nzdekodowane\n\n";
-
-        //9 491 369
-        std::vector<int> polynomials;
-        polynomials.push_back(491);
-        polynomials.push_back(369);
-
-        // todo: dostaje 24 bity zamiast 32 na wyjsciu dekodera :(
-        ViterbiCodec codec(9, polynomials);
-
-        cout << codec.Decode(odrzuconePowtorki);
-
+        for (auto b : bityOdrzucone)
+            cout << b;
 
 #endif //demoduluj
 

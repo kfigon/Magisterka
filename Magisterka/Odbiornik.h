@@ -146,7 +146,7 @@ public:
     std::vector<complex<long long>> korygujFaze(const std::vector<complex<long long>>& skupionyCiag, const std::vector<complex<double>>& korektyFazy);
 
     std::vector<int> demodulacja(const std::vector<complex<long long>>& skupioneWidmo, int przedzialCalkowania);
-    std::vector<int> demodulacjaBsk(const std::vector<complex<long long>>& zakumulowaneProbki);
+    std::vector<int> demodulacjaBsk(const std::vector<complex<long long>>& symbole);
     
     // zwraca bit na podstawie symbolu
     __forceinline
@@ -162,6 +162,7 @@ public:
     // start == 1 -> 13
     // start == 2 -> 24
     static std::string odrzucPowtorzenia(const std::string& data, int start);
+    static std::vector<std::complex<long long>> odrzucPowtorzenia(const std::vector<std::complex<long long>>& symbole);
 
     // gdy juz dostane wystarczajaco dlugi ciag bitow
     // nastepuje rozplot, odrzucanie powtorek i dekodowanie.
@@ -170,6 +171,7 @@ public:
 };
 
 // klasa do obslugi operacji rozplotu
+template<class T>
 class Rozplatacz
 {
     // parametry m i J, dla przypadku uzycia w programie 
@@ -186,14 +188,36 @@ public:
         mJ(j)
     {}
 
-    template<class T>
-    std::vector<T> rozplot(const std::vector<T>& ciag) const;
+    std::vector<T> rozplot(const std::vector<T>& ciag) const
+    {
+        std::vector<T> out(ciag.size(), 0);
+        for (size_t i = 0; i < out.size(); i++)
+            out[i] = ciag[getId(i)];
 
-    __forceinline int getId(int index) const { return pow(2, getM()) * (index%getJ()) + bro((int)index / getJ()); }
+        return out;
+    }
+
+    __forceinline 
+        int getId(int index) const { return pow(2, getM()) * (index%getJ()) + bro((int)index / getJ()); }
 
     // BRO_m(y) wypisuje liczbe y binarnie od konca (m bitow)
     // np. BRO_3(6) = 3
     // 6 = b110 -> b011
-    int bro(int liczba) const;
+    int bro(int liczba) const
+    {
+        int out = 0;
+        const auto ileBitow = getM();
+
+        for (size_t i = 0; i < ileBitow; i++)
+        {
+            const auto bitLiczby = (liczba >> i) & 0x1;
+
+            // teraz wrzucam od konca poszczegolne bity:
+            const auto pozycjaBitowaOdKonca = ileBitow - i - 1;
+            out |= (bitLiczby << pozycjaBitowaOdKonca);
+        }
+
+        return out;
+    }
 };
 

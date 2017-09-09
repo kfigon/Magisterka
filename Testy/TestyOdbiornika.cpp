@@ -342,6 +342,29 @@ namespace Testy
             Assert::AreEqual(std::string{ "1010001" }, wynik);
         }
 
+        TEST_METHOD(odrzucPowtorzenia_symbole1)
+        {
+            std::vector<complex<long long>> dane{ { -2, -1 }, { 3, 1 }, { 4, 4 },
+            { -5, -2 }, { -3, -4 }, { -1, -5 } };
+
+            const auto wynik = Odbiornik::odrzucPowtorzenia(dane);
+            std::vector<complex<long long>> expected{ { 1, 0 }, { -1, 2 }, {-4,-9} };
+
+            porownajCiagi(expected, wynik);
+        }
+
+        TEST_METHOD(odrzucPowtorzenia_symbole2)
+        {
+            std::vector<complex<long long>> dane{ { -2, -1 }, { 3, 1 }, { 4, 4 },
+            { -5, -2 }, { -3, -4 }, { -1, -5 }, { 3, 2 } };
+
+            const auto wynik = Odbiornik::odrzucPowtorzenia(dane);
+            std::vector<complex<long long>> expected{ { 1, 0 }, { -1, 2 }, { -4, -9 }, { 3, 2 } };
+
+            porownajCiagi(expected, wynik);
+        }
+
+
         TEST_METHOD(bierzKolejneProbki)
         {
             Assert::Fail();
@@ -578,7 +601,7 @@ namespace Testy
 
     TEST_CLASS(TestyRozplatacza_7_1)
     {
-        Rozplatacz r{ 7, 1 };
+        Rozplatacz<int> r{ 7, 1 };
         TEST_METHOD(rozplataczGetId0)
         {
             Assert::AreEqual(0, r.getId(0));
@@ -621,7 +644,7 @@ namespace Testy
 
         TEST_METHOD(rozplot1)
         {
-            Rozplatacz rozplatacz;
+            Rozplatacz<int> rozplatacz;
 
             std::vector<int> splecione{ 1, 33, 17, 49, 9, 41, 25, 57, 5, 37, 21, 53, 13, 45, 29, 61,
                 3, 35, 19, 51, 11, 43, 27, 59, 7, 39, 23, 55, 15, 47, 31, 63,
@@ -634,13 +657,13 @@ namespace Testy
 
             const auto expected = wygenerujExpectedDlaRozplatacza(128);
 
-            porownajCiagi(expected, rozplatacz.rozplot<int>(splecione));
+            porownajCiagi(expected, rozplatacz.rozplot(splecione));
         }
     };
 
     TEST_CLASS(TestyFunkcjiBRO_7_1)
     {
-        Rozplatacz r{ 7, 1 };
+        Rozplatacz<int> r{ 7, 1 };
 
         TEST_METHOD(bro0)
         {

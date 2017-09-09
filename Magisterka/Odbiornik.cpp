@@ -513,35 +513,32 @@ std::string Odbiornik::odrzucPowtorzenia(const std::string& data, int start)
     return out.str();
 }
 
-void Odbiornik::obrobkaKanaluSynchronizacyjnego(const std::vector<int>& bity)
+std::vector<std::complex<long long>> Odbiornik::odrzucPowtorzenia(const std::vector<std::complex<long long>>& symbole)
 {
-    // todo: problemy z odlaczeniem viterbiego w testach :O
-}
+    const auto nieparzystaIlosc = (symbole.size() % 2 == 1);
+    int ile = symbole.size() / 2;
+    if (nieparzystaIlosc)
+        ile++;
 
-template<class T>
-std::vector<T> Rozplatacz::rozplot(const std::vector<T>& ciag) const
-{
-    std::vector<T> out(ciag.size(), 0);
+    std::vector<std::complex<long long>> out(ile);
+    
+    int symbolIdx = 0;
     for (size_t i = 0; i < out.size(); i++)
-        out[i] = ciag[getId(i)];
-
-    return out;
-}
-
-int Rozplatacz::bro(int liczba) const
-{
-    int out = 0;
-    const auto ileBitow = getM();
-
-    for (size_t i = 0; i < ileBitow; i++)
     {
-        const auto bitLiczby = (liczba >> i) & 0x1;
+        if (symbolIdx >= symbole.size())
+            break;
+        else if (symbolIdx + 1 >= symbole.size())
+            out[i] = symbole[symbolIdx];
+        else
+            out[i] = symbole[symbolIdx] + symbole[symbolIdx + 1];
 
-        // teraz wrzucam od konca poszczegolne bity:
-        const auto pozycjaBitowaOdKonca = ileBitow - i - 1;
-        out |= (bitLiczby << pozycjaBitowaOdKonca);
+        symbolIdx+=2;
     }
 
     return out;
+}
 
+void Odbiornik::obrobkaKanaluSynchronizacyjnego(const std::vector<int>& bity)
+{
+    // todo: problemy z odlaczeniem viterbiego w testach :O
 }

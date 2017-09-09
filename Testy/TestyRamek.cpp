@@ -316,16 +316,6 @@ namespace Testy
             RamkaSyncCh r{ "00000001" };
             Assert::AreEqual(8, r.getMsgLen());
         }
-
-        TEST_METHOD(checkCrc_valid)
-        {
-            Assert::Fail();
-        }
-
-        TEST_METHOD(checkCrc_invalid)
-        {
-            Assert::Fail();
-        }
     };
 
     TEST_CLASS(TestyCrc)
@@ -537,6 +527,17 @@ namespace Testy
 
             CrcChecker c{ 32 };
             Assert::IsFalse(c.isCrcOk(msgWithCrc, poly));
+        }
+
+        TEST_METHOD(crc_7)
+        {
+            const string msg = "1010010010110110110001111110111000100001"; //A4B6C7EE21
+            const string crc = "110110010100111100101000110100"; //3653CA34
+            const string msgWithCrc = msg + crc;
+            const string poly = "1110110010111110110110001001100"; // 365F6C4C (765F6C4C, jedynka dodana)
+
+            CrcChecker c{ 30 };
+            Assert::IsTrue(c.isCrcOk(msgWithCrc, poly));
         }
 
     };
