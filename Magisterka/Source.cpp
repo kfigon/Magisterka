@@ -252,7 +252,7 @@ void asd(int plikidx)
         cout << "mam " << bity.size() << " bitow:\n";
         Rozplatacz r;
         const int dlugoscRamkiPrzedRozplotem = 128; // 4.8kbps * 26.6...7 ms
-        const auto rozplecione = o.toString(r.rozplot(bity));
+        const auto rozplecione = o.toString(r.rozplot<int>(bity));
 
         cout<<"rozmplecione: \n";
         cout<<rozplecione<<"\n";

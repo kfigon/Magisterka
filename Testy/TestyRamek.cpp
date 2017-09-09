@@ -365,7 +365,15 @@ namespace Testy
                 }
                 return true;
             }
+            void dodajPadding(std::vector<int>& data) const
+            {
+                for (size_t i = 0; i < getPaddingSize(); i++)
+                {
+                    data.push_back(0);
+                }
+            }
 
+            int getPaddingSize() const { return mState.size() - 1; }
         private:
             void shift(int bit)
             {
@@ -446,6 +454,11 @@ namespace Testy
             Assert::IsFalse(c.sprawdzPoprawnoscWiadomosci("11010011100100100"));
             Assert::IsFalse(c.sprawdzPoprawnoscWiadomosci("11010011111100100"));
             Assert::IsFalse(c.sprawdzPoprawnoscWiadomosci("11010111101100100"));*/
+        }
+
+        TEST_METHOD(addPadding)
+        {
+            Assert::Fail();
         }
     };
 }

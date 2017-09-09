@@ -186,7 +186,8 @@ public:
         mJ(j)
     {}
 
-    std::vector<int> rozplot(const std::vector<int>& ciag) const;
+    template<class T>
+    std::vector<T> rozplot(const std::vector<T>& ciag) const;
 
     __forceinline int getId(int index) const { return pow(2, getM()) * (index%getJ()) + bro((int)index / getJ()); }
 

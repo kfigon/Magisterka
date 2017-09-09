@@ -634,7 +634,7 @@ namespace Testy
 
             const auto expected = wygenerujExpectedDlaRozplatacza(128);
 
-            porownajCiagi(expected, rozplatacz.rozplot(splecione));
+            porownajCiagi(expected, rozplatacz.rozplot<int>(splecione));
         }
     };
 

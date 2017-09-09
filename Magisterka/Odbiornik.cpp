@@ -518,9 +518,10 @@ void Odbiornik::obrobkaKanaluSynchronizacyjnego(const std::vector<int>& bity)
     // todo: problemy z odlaczeniem viterbiego w testach :O
 }
 
-std::vector<int> Rozplatacz::rozplot(const std::vector<int>& ciag) const
+template<class T>
+std::vector<T> Rozplatacz::rozplot(const std::vector<T>& ciag) const
 {
-    std::vector<int> out(ciag.size(), 0);
+    std::vector<T> out(ciag.size(), 0);
     for (size_t i = 0; i < out.size(); i++)
         out[i] = ciag[getId(i)];
 
