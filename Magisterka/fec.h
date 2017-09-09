@@ -31,7 +31,22 @@ int chainback_viterbi29_port(v29 *p,unsigned char *data,unsigned int nbits,unsig
 void delete_viterbi29_port(v29 *p);
 int update_viterbi29_blk_port(v29 *p,unsigned char *syms,int nbits);
 
-int parityb(unsigned char x);
-int parity(int x);
 void partab_init(void);
+
+static inline int parityb(unsigned char x){
+    extern unsigned char Partab[256];
+    extern int P_init;
+    if (!P_init){
+        partab_init();
+    }
+    return Partab[x];
+}
+
+static inline int parity(int x){
+    /* Fold down to one byte */
+    x ^= (x >> 16);
+    x ^= (x >> 8);
+    return parityb(x);
+}
+
 #endif

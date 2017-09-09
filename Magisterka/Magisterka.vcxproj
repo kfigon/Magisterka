@@ -116,6 +116,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AproksymatorLiniowy.cpp" />
+    <ClCompile Include="fec.cpp" />
     <ClCompile Include="FileReader.cpp" />
     <ClCompile Include="GeneratorCiagow.cpp" />
     <ClCompile Include="KalkulatorOdleglosci.cpp" />
@@ -128,6 +129,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AproksymatorLiniowy.h" />
+    <ClInclude Include="fec.h" />
     <ClInclude Include="FileReader.h" />
     <ClInclude Include="GeneratorCiagow.h" />
     <ClInclude Include="KalkulatorOdleglosci.h" />

@@ -45,6 +45,9 @@
     <ClCompile Include="KalkulatorOdleglosci.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="fec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RejestrPrzesuwny.h">
@@ -78,6 +81,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="KalkulatorOdleglosci.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fec.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

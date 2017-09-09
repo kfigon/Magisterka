@@ -50,5 +50,8 @@
     <ClCompile Include="TestyObliczenGeograficznych.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="testviterbi.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

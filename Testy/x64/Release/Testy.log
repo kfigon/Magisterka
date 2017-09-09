@@ -1,13 +1,14 @@
-﻿Build started 2017-09-08 17:50:40.
+﻿Build started 2017-09-09 15:10:58.
      1>Project "C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\Testy\Testy.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /IC:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\Magisterka /I"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\UnitTest\include" /Zi /nologo /W3 /WX- /O2 /Oi /GL /D WIN32 /D NDEBUG /D _WINDLL /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"x64\Release\Testy.pch" /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TP /FC /errorReport:prompt TestyOdbiornika.cpp TestyRamek.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /IC:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\Magisterka /I"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\UnitTest\include" /Zi /nologo /W3 /WX- /O2 /Oi /GL /D WIN32 /D NDEBUG /D _WINDLL /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"x64\Release\Testy.pch" /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TP /FC /errorReport:prompt testviterbi.cpp TestyOdbiornika.cpp TestyRamek.cpp
+         testviterbi.cpp
          TestyOdbiornika.cpp
      1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\sygnal.h(41): warning C4018: '<' : signed/unsigned mismatch
      1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.h(78): warning C4244: 'argument' : conversion from '__int64' to 'int', possible loss of data
      1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.h(79): warning C4244: '=' : conversion from '__int64' to 'int', possible loss of data
      1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.h(80): warning C4244: '=' : conversion from '__int64' to 'int', possible loss of data
-     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.h(191): warning C4244: 'return' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.h(192): warning C4244: 'return' : conversion from 'double' to 'int', possible loss of data
      1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(126): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
      1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(175): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
      1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(216): warning C4267: '=' : conversion from 'size_t' to 'UINT', possible loss of data
@@ -18,7 +19,6 @@
      1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(357): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
      1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(358): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
      1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(359): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
-     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(525): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
      1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\testy\testyodbiornika.cpp(140): warning C4244: 'argument' : conversion from '__int64' to 'double', possible loss of data
      1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\testy\testyodbiornika.cpp(169): warning C4244: 'argument' : conversion from '__int64' to 'double', possible loss of data
      1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\aproksymatorliniowy.h(33): warning C4244: '+=' : conversion from 'const double' to 'float', possible loss of data
@@ -34,31 +34,32 @@
                  ]
                  c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(281) : see reference to class template instantiation 'AproksymatorLiniowy<double>' being compiled
      1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\aproksymatorliniowy.h(35): warning C4244: '+=' : conversion from 'const double' to 'float', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.cpp(526): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+                 c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\testy\testyodbiornika.cpp(637) : see reference to function template instantiation 'std::vector<int,std::allocator<_Ty>> Rozplatacz::rozplot<int>(const std::vector<_Ty,std::allocator<_Ty>> &) const' being compiled
+                 with
+                 [
+                     _Ty=int
+                 ]
          TestyRamek.cpp
      1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\ramkasyncch.cpp(127): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
      1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\ramkasyncch.cpp(200): warning C4244: 'return' : conversion from 'unsigned __int64' to 'int', possible loss of data
      1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\ramkasyncch.cpp(211): warning C4244: 'return' : conversion from 'unsigned __int64' to 'unsigned int', possible loss of data
      1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\ramkasyncch.cpp(231): warning C4244: '+=' : conversion from 'double' to 'unsigned __int64', possible loss of data
-     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\testy\testyramek.cpp(341): warning C4267: 'return' : conversion from 'size_t' to 'int', possible loss of data
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Release\Testy.dll" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\UnitTest\lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Release\Testy.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Release\Testy.lib" /MACHINE:X64 /DLL x64\Release\stdafx.obj
-         x64\Release\TestyAproksymatora.obj
-         x64\Release\TestyCzytaniaPliku.obj
-         x64\Release\TestyGeneratora.obj
-         x64\Release\TestyObliczenGeograficznych.obj
-         x64\Release\TestyOdbiornika.obj
-         x64\Release\TestyRamek.obj
-         x64\Release\TestyRejestruPrzesuwnego.obj
-         x64\Release\TestySygnalu.obj
-     1>LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/LTCG' specification
-            Creating library C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Release\Testy.lib and object C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Release\Testy.exp
-         Generating code
-     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\ramkasyncch.h(49): warning C4715: 'RamkaSyncCh::StatusRamkiToString' : not all control paths return a value
-     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\odbiornik.h(113): warning C4724: potential mod by 0
-         Finished generating code
-         Testy.vcxproj -> C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\x64\Release\Testy.dll
-     1>Done Building Project "C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\Testy\Testy.vcxproj" (Build target(s)).
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\testy\testyramek.cpp(448): error C2535: 'const Microsoft::VisualStudio::CppUnitTestFramework::MemberMethodInfo *Testy::TestyCrc::__GetTestMethodInfo_asd2(void)' : member function already defined or declared
+                 c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\testy\testyramek.cpp(435) : see declaration of 'Testy::TestyCrc::__GetTestMethodInfo_asd2'
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\testy\testyramek.cpp(449): error C2535: 'void Testy::TestyCrc::asd2(void)' : member function already defined or declared
+                 c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\testy\testyramek.cpp(435) : see declaration of 'Testy::TestyCrc::asd2'
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\testy\testyramek.cpp(377): warning C4267: 'return' : conversion from 'size_t' to 'int', possible loss of data
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\testy\testyramek.cpp(464): error C2059: syntax error : '}'
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\testy\testyramek.cpp(464): error C2143: syntax error : missing ';' before '}'
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\testy\testyramek.cpp(466): error C2146: syntax error : missing ';' before identifier 'r'
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\testy\testyramek.cpp(466): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\testy\testyramek.cpp(466): error C2065: 'poly' : undeclared identifier
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\testy\testyramek.cpp(466): error C2228: left of '.size' must have class/struct/union
+                 type is 'unknown-type'
+     1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\testy\testyramek.cpp(466): fatal error C1903: unable to recover from previous error(s); stopping compilation
+     1>Done Building Project "C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\Testy\Testy.vcxproj" (Build target(s)) -- FAILED.
 
-Build succeeded.
+Build FAILED.
 
-Time Elapsed 00:00:05.85
+Time Elapsed 00:00:02.37

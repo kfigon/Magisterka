@@ -129,8 +129,9 @@ void asd(int plikidx)
     }
 
     // flagi konfiguracyjne
+#define liczKorelacje 0
 #define rysujKonselacje 1
-#define rysujKorektyFaz 0
+#define rysujKorektyFaz 1
 #define rysujRozwiniecia 0
 #define rysujKorelacje 0
 #define demoduluj 0
@@ -139,33 +140,27 @@ void asd(int plikidx)
     const auto ciagI = GeneratorCiagow::generujCiagI();
     const auto ciagQ = GeneratorCiagow::generujCiagQ();
     // todo: 32 do synchro
-    const auto ciagWalsha = GeneratorCiagow::generujCiagWalsha(0); // ciag Walsha32 do skupienia kanalu synchronizacyjnego
+    const auto ciagWalsha = GeneratorCiagow::generujCiagWalsha(32); // ciag Walsha32 do skupienia kanalu synchronizacyjnego
 
-    // todo: uncomment
+#if liczKorelacje
     //const auto wynikZespolony = o.liczKorelacje(dane, *ciagI);
     //const auto wynikKorelacji = o.liczModuly(wynikZespolony);
+#endif
 
 #if rysujKorelacje
     RysujWykres("korelacja.txt", wynikKorelacji);
 #endif //rysujKorelacje
 
-    const long long domyslnyProgKorelacji = 9000000;    // 7000000
+    const long long domyslnyProgKorelacji = 9000000;
     // w celu wyznaczenia korekty biore tylo probkowe
     // odcinki ciagu danych i je sumuje. Faza tak czy siak powinna dac 0, wiec bedize to
     // uzyte do korekty
     const auto domyslnaDlugoscCiagowDoZfazowania = 2096;
 
-    //    const auto pikiKorelacji = o.znajdzMaksimaKorelacji(wynikKorelacji, domyslnyProgKorelacji);
-    //    [0] offset 1266 val: 19575512
-    //    [1] offset 10777 val : 9987865
-    //    [2] offset 20940 val : 27329830
-    //    [3] offset 20941 val : 19925612
-    //    [4] offset 21207 val : 18924286
-    //    [5] offset 30537 val : 25115077
-    //    [6] offset 30538 val : 34816201
-
+#if liczKorelacje == 0
     std::vector<WynikKorelacji> pikiKorelacji{ { 1266, 19575512 }, { 10777, 9987865 }, { 20940, 27329830 },
     { 20941, 19925612 }, { 21207, 18924286 }, { 30537, 25115077 }, { 30538, 34816201 } };
+#endif
 
     cout << "znalazlem " << pikiKorelacji.size() << " prazki: \n\n";
 
@@ -228,7 +223,7 @@ void asd(int plikidx)
         // moze byc koniecznosc zachowania tego samego powtarzania probek wzorca w kolejnyc wielokrotnosciach
 
 
-        const int krokCalkowania = 533;
+        const int krokCalkowania = 266;
         const auto przed = o.calkowanie(skupionePrzedKorekta, krokCalkowania);
         const auto po = o.calkowanie(skupionePoKorekcie, krokCalkowania);
 
@@ -241,11 +236,10 @@ void asd(int plikidx)
 #if demoduluj
         // 26.66667ms to 34133 probek. 
         // po skupieniu mamy przeplecione bity o przeplywnosci 4.8k. 
-        // 26.666667ms w 4.8k to 128 bity. symbol to 2 bity (QPSK) (64 symbole)
+        // 26.666667ms w 4.8k to 128 bity. symbol to 2 bity (QPSK) (64 symbole). BPSK 1:1
         // 34133/128 = 266.6640625
 
-        // 34133/64 symbole - 533.32 probki/symbol
-        const auto przedzialCalkowania = 533;
+        const auto przedzialCalkowania = 266;
         const auto bity = o.demodulacja(skupionePoKorekcie, przedzialCalkowania);
 
         // obrobka kanalu synchronizacyjnego
