@@ -9,10 +9,9 @@
 #include "SpeedTest.h"
 #include "AproksymatorLiniowy.h"
 
-#include "viterbi.h"
-#include <algorithm>
 #include <cstdlib>
 #include <ctime>
+#include "fec.h"
 
 std::vector<string> plikiWKatalogu(const string& katalog);
 void zrzucCiagDoPliku(const string& sciezka, SygnalBipolarny& sygnal);
@@ -257,6 +256,32 @@ void asd(int plikidx)
         for (auto b : bityOdrzucone)
             cout << b;
 
+        {
+            const int frameBits = 32;
+            const int symLen = 64;
+
+            unsigned char symbols[symLen]; // input
+            unsigned char data[frameBits]; // output
+
+            memset(symbols, 0, symLen);
+            memset(data, 0, frameBits);
+
+            for (size_t x = 0; x < symLen; x++)
+                symbols[x] = bityOdrzucone[x];
+
+            v29* vp = (v29*)create_viterbi29_port(frameBits);
+
+            init_viterbi29_port(vp, 0);
+            update_viterbi29_blk_port(vp, symbols, frameBits);
+
+            chainback_viterbi29_port(vp, data, frameBits, 0);
+
+            delete_viterbi29_port(vp);
+
+            cout << "\nzdekodowane\n";
+            for (size_t x = 0; x < frameBits; x++)
+                cout << static_cast<int>(data[x]);
+        }
 #endif //demoduluj
 
         cout << "\n\n";

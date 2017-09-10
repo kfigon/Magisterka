@@ -1,4 +1,4 @@
-﻿Build started 2017-09-09 20:19:34.
+﻿Build started 2017-09-10 13:40:45.
      1>Project "C:\Users\kfigon\Desktop\uczelnia\mgr\repoMgr\again\Magisterka\Magisterka\Magisterka.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /sdl /Od /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt Source.cpp
@@ -7,19 +7,19 @@
      1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Odbiornik.h(78): warning C4244: 'argument' : conversion from '__int64' to 'int', possible loss of data
      1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Odbiornik.h(79): warning C4244: '=' : conversion from '__int64' to 'int', possible loss of data
      1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Odbiornik.h(80): warning C4244: '=' : conversion from '__int64' to 'int', possible loss of data
-     1>Source.cpp(50): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>Source.cpp(49): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
      1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Odbiornik.h(195): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
                  c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Odbiornik.h(192) : while compiling class template member function 'std::vector<std::complex<__int64>,std::allocator<_Ty>> Rozplatacz<std::complex<__int64>>::rozplot(const std::vector<_Ty,std::allocator<_Ty>> &) const'
                  with
                  [
                      _Ty=std::complex<__int64>
                  ]
-                 Source.cpp(246) : see reference to function template instantiation 'std::vector<std::complex<__int64>,std::allocator<_Ty>> Rozplatacz<std::complex<__int64>>::rozplot(const std::vector<_Ty,std::allocator<_Ty>> &) const' being compiled
+                 Source.cpp(245) : see reference to function template instantiation 'std::vector<std::complex<__int64>,std::allocator<_Ty>> Rozplatacz<std::complex<__int64>>::rozplot(const std::vector<_Ty,std::allocator<_Ty>> &) const' being compiled
                  with
                  [
                      _Ty=std::complex<__int64>
                  ]
-                 Source.cpp(245) : see reference to class template instantiation 'Rozplatacz<std::complex<__int64>>' being compiled
+                 Source.cpp(244) : see reference to class template instantiation 'Rozplatacz<std::complex<__int64>>' being compiled
      1>c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Odbiornik.h(201): warning C4244: 'return' : conversion from 'double' to 'int', possible loss of data
                  c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Odbiornik.h(201) : while compiling class template member function 'int Rozplatacz<std::complex<__int64>>::getId(int) const'
                  c:\users\kfigon\desktop\uczelnia\mgr\repomgr\again\magisterka\magisterka\Odbiornik.h(195) : see reference to function template instantiation 'int Rozplatacz<std::complex<__int64>>::getId(int) const' being compiled
@@ -40,4 +40,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:02.63
+Time Elapsed 00:00:02.27
